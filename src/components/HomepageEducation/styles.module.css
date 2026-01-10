@@ -1,0 +1,83 @@
+.educationSection {
+  padding: 4rem 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: var(--ifm-heading-color);
+}
+
+.educationContent {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+}
+
+.section {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-heading-color);
+  border-bottom: 2px solid var(--ifm-color-primary);
+  padding-bottom: 0.5rem;
+}
+
+.item {
+  margin-bottom: 1.5rem;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.itemTitle {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--ifm-heading-color);
+}
+
+.itemTitleHighlight {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+}
+
+.itemSubtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.itemDescription {
+  margin: 0.5rem 0 0 0;
+  color: var(--ifm-font-color-base);
+  line-height: 1.6;
+  text-align: justify;
+}
+
+@media (max-width: 996px) {
+  .educationContent {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .section {
+    padding: 1.5rem;
+  }
+}

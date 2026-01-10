@@ -10,7 +10,7 @@ import { themes as prismThemes } from "prism-react-renderer";
 const config = {
   title: `Nick Miyasato`,
   tagline:
-    "I'm a Software Engineer. Crafting code and building solutions is my passion. ⚽",
+    "Software Engineer with 4+ years of experience in team leadership, project management, and full-stack development.",
   favicon: "img/nick-logo.png",
 
   // Set the production url of your site here
@@ -134,13 +134,6 @@ const config = {
           src: "img/nick-logo.png",
         },
         items: [
-          {
-            type: "docSidebar",
-            sidebarId: "tutorialSidebar",
-            position: "left",
-            label: "About",
-          },
-          { to: "/portfolio/projects", label: "Projects", position: "left" },
           { to: "/blog", label: "Blog", position: "left" },
           {
             to: "/contact",

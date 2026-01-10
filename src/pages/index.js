@@ -2,8 +2,9 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
+import HomepageExperience from "@site/src/components/HomepageExperience";
+import HomepageEducation from "@site/src/components/HomepageEducation";
 import ParticlesBackground from "../components/ParticlesBackground";
-import ProjectShowcase from "../components/ProjectShowcase";
 
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
@@ -11,7 +12,6 @@ import Translate from "@docusaurus/Translate";
 import SocialIcons from "../components/SocialIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBook,
   faFilePdf,
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
@@ -42,7 +42,7 @@ function HomepageHeader() {
           />
           <p className="hero__subtitle" style={{ paddingTop: "1rem" }}>
             <Translate>
-              Software Engineer, Musician and Designer.
+              Software Engineer with 4+ years of experience in team leadership, project management, and full-stack development.
             </Translate>
           </p>
           <div
@@ -50,13 +50,6 @@ function HomepageHeader() {
             style={{ display: "flex", gap: "10px", flexDirection: "column" }}
           >
             <div style={{ display: "flex", gap: "10px", flexDirection: "row" }}>
-              <Link
-                className="button button--primary button--lg"
-                to="/portfolio/projects"
-              >
-                <Translate>Projects </Translate>
-                <FontAwesomeIcon icon={faBook} width={15} />
-              </Link>
               <Link
                 className="button button--primary button--lg"
                 to="/blog"
@@ -111,7 +104,6 @@ function HomepageHeader() {
         </div>
         <Shadown />
       </header>
-      <ProjectShowcase />
     </>
   );
 }
@@ -121,6 +113,8 @@ export default function Home() {
     <Layout title={`Welcome`} description="Nicholas Miyasato Portfolio & Blog">
       <HomepageHeader />
       <main>
+        <HomepageExperience />
+        <HomepageEducation />
         <HomepageFeatures />
       </main>
     </Layout>

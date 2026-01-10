@@ -14,59 +14,77 @@ export default function HomepageEducation() {
             </Heading>
             <div className={styles.educationContent}>
               <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Formação</h3>
+                <h3 className={styles.sectionTitle}>
+                  <Translate>Academic Background</Translate>
+                </h3>
                 <div className={styles.item}>
                   <h4 className={styles.itemTitle}>
-                    Análise e Desenvolvimento de Sistemas
+                    <Translate>Systems Analysis and Development</Translate>
                   </h4>
                   <p className={styles.itemSubtitle}>
-                    Faculdade Descomplica Digital (2021 - 2024)
+                    <Translate>Faculdade Descomplica Digital (2021 - 2024)</Translate>
                   </p>
                 </div>
                 <div className={styles.item}>
-                  <h4 className={styles.itemTitle}>Segurança da Informação</h4>
+                  <h4 className={styles.itemTitle}>
+                    <Translate>Information Security</Translate>
+                  </h4>
                   <p className={styles.itemSubtitle}>
-                    Faculdade Descomplica Digital (2024 - Momento)
+                    <Translate>Faculdade Descomplica Digital (2024 - Momento)</Translate>
                   </p>
                 </div>
               </div>
 
               <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Cursos</h3>
+                <h3 className={styles.sectionTitle}>
+                  <Translate>Courses</Translate>
+                </h3>
                 <div className={styles.item}>
                   <h4 className={styles.itemTitle}>
-                    AWS Academy Introduction to Cloud Semester 1
+                    <Translate>AWS Academy Introduction to Cloud Semester 1</Translate>
                   </h4>
-                  <p className={styles.itemSubtitle}>AWS</p>
+                  <p className={styles.itemSubtitle}>
+                    <Translate>AWS</Translate>
+                  </p>
                 </div>
                 <div className={styles.item}>
                   <h4 className={styles.itemTitle}>
-                    Business Intelligence com Power BI
+                    <Translate>Business Intelligence with Power BI</Translate>
                   </h4>
-                  <p className={styles.itemSubtitle}>SENAC/MS</p>
+                  <p className={styles.itemSubtitle}>
+                    <Translate>SENAC/MS</Translate>
+                  </p>
                 </div>
                 <div className={styles.item}>
                   <h4 className={styles.itemTitle}>
-                    Gestão de Infraestruturas de TI
+                    <Translate>IT Infrastructure Management</Translate>
                   </h4>
-                  <p className={styles.itemSubtitle}>FIAP</p>
+                  <p className={styles.itemSubtitle}>
+                    <Translate>FIAP</Translate>
+                  </p>
                 </div>
                 <div className={styles.item}>
-                  <h4 className={styles.itemTitle}>Cybersecurity</h4>
-                  <p className={styles.itemSubtitle}>FIAP</p>
+                  <h4 className={styles.itemTitle}>
+                    <Translate>Cybersecurity</Translate>
+                  </h4>
+                  <p className={styles.itemSubtitle}>
+                    <Translate>FIAP</Translate>
+                  </p>
                 </div>
               </div>
 
               <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Idiomas</h3>
+                <h3 className={styles.sectionTitle}>
+                  <Translate>Languages</Translate>
+                </h3>
                 <div className={styles.item}>
                   <h4 className={styles.itemTitleHighlight}>
-                    🇬🇧 Inglês Fluente
+                    <Translate>🇬🇧 Fluent English</Translate>
                   </h4>
                   <p className={styles.itemDescription}>
-                    Fluente em inglês, com capacidade de comunicação eficaz em
-                    ambientes profissionais internacionais, leitura técnica,
-                    escrita e apresentações.
+                    <Translate>
+                      Fluent in English, with effective communication skills in international professional environments, technical reading, writing and presentations.
+                    </Translate>
                   </p>
                 </div>
               </div>

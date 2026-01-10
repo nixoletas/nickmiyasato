@@ -1,41 +1,52 @@
 import React from "react";
 import Heading from "@theme/Heading";
-import Experience from "../Experience";
 import TechTags from "../TechTags";
 import Translate from "@docusaurus/Translate";
 import styles from "./styles.module.css";
 
 const experiences = [
   {
-    title: "Zukk - Freelance",
-    role: "Desenvolvedor de Software .NET, Angular",
-    period: "(Jul 2025 - Momento)",
-    description:
-      "Consultoria no desenvolvimento e implantação do sistema de índices de conformidade, desenvolvimento de WebAPIs, mensageria com RabbitMQ e aplicações em C# .NET e Angular. Apoiei o time em um projeto extenso de alta complexidade para a Neoenergia, grupo do setor elétrico brasileiro.",
+    title: <Translate>Zukk - Freelance</Translate>,
+    role: <Translate>Software Developer .NET, Angular</Translate>,
+    period: <Translate>(Jul 2025 - Present)</Translate>,
+    description: (
+      <Translate>
+        Consulting on the development and implementation of the compliance index system, WebAPI development, messaging with RabbitMQ and applications in C# .NET and Angular. I supported the team on an extensive high-complexity project for Neoenergia, a Brazilian electricity sector group.
+      </Translate>
+    ),
     tags: ["C#", ".NET", "Angular", "WebAPI", "RabbitMQ"],
   },
   {
-    title: "A Divisão - Freelance",
-    role: "Desenvolvedor de Software NextJs",
-    period: "(Junho 2025 - Momento)",
-    description:
-      "Atuei no desenvolvimento das plataformas de Conexão entre Empresas e Veteranos militares com tecnologias Next.js, Supabase, integração de pagamentos e gestão de assinaturas com Stripe, monetização da plataforma e controle de planos, otimização de banco de dados DynamoDB.",
+    title: <Translate>A Divisão - Freelance</Translate>,
+    role: <Translate>Software Developer NextJs</Translate>,
+    period: <Translate>(June 2025 - Present)</Translate>,
+    description: (
+      <Translate>
+        Worked on the development of platforms connecting Companies and Military Veterans using Next.js, Supabase, payment integration and subscription management with Stripe, platform monetization and plan control, DynamoDB database optimization.
+      </Translate>
+    ),
     tags: ["Next.js", "Supabase", "Stripe", "DynamoDB", "TypeScript"],
   },
   {
-    title: "Picmoney - Freelance",
-    role: "Desenvolvedor de Software Flutter",
-    period: "(Maio 2025 - Momento)",
-    description:
-      "Desenvolvi o primeiro MVP em Flutter utilizando padrões de design e interfaces modernas com integração de APIs. Criei documentação para toda a pilha tecnológica, incluindo API, fluxos de processos e diagramas, acelerando e facilitando a integração de novos membros da equipe e promovendo a transferência de conhecimento.",
+    title: <Translate>Picmoney - Freelance</Translate>,
+    role: <Translate>Software Developer Flutter</Translate>,
+    period: <Translate>(May 2025 - Present)</Translate>,
+    description: (
+      <Translate>
+        Developed the first MVP in Flutter using design patterns and modern interfaces with API integration. Created documentation for the entire technology stack, including API, process flows and diagrams, accelerating and facilitating the integration of new team members and promoting knowledge transfer.
+      </Translate>
+    ),
     tags: ["Flutter", "Dart", "API", "Documentation", "MVP"],
   },
   {
-    title: "Exército Brasileiro - Período Integral",
-    role: "Chefe da Seção de TI",
-    period: "(Mar 2023 - Jul 2025)",
-    description:
-      "Gerenciei a equipe responsável pela manutenção e suporte de todos os equipamentos e serviços da unidade. Implementei a nova página da intranet utilizando o padrão governamental GovBr em Angular e Strapi, servindo de modelo para outras unidades do Brasil. Atuei em melhorias de segurança e disponibilidade dos sistemas linux e aplicações Docker, gerenciando backups e ferramentas de monitoramento e observabilidade.",
+    title: <Translate>Exército Brasileiro - Período Integral</Translate>,
+    role: <Translate>IT Section Chief</Translate>,
+    period: <Translate>(Mar 2023 - Jul 2025)</Translate>,
+    description: (
+      <Translate>
+        Managed the team responsible for maintaining and supporting all unit equipment and services. Implemented the new intranet page using the GovBr government standard in Angular and Strapi, serving as a model for other units in Brazil. Worked on security and availability improvements for Linux systems and Docker applications, managing backups and monitoring and observability tools.
+      </Translate>
+    ),
     tags: [
       "Angular",
       "Strapi",

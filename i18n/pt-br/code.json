@@ -45,7 +45,7 @@
   },
   "theme.colorToggle.ariaLabel": {
     "message": "Alterar entre os modos claro e escuro (modo {mode} ativado)",
-    "description": "The ARIA label for the navbar color mode toggle"
+    "description": "The ARIA label for the color mode toggle"
   },
   "theme.colorToggle.ariaLabel.mode.dark": {
     "message": "modo escuro",
@@ -433,5 +433,164 @@
   },
   "contact.message.note": {
     "message": "Mensagens podem levar um pouco para serem enviadas devido à função serverless. Por favor, seja paciente."
+  },
+  "Software Engineer with 4+ years of experience in team leadership, project management, and full-stack development.": {
+    "message": "Software Engineer with 4+ years of experience in team leadership, project management, and full-stack development."
+  },
+  "Blog": {
+    "message": "Blog"
+  },
+  "Education": {
+    "message": "Educação"
+  },
+  "Academic Background": {
+    "message": "Formação"
+  },
+  "Systems Analysis and Development": {
+    "message": "Análise e Desenvolvimento de Sistemas"
+  },
+  "Faculdade Descomplica Digital (2021 - 2024)": {
+    "message": "Faculdade Descomplica Digital (2021 - 2024)"
+  },
+  "Information Security": {
+    "message": "Segurança da Informação"
+  },
+  "Faculdade Descomplica Digital (2024 - Momento)": {
+    "message": "Faculdade Descomplica Digital (2024 - Momento)"
+  },
+  "Courses": {
+    "message": "Cursos"
+  },
+  "AWS Academy Introduction to Cloud Semester 1": {
+    "message": "AWS Academy Introduction to Cloud Semester 1"
+  },
+  "AWS": {
+    "message": "AWS"
+  },
+  "Business Intelligence with Power BI": {
+    "message": "Business Intelligence com Power BI"
+  },
+  "SENAC/MS": {
+    "message": "SENAC/MS"
+  },
+  "IT Infrastructure Management": {
+    "message": "Gestão de Infraestruturas de TI"
+  },
+  "FIAP": {
+    "message": "FIAP"
+  },
+  "Cybersecurity": {
+    "message": "Cybersecurity"
+  },
+  "Languages": {
+    "message": "Idiomas"
+  },
+  "🇬🇧 Fluent English": {
+    "message": "🇬🇧 Inglês Fluente"
+  },
+  "Fluent in English, with effective communication skills in international professional environments, technical reading, writing and presentations.": {
+    "message": "Fluente em inglês, com capacidade de comunicação eficaz em ambientes profissionais internacionais, leitura técnica, escrita e apresentações."
+  },
+  "Zukk - Freelance": {
+    "message": "Zukk - Freelance"
+  },
+  "Software Developer .NET, Angular": {
+    "message": "Desenvolvedor de Software .NET, Angular"
+  },
+  "(Jul 2025 - Present)": {
+    "message": "(Jul 2025 - Momento)"
+  },
+  "Consulting on the development and implementation of the compliance index system, WebAPI development, messaging with RabbitMQ and applications in C# .NET and Angular. I supported the team on an extensive high-complexity project for Neoenergia, a Brazilian electricity sector group.": {
+    "message": "Consultoria no desenvolvimento e implantação do sistema de índices de conformidade, desenvolvimento de WebAPIs, mensageria com RabbitMQ e aplicações em C# .NET e Angular. Apoiei o time em um projeto extenso de alta complexidade para a Neoenergia, grupo do setor elétrico brasileiro."
+  },
+  "A Divisão - Freelance": {
+    "message": "A Divisão - Freelance"
+  },
+  "Software Developer NextJs": {
+    "message": "Desenvolvedor de Software NextJs"
+  },
+  "(June 2025 - Present)": {
+    "message": "(Junho 2025 - Momento)"
+  },
+  "Worked on the development of platforms connecting Companies and Military Veterans using Next.js, Supabase, payment integration and subscription management with Stripe, platform monetization and plan control, DynamoDB database optimization.": {
+    "message": "Atuei no desenvolvimento das plataformas de Conexão entre Empresas e Veteranos militares com tecnologias Next.js, Supabase, integração de pagamentos e gestão de assinaturas com Stripe, monetização da plataforma e controle de planos, otimização de banco de dados DynamoDB."
+  },
+  "Picmoney - Freelance": {
+    "message": "Picmoney - Freelance"
+  },
+  "Software Developer Flutter": {
+    "message": "Desenvolvedor de Software Flutter"
+  },
+  "(May 2025 - Present)": {
+    "message": "(Maio 2025 - Momento)"
+  },
+  "Developed the first MVP in Flutter using design patterns and modern interfaces with API integration. Created documentation for the entire technology stack, including API, process flows and diagrams, accelerating and facilitating the integration of new team members and promoting knowledge transfer.": {
+    "message": "Desenvolvi o primeiro MVP em Flutter utilizando padrões de design e interfaces modernas com integração de APIs. Criei documentação para toda a pilha tecnológica, incluindo API, fluxos de processos e diagramas, acelerando e facilitando a integração de novos membros da equipe e promovendo a transferência de conhecimento."
+  },
+  "Exército Brasileiro - Período Integral": {
+    "message": "Exército Brasileiro - Período Integral"
+  },
+  "IT Section Chief": {
+    "message": "Chefe da Seção de TI"
+  },
+  "(Mar 2023 - Jul 2025)": {
+    "message": "(Mar 2023 - Jul 2025)"
+  },
+  "Managed the team responsible for maintaining and supporting all unit equipment and services. Implemented the new intranet page using the GovBr government standard in Angular and Strapi, serving as a model for other units in Brazil. Worked on security and availability improvements for Linux systems and Docker applications, managing backups and monitoring and observability tools.": {
+    "message": "Gerenciei a equipe responsável pela manutenção e suporte de todos os equipamentos e serviços da unidade. Implementei a nova página da intranet utilizando o padrão governamental GovBr em Angular e Strapi, servindo de modelo para outras unidades do Brasil. Atuei em melhorias de segurança e disponibilidade dos sistemas linux e aplicações Docker, gerenciando backups e ferramentas de monitoramento e observabilidade."
+  },
+  "Experience": {
+    "message": "Experiência"
+  },
+  "theme.colorToggle.ariaLabel.mode.system": {
+    "message": "modo do sistema",
+    "description": "The name for the system color mode"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.expandAriaLabel": {
+    "message": "Expandir a seleção",
+    "description": "The ARIA label of the button to expand the mobile dropdown navbar item"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.collapseAriaLabel": {
+    "message": "Recolher a seleção",
+    "description": "The ARIA label of the button to collapse the mobile dropdown navbar item"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "No results"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "See all results outside \"{context}\""
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "See all results within \"{context}\""
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "See all results"
+  },
+  "theme.SearchBar.label": {
+    "message": "Search",
+    "description": "The ARIA label and placeholder for search button"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Search results for \"{query}\"",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Search the documentation",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "Everywhere"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "1 document found|{count} documents found",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "No documents were found",
+    "description": "The paragraph for empty search result"
   }
 }

@@ -6,17 +6,18 @@
 }
 
 .tag {
-  background: rgba(9, 67, 134, 0.1);
-  color: #fff;
+  background: #1e40af;
+  color: #ffffff;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #1e3a8a;
 }
 
 .tag:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #1e3a8a;
   transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

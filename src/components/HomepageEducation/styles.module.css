@@ -1,13 +1,14 @@
 .educationSection {
   padding: 4rem 0;
-  background: rgba(255, 255, 255, 0.02);
+  background: #ffffff;
 }
 
 .title {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 3rem;
-  color: var(--ifm-heading-color);
+  color: #111827;
+  font-weight: 700;
 }
 
 .educationContent {
@@ -19,18 +20,20 @@
 }
 
 .section {
-  background: rgba(255, 255, 255, 0.05);
+  background: #f9fafb;
   padding: 2rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .sectionTitle {
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
-  color: var(--ifm-heading-color);
-  border-bottom: 2px solid var(--ifm-color-primary);
+  color: #111827;
+  border-bottom: 2px solid #2563eb;
   padding-bottom: 0.5rem;
+  font-weight: 600;
 }
 
 .item {
@@ -44,25 +47,26 @@
 .itemTitle {
   font-size: 1.1rem;
   margin: 0 0 0.5rem 0;
-  color: var(--ifm-heading-color);
+  color: #111827;
+  font-weight: 500;
 }
 
 .itemTitleHighlight {
   font-size: 1.2rem;
   margin: 0 0 0.5rem 0;
-  color: var(--ifm-color-primary);
-  font-weight: bold;
+  color: #2563eb;
+  font-weight: 600;
 }
 
 .itemSubtitle {
   margin: 0;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6b7280;
   font-size: 0.95rem;
 }
 
 .itemDescription {
   margin: 0.5rem 0 0 0;
-  color: var(--ifm-font-color-base);
+  color: #374151;
   line-height: 1.6;
   text-align: justify;
 }

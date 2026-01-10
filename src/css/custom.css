@@ -9,69 +9,101 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #314e72;
-  --ifm-color-primary-dark: #295278;
-  --ifm-color-primary-darker: #275071;
-  --ifm-color-primary-darkest: #20385d;
-  --ifm-color-primary-light: #20385d;
-  --ifm-color-primary-lighter: #356099;
-  --ifm-color-primary-lightest: #3c64ad;
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
   --ifm-code-font-size: 95%;
-  --ifm-hero-background-color: #163057;
+  --ifm-hero-background-color: #ffffff;
+  --ifm-background-color: #ffffff;
+  --ifm-font-color-base: #1f2937;
+  --ifm-heading-color: #111827;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   font-family: "JetBrains Mono", monospace;
+}
 
+.hero--primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: rgba(255, 255, 255, 0.95);
+}
 
-  .hero--primary {
-    background-color: white;
-    color: rgba(0, 0, 0, 0.9);
-  }
+.hero--primary .hero__title {
+  color: #ffffff;
+}
 
-  .button {
-    background-color: var(--ifm-color-primary-darkest);
-    color: white;
-  }
+.hero--primary .hero__subtitle {
+  color: rgba(255, 255, 255, 0.95);
+}
 
-  .button:hover {
-    background-color: var(--ifm-color-primary-lightest);
-    color: white;
-  }
+.button {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  border: none;
+}
 
-  .footer {
-    font-family: "Virgil", monospace;
-    background-color: var(--ifm-color-primary-darkest);
-  }
+.button:hover {
+  background-color: var(--ifm-color-primary-dark);
+  color: white;
+}
 
-  .navbar__title {
-    font-family: "Virgil", monospace;
-  }
+.footer {
+  font-family: "Virgil", monospace;
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+
+.footer__copyright {
+  color: #6b7280;
+}
+
+.navbar__title {
+  font-family: "Virgil", monospace;
+}
+
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar__link {
+  color: #374151;
+}
+
+.navbar__link:hover {
+  color: var(--ifm-color-primary);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
-  --ifm-color-primary: #2564c2a8;
-  --ifm-color-primary-dark: #2136af8c;
-  --ifm-color-primary-darker: #1f33a5;
-  --ifm-color-primary-darkest: #1a468894;
-  --ifm-color-primary-light: #2979d5;
-  --ifm-color-primary-lighter: #2979d5;
-  --ifm-color-primary-lightest: #57a5ff;
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  .hero--primary {
-    background-color: var(--ifm-background-color);
-    color: rgba(255, 255, 255, 0.9);
-  }
+}
 
-  .button:hover {
-    background-color: var(--ifm-color-primary);
-    color: white;
-  }
+[data-theme="dark"] .hero--primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="dark"] .footer {
+  background-color: #1f2937;
+  color: #f9fafb;
 }
 
 /* Apply JetBrains Mono to all text elements */
 body {
   text-align: justify;
   font-size: larger;
+  background-color: #ffffff;
+  color: #1f2937;
 }
 
 section {
@@ -81,7 +113,7 @@ section {
   align-items: center;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   flex-direction: row;
   justify-content: center;
 }
@@ -93,7 +125,7 @@ section {
 }
 
 .navbar__link {
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .menu {

@@ -4,7 +4,6 @@ import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import HomepageExperience from "@site/src/components/HomepageExperience";
 import HomepageEducation from "@site/src/components/HomepageEducation";
-import ParticlesBackground from "../components/ParticlesBackground";
 
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
@@ -15,32 +14,30 @@ import {
   faFilePdf,
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
-import Shadown from "../components/Shadown";
 
 function HomepageHeader() {
   return (
     <>
-      <header className={clsx("hero hero--primary", styles.heroBanner)}>
-        <ParticlesBackground />
-        <div className="container" style={{ zIndex: 1 }}>
+      <header className={clsx("hero", styles.heroBanner)} style={{ backgroundColor: "white" }}>
+        <div className="container">
           <Heading
             as="h1"
             className="hero__title"
-            style={{ paddingTop: "0rem" }}
+            style={{ paddingTop: "0rem", color: "#333" }}
           >
             <Translate>Hi, I'm Nick.</Translate>
           </Heading>
           <img
-            src="/img/nick-logo.png"
+            src="/img/nick.jpeg"
             alt="GitHub"
             style={{
-              width: "140px",
-              height: "140px",
+              width: "120px",
+              height: "120px",
               marginLeft: "10px",
-              borderRadius: "4rem",
+              borderRadius: "50%",
             }}
           />
-          <p className="hero__subtitle" style={{ paddingTop: "1rem" }}>
+          <p className="hero__subtitle" style={{ paddingTop: "1rem", color: "#666" }}>
             <Translate>
               Software Engineer with 4+ years of experience in team leadership, project management, and full-stack development.
             </Translate>
@@ -49,15 +46,7 @@ function HomepageHeader() {
             className={styles.buttons}
             style={{ display: "flex", gap: "10px", flexDirection: "column" }}
           >
-            <div style={{ display: "flex", gap: "10px", flexDirection: "row" }}>
-              <Link
-                className="button button--primary button--lg"
-                to="/blog"
-              >
-                <Translate>Blog </Translate>
-                <FontAwesomeIcon icon={faEnvelope} width={15} />
-              </Link>
-            </div>
+
             <Link
               className="button button--secondary button--lg"
               href="/Nick_Miyasato.pdf"
@@ -67,7 +56,7 @@ function HomepageHeader() {
                 background: "transparent",
                 position: "relative",
                 padding: "0",
-                color: "white",
+                color: "#333",
                 paddingTop: "1rem",
                 textDecoration: "none",
               }}
@@ -102,7 +91,6 @@ function HomepageHeader() {
           </div>
           <SocialIcons />
         </div>
-        <Shadown />
       </header>
     </>
   );

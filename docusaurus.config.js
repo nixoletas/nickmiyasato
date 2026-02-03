@@ -36,16 +36,16 @@ const config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: "pt-br",
+    defaultLocale: "en",
     locales: ["en", "pt-br"],
     localeConfigs: {
-      "pt-br": {
-        label: "Português (Brasil)",
-        direction: "ltr", // Sentido da escrita (esquerda para direita)
-      },
       en: {
         label: "English",
         direction: "ltr",
+      },
+      "pt-br": {
+        label: "Português (Brasil)",
+        direction: "ltr", // Sentido da escrita (esquerda para direita)
       },
     },
   },
@@ -134,7 +134,6 @@ const config = {
           src: "img/nick-logo.png",
         },
         items: [
-          { to: "/blog", label: "Blog", position: "left" },
           {
             to: "/contact",
             label: "Contact",

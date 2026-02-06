@@ -61,19 +61,52 @@
 
 .navbar__title {
   font-family: "Virgil", monospace;
+  font-size: 1.25rem;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: opacity 0.3s ease;
+}
+
+.navbar__title:hover {
+  opacity: 0.8;
 }
 
 .navbar {
-  background-color: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .navbar__link {
   color: #374151;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  transition: all 0.25s ease;
 }
 
 .navbar__link:hover {
   color: var(--ifm-color-primary);
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.navbar__link--active {
+  color: var(--ifm-color-primary);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.navbar__logo img {
+  transition: transform 0.3s ease;
+}
+
+.navbar__logo:hover img {
+  transform: scale(1.08);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */

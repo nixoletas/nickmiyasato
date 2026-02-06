@@ -9,6 +9,7 @@ import DotPattern from "@site/src/components/DotPattern";
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 import Translate from "@docusaurus/Translate";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import SocialIcons from "../components/SocialIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
@@ -20,6 +21,10 @@ const RESUME_LINKS = {
 };
 
 function HomepageHeader() {
+  const { i18n } = useDocusaurusContext();
+  const isPtBr = i18n.currentLocale === "pt-br";
+  const isEn = i18n.currentLocale === "en";
+
   return (
     <header className={clsx("hero", styles.heroBanner)}>
       <DotPattern
@@ -71,24 +76,27 @@ function HomepageHeader() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.45, ease: "easeOut" }}
         >
-          <Link
-            className={styles.resumeBtn}
-            href={RESUME_LINKS.pt}
-            target="_blank"
-          >
-            <span className={styles.resumeBtnFlag}>🇧🇷</span>
-            <Translate>Currículo (PT-BR)</Translate>
-            <FontAwesomeIcon icon={faFilePdf} width={14} />
-          </Link>
-          <Link
-            className={styles.resumeBtn}
-            href={RESUME_LINKS.en}
-            target="_blank"
-          >
-            <span className={styles.resumeBtnFlag}>🇺🇸</span>
-            <Translate>Resume (EN)</Translate>
-            <FontAwesomeIcon icon={faFilePdf} width={14} />
-          </Link>
+          {isPtBr ? (
+            <Link
+              className={styles.resumeBtn}
+              href={RESUME_LINKS.pt}
+              target="_blank"
+            >
+              <span className={styles.resumeBtnFlag}>🇧🇷</span>
+              <Translate>Currículo (PT-BR)</Translate>
+              <FontAwesomeIcon icon={faFilePdf} width={14} />
+            </Link>
+          ) : (
+            <Link
+              className={styles.resumeBtn}
+              href={RESUME_LINKS.en}
+              target="_blank"
+            >
+              <span className={styles.resumeBtnFlag}>🇺🇸</span>
+              <Translate>Resume (EN)</Translate>
+              <FontAwesomeIcon icon={faFilePdf} width={14} />
+            </Link>
+          )}
         </motion.div>
 
         <motion.div

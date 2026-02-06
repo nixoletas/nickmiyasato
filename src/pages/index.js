@@ -4,95 +4,102 @@ import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import HomepageExperience from "@site/src/components/HomepageExperience";
 import HomepageEducation from "@site/src/components/HomepageEducation";
+import DotPattern from "@site/src/components/DotPattern";
 
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 import Translate from "@docusaurus/Translate";
 import SocialIcons from "../components/SocialIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFilePdf,
-  faEnvelope,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
+
+const RESUME_LINKS = {
+  pt: "https://github.com/nixoletas/resume/raw/refs/heads/main/resumes/pt-br/CV_Nicholas_Miyasato.pdf",
+  en: "https://github.com/nixoletas/resume/raw/refs/heads/main/resumes/en/Resume_Nicholas_Miyasato.pdf",
+};
 
 function HomepageHeader() {
   return (
-    <>
-      <header className={clsx("hero", styles.heroBanner)} style={{ backgroundColor: "white" }}>
-        <div className="container">
-          <Heading
-            as="h1"
-            className="hero__title"
-            style={{ paddingTop: "0rem", color: "#333" }}
-          >
-            <Translate>Hi, I'm Nick.</Translate>
-          </Heading>
+    <header className={clsx("hero", styles.heroBanner)}>
+      <DotPattern
+        width={20}
+        height={20}
+        cx={1}
+        cy={1}
+        cr={1.2}
+        className={styles.dotPatternColor}
+      />
+      <div className={clsx("container", styles.heroContent)}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <img
             src="/img/nick.jpeg"
-            alt="GitHub"
-            style={{
-              width: "120px",
-              height: "120px",
-              marginLeft: "10px",
-              borderRadius: "50%",
-            }}
+            alt="Nicholas Miyasato"
+            className={styles.profileImage}
           />
-          <p className="hero__subtitle" style={{ paddingTop: "1rem", color: "#666" }}>
-            <Translate>
-              Software Engineer with 4+ years of experience in team leadership, project management, and full-stack development.
-            </Translate>
-          </p>
-          <div
-            className={styles.buttons}
-            style={{ display: "flex", gap: "10px", flexDirection: "column" }}
-          >
+        </motion.div>
 
-            <Link
-              className="button button--secondary button--lg"
-              href="/Nick_Miyasato.pdf"
-              target="_blank"
-              style={{
-                border: "none",
-                background: "transparent",
-                position: "relative",
-                padding: "0",
-                color: "#333",
-                paddingTop: "1rem",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.setProperty("--underline-width", "100%");
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.setProperty("--underline-width", "0%");
-              }}
-            >
-              <span
-                style={{
-                  position: "relative",
-                  display: "inline-block",
-                }}
-              >
-                <Translate>Resume (PDF)</Translate>
-                <FontAwesomeIcon icon={faFilePdf} width={15} />
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: "-2px",
-                    left: "0",
-                    width: "var(--underline-width, 0%)",
-                    height: "2px",
-                    backgroundColor: "var(--ifm-color-primary)",
-                    transition: "width 0.3s ease",
-                  }}
-                />
-              </span>
-            </Link>
-          </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+        >
+          <Heading as="h1" className={styles.heroTitle}>
+            <Translate>Hi, I'm Nick.</Translate>
+          </Heading>
+        </motion.div>
+
+        <motion.p
+          className={styles.heroSubtitle}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+        >
+          <Translate>
+            Software Engineer with 4+ years of experience in team leadership,
+            project management, and full-stack development.
+          </Translate>
+        </motion.p>
+
+        <motion.div
+          className={styles.resumeButtons}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.45, ease: "easeOut" }}
+        >
+          <Link
+            className={styles.resumeBtn}
+            href={RESUME_LINKS.pt}
+            target="_blank"
+          >
+            <span className={styles.resumeBtnFlag}>🇧🇷</span>
+            <Translate>Currículo (PT-BR)</Translate>
+            <FontAwesomeIcon icon={faFilePdf} width={14} />
+          </Link>
+          <Link
+            className={styles.resumeBtn}
+            href={RESUME_LINKS.en}
+            target="_blank"
+          >
+            <span className={styles.resumeBtnFlag}>🇺🇸</span>
+            <Translate>Resume (EN)</Translate>
+            <FontAwesomeIcon icon={faFilePdf} width={14} />
+          </Link>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
+        >
           <SocialIcons />
-        </div>
-      </header>
-    </>
+        </motion.div>
+      </div>
+    </header>
   );
 }
 

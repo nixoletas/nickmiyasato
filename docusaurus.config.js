@@ -86,24 +86,6 @@ const config = {
     ],
   ],
 
-  plugins: [
-    [
-      '@easyops-cn/docusaurus-search-local',
-      {
-        // Options for the search plugin
-        indexDocs: true,
-        indexPages: true,
-        indexBlog: true,
-        docsRouteBasePath: 'portfolio',
-        blogRouteBasePath: 'blog',
-        hashed: true,
-        language: ['en'],
-        highlightSearchTermsOnTargetPage: false,
-        explicitSearchResultPath: false,
-      },
-    ],
-  ],
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({

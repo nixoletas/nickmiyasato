@@ -4,7 +4,7 @@ export const site = {
   name: "Nick Miyasato",
   legalName: "Nicholas Miyasato",
   url: "https://nickmiyasato.com.br",
-  email: "contact@nickmiyasato.com.br",
+  email: "nick.miyasato.dev@gmail.com",
   github: "https://github.com/nixoletas",
   linkedin: "https://linkedin.com/in/nixoletas",
   repo: "https://github.com/nixoletas/nickmiyasato",

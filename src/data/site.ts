@@ -55,14 +55,9 @@ export const education: Record<
   en: {
     degrees: [
       {
-        title: "BSc, Systems Analysis and Development",
+        title: "Associate Degree, Systems Analysis and Development",
         org: "Faculdade Descomplica Digital",
         period: "2021 — 2024",
-      },
-      {
-        title: "BSc, Information Security",
-        org: "Faculdade Descomplica Digital",
-        period: "2024 — present",
       },
     ],
     courses: [
@@ -79,14 +74,9 @@ export const education: Record<
   "pt-br": {
     degrees: [
       {
-        title: "Análise e Desenvolvimento de Sistemas",
+        title: "Tecnólogo em Análise e Desenvolvimento de Sistemas",
         org: "Faculdade Descomplica Digital",
         period: "2021 — 2024",
-      },
-      {
-        title: "Segurança da Informação",
-        org: "Faculdade Descomplica Digital",
-        period: "2024 — atual",
       },
     ],
     courses: [

@@ -14,12 +14,26 @@ export interface Role {
   link?: { href: string; label: string };
 }
 
+/**
+ * docs/resume.tex is the source of truth for roles, dates, and stacks. Zukk is
+ * the one entry that lives only here — keep both in sync when either changes.
+ */
 export const experience: Record<Lang, Role[]> = {
   en: [
     {
+      company: "Informar Saúde",
+      kind: "Full-time",
+      title: "Software Engineer",
+      start: "Oct 2025",
+      end: null,
+      summary:
+        "Designing healthcare analytics pipelines across on-premise and cloud environments with BigQuery, Dataform, Python, PostgreSQL and MySQL, plus the operational dashboards and reporting that clinical and business teams decide on. Also contributing to GCP and Microsoft cloud migration work, and writing the documentation that keeps the systems usable without me.",
+      stack: ["Python", "BigQuery", "Dataform", "PostgreSQL", "MySQL", "GCP"],
+    },
+    {
       company: "Zukk",
       kind: "Freelance",
-      title: "Software Engineer — .NET, Angular",
+      title: "Software Engineer",
       start: "Jul 2025",
       end: null,
       summary:
@@ -28,51 +42,71 @@ export const experience: Record<Lang, Role[]> = {
     },
     {
       company: "A Divisão",
-      kind: "Freelance",
-      title: "Software Engineer — Next.js",
+      kind: "Contract",
+      title: "Product Engineer",
       start: "Jun 2025",
       end: null,
       summary:
-        "Building the platform that connects companies with military veterans. Next.js and Supabase, Stripe for payments and subscription management, plus plan gating and DynamoDB query optimisation.",
-      stack: ["Next.js", "TypeScript", "Supabase", "Stripe", "DynamoDB"],
+        "Architecting the platform that connects companies with military veterans, built to hold up under concurrent load. Automated the test and deploy pipelines on GitHub Actions, cutting release cycle time, and built the real-time metrics and audit dashboards the team runs on.",
+      stack: [
+        "React",
+        "Next.js",
+        "Node.js",
+        "PostgreSQL",
+        "Docker",
+        "GitHub Actions",
+      ],
     },
     {
-      company: "Picmoney",
-      kind: "Freelance",
-      title: "Software Engineer — Flutter",
+      company: "PIC Money",
+      kind: "Contract",
+      title: "Product Engineer",
       start: "May 2025",
       end: null,
       summary:
-        "Built the first Flutter MVP, with API integration and a modern interface layer. Wrote the documentation for the whole stack — API reference, process flows, architecture diagrams — which cut how long it took new developers to become productive.",
-      stack: ["Flutter", "Dart", "REST APIs", "Technical writing"],
+        "Designed the database architecture and backend infrastructure, then built mobile and web features on top — authentication, API integrations, geolocation, and augmented reality. Documented the APIs, business flows, and architectural decisions so the product could keep moving without me in the room.",
+      stack: [
+        "Flutter",
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "API Design",
+        "Cloud Infrastructure",
+      ],
     },
     {
       company: "Brazilian Army",
       kind: "Full-time",
-      title: "Head of IT Section",
-      start: "Mar 2023",
-      end: "Jul 2025",
+      title: "Head of Information Technology Section",
+      start: "Jan 2023",
+      end: "Jun 2025",
       summary:
-        "Led the team responsible for every piece of equipment and every service the unit ran on. Replaced the Joomla intranet with an Angular and Strapi application on the gov.br design system, which was adopted as a model by other units. Hardened and improved availability across Linux hosts and Docker services, and ran backups, monitoring, and observability.",
+        "Led the IT section supporting infrastructure, automation, and internal systems for over 300 users. Built reusable intranet templates that other military organisations adopted nationwide, automated operational workflows in Python, and introduced agile practice and technical standards across internal development.",
       stack: [
-        "Angular",
-        "Strapi",
-        "Linux",
-        "Docker",
-        "Nginx",
-        "PostgreSQL",
-        "MySQL",
-        "LDAP",
-        "Grafana",
+        "Python",
+        "System Administration",
+        "Automation",
+        "Infrastructure",
+        "Agile",
       ],
       link: { href: "/projects/intranet-govbr", label: "GovBR Intranet" },
     },
   ],
   "pt-br": [
     {
+      company: "Informar Saúde",
+      kind: "Tempo integral",
+      title: "Engenheiro de Software",
+      start: "Out 2025",
+      end: null,
+      summary:
+        "Desenvolvimento de pipelines de analytics em saúde entre ambientes on-premise e nuvem com BigQuery, Dataform, Python, PostgreSQL e MySQL, além dos dashboards operacionais e relatórios em que times clínicos e de negócio se apoiam para decidir. Também contribuo nas migrações para GCP e ecossistema Microsoft, e escrevo a documentação que mantém os sistemas utilizáveis sem depender de mim.",
+      stack: ["Python", "BigQuery", "Dataform", "PostgreSQL", "MySQL", "GCP"],
+    },
+    {
       company: "Zukk",
       kind: "Freelance",
-      title: "Engenheiro de Software — .NET, Angular",
+      title: "Engenheiro de Software",
       start: "Jul 2025",
       end: null,
       summary:
@@ -81,42 +115,52 @@ export const experience: Record<Lang, Role[]> = {
     },
     {
       company: "A Divisão",
-      kind: "Freelance",
-      title: "Engenheiro de Software — Next.js",
+      kind: "Contrato",
+      title: "Engenheiro de Produto",
       start: "Jun 2025",
       end: null,
       summary:
-        "Desenvolvimento da plataforma que conecta empresas a veteranos militares. Next.js e Supabase, Stripe para pagamentos e gestão de assinaturas, além de controle de planos e otimização de consultas no DynamoDB.",
-      stack: ["Next.js", "TypeScript", "Supabase", "Stripe", "DynamoDB"],
+        "Arquitetura da plataforma que conecta empresas a veteranos militares, construída para aguentar tráfego concorrente. Automatizei os pipelines de teste e deploy com GitHub Actions, reduzindo o tempo de ciclo de release, e construí os dashboards de métricas em tempo real e auditoria em que o time se apoia.",
+      stack: [
+        "React",
+        "Next.js",
+        "Node.js",
+        "PostgreSQL",
+        "Docker",
+        "GitHub Actions",
+      ],
     },
     {
-      company: "Picmoney",
-      kind: "Freelance",
-      title: "Engenheiro de Software — Flutter",
+      company: "PIC Money",
+      kind: "Contrato",
+      title: "Engenheiro de Produto",
       start: "Mai 2025",
       end: null,
       summary:
-        "Construí o primeiro MVP em Flutter, com integração de APIs e uma camada de interface moderna. Escrevi a documentação de toda a stack — referência de API, fluxos de processo, diagramas de arquitetura — o que reduziu o tempo até novos desenvolvedores se tornarem produtivos.",
-      stack: ["Flutter", "Dart", "APIs REST", "Documentação técnica"],
+        "Projetei a arquitetura de banco e a infraestrutura de backend, e desenvolvi as funcionalidades mobile e web em cima disso — autenticação, integrações de API, geolocalização e realidade aumentada. Documentei APIs, fluxos de negócio e decisões de arquitetura para o produto seguir andando sem eu estar na sala.",
+      stack: [
+        "Flutter",
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Design de API",
+        "Infraestrutura em nuvem",
+      ],
     },
     {
       company: "Exército Brasileiro",
       kind: "Tempo integral",
-      title: "Chefe da Seção de TI",
-      start: "Mar 2023",
-      end: "Jul 2025",
+      title: "Chefe da Seção de Tecnologia da Informação",
+      start: "Jan 2023",
+      end: "Jun 2025",
       summary:
-        "Chefiei a equipe responsável por todos os equipamentos e serviços em que a unidade rodava. Substituí a intranet Joomla por uma aplicação Angular e Strapi sobre o design system gov.br, adotada como modelo por outras unidades. Endureci e melhorei a disponibilidade de hosts Linux e serviços Docker, e mantive backups, monitoramento e observabilidade.",
+        "Chefiei a seção de TI responsável por infraestrutura, automação e sistemas internos para mais de 300 usuários. Construí templates de intranet reaproveitáveis que outras organizações militares adotaram país afora, automatizei fluxos operacionais em Python e introduzi prática ágil e padronização técnica no desenvolvimento interno.",
       stack: [
-        "Angular",
-        "Strapi",
-        "Linux",
-        "Docker",
-        "Nginx",
-        "PostgreSQL",
-        "MySQL",
-        "LDAP",
-        "Grafana",
+        "Python",
+        "Administração de sistemas",
+        "Automação",
+        "Infraestrutura",
+        "Agile",
       ],
       link: { href: "/projects/intranet-govbr", label: "Intranet GovBR" },
     },

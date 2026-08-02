@@ -16,3 +16,7 @@ node_modules/
 *.log
 npm-debug.log*
 .idea/
+
+# Resume source. Deliberately untracked — this repo is public and the document
+# carries a personal phone number. src/data/experience.ts mirrors its contents.
+docs/

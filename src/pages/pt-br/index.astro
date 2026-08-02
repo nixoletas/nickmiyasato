@@ -1,13 +1,12 @@
 ---
 import HomeBody from "@/components/HomeBody.astro";
 import Base from "@/layouts/Base.astro";
-import { intro, site } from "@/data/site";
+import { site } from "@/data/site";
 ---
 
 <Base
   title={`${site.legalName} — Engenheiro de Dados e Software`}
-  description={intro["pt-br"].headline +
-    " Engenheiro full-stack em .NET, Angular e Next.js, em São Paulo."}
+  description="Engenheiro de dados e software em São Paulo. Construo pipelines de dados no GCP e BigQuery, sistemas .NET e Angular, e a infraestrutura que sustenta os dois."
 >
   <HomeBody />
 </Base>

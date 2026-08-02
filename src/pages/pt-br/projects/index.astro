@@ -2,11 +2,18 @@
 import ProjectsIndexBody from "@/components/ProjectsIndexBody.astro";
 import Base from "@/layouts/Base.astro";
 import { site } from "@/data/site";
+import { breadcrumbSchema } from "@/lib/seo";
+
+const breadcrumb = breadcrumbSchema("pt-br", [
+  { name: site.name, path: "/" },
+  { name: "Projetos", path: "/projects" },
+]);
 ---
 
 <Base
   title={`Projetos — ${site.name}`}
-  description="Todos os projetos que entreguei, de sistemas em produção usados por um batalhão do Exército Brasileiro aos projetos pessoais em que aprendi."
+  description="Os projetos que projetei e entreguei: plataformas de cliente em produção, um app de gastos no Android e na web, e as decisões técnicas por trás de cada um."
+  schemas={[breadcrumb]}
 >
   <ProjectsIndexBody />
 </Base>

@@ -5,21 +5,28 @@ import Footer from "@/components/Footer.astro";
 import { site } from "@/data/site";
 import { htmlLang, type Lang } from "@/i18n/ui";
 import { alternateUrls, getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { OG_SIZE } from "@/lib/seo";
 
 interface Props {
   title: string;
   description: string;
-  /** Absolute or root-relative image for OG/Twitter cards. */
+  /** Absolute or root-relative image for OG/Twitter cards, 1200x630. */
   image?: string;
+  /** Describes the card image; falls back to the page title. */
+  imageAlt?: string;
   /** Emitted as <meta name="robots"> — used to keep 404s out of the index. */
   noindex?: boolean;
+  /** Extra JSON-LD blocks for this page, alongside the site-wide Person. */
+  schemas?: Record<string, unknown>[];
 }
 
 const {
   title,
   description,
   image = "/img/og-default.png",
+  imageAlt,
   noindex = false,
+  schemas = [],
 } = Astro.props;
 
 const lang: Lang = getLangFromUrl(Astro.url);
@@ -34,6 +41,7 @@ const ogImage = new URL(image, site.url).href;
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${site.url}/#person`,
   name: site.legalName,
   alternateName: site.name,
   url: site.url,
@@ -89,6 +97,9 @@ const personSchema = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={imageAlt ?? title} />
+    <meta property="og:image:width" content={String(OG_SIZE.width)} />
+    <meta property="og:image:height" content={String(OG_SIZE.height)} />
     <meta property="og:locale" content={lang === "en" ? "en_US" : "pt_BR"} />
     <meta
       property="og:locale:alternate"
@@ -98,6 +109,7 @@ const personSchema = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={imageAlt ?? title} />
 
     <script is:inline>
       // Runs before first paint so the correct theme is already on <html>.
@@ -118,6 +130,15 @@ const personSchema = {
       is:inline
       set:html={JSON.stringify(personSchema)}
     />
+    {
+      schemas.map((schema) => (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(schema)}
+        />
+      ))
+    }
   </head>
 
   <body>

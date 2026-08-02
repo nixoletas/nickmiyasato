@@ -4,6 +4,7 @@ import ProjectDetail from "@/components/ProjectDetail.astro";
 import Base from "@/layouts/Base.astro";
 import { site } from "@/data/site";
 import { entrySlug, getProjects } from "@/lib/content";
+import { breadcrumbSchema, projectOgImage, projectSchema } from "@/lib/seo";
 
 // Deliberately not annotated with `GetStaticPaths` — the annotation erases the
 // prop types that InferGetStaticPropsType needs to recover below.
@@ -18,11 +19,24 @@ export async function getStaticPaths() {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { project } = Astro.props as Props;
+
+const ogImage = await projectOgImage(project.data.cover);
+const schemas = [
+  projectSchema(project, "pt-br", ogImage),
+  breadcrumbSchema("pt-br", [
+    { name: site.name, path: "/" },
+    { name: "Projetos", path: "/projects" },
+    { name: project.data.title, path: `/projects/${entrySlug(project.id)}` },
+  ]),
+];
 ---
 
 <Base
   title={`${project.data.title} — ${site.name}`}
   description={project.data.summary}
+  image={ogImage}
+  imageAlt={`${project.data.title} — captura de tela`}
+  schemas={schemas}
 >
   <ProjectDetail project={project} />
 </Base>

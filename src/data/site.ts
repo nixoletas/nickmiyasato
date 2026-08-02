@@ -22,7 +22,7 @@ export const intro: Record<
   { headline: string; tagline: string; bio: string[]; focus: string[] }
 > = {
   en: {
-    headline: "I build systems that go into production and stay there.",
+    headline: "I build and maintain web systems.",
     /** One line under the headline. The full bio belongs to the About section. */
     tagline:
       "Full-stack engineer, 4+ years. Enterprise .NET and Angular, product work in Next.js, and two years running the IT section of a Brazilian Army battalion.",
@@ -33,7 +33,7 @@ export const intro: Record<
     focus: [".NET", "Angular", "Next.js", "TypeScript", "Docker", "DevSecOps"],
   },
   "pt-br": {
-    headline: "Construo sistemas que entram em produção e continuam lá.",
+    headline: "Construo e mantenho sistemas web.",
     tagline:
       "Engenheiro full-stack, 4+ anos. .NET e Angular no corporativo, produto em Next.js, e dois anos chefiando a seção de TI de um batalhão do Exército Brasileiro.",
     bio: [

@@ -31,7 +31,7 @@ export const ui = {
     "nav.lang": "Switch language",
     "nav.skip": "Skip to content",
 
-    "hero.role": "Software Engineer",
+    "hero.role": "Data & Software Engineer",
     "hero.available": "Open to new opportunities",
 
     "work.title": "Selected work",
@@ -82,7 +82,7 @@ export const ui = {
     "nav.lang": "Trocar idioma",
     "nav.skip": "Pular para o conteúdo",
 
-    "hero.role": "Engenheiro de Software",
+    "hero.role": "Engenheiro de Dados e Software",
     "hero.available": "Aberto a novas oportunidades",
 
     "work.title": "Trabalhos selecionados",

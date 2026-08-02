@@ -73,6 +73,8 @@ const { headline, tagline, focus } = intro[lang];
     </div>
 
     <div class="rise order-first md:order-last">
+      {/* No fetchpriority="high" — the LCP element is the h1, so the portrait
+          must not compete with the preloaded Inter file. */}
       <Image
         src={portrait}
         alt={site.legalName}
@@ -80,8 +82,6 @@ const { headline, tagline, focus } = intro[lang];
         height={260}
         densities={[1, 2]}
         loading="eager"
-        {/* No fetchpriority="high" — the LCP element is the h1, so the portrait
-            must not compete with the preloaded Inter file. */}
         class="size-32 rounded-2xl border border-border object-cover sm:size-40 md:size-60"
       />
     </div>

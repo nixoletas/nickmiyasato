@@ -25,7 +25,7 @@ export const intro: Record<
       "Software engineer with 3+ years across the full stack — C#/.NET and Angular on the enterprise side, Next.js and Supabase on the product side. For two years I led the IT section of a Brazilian Army battalion, responsible for every system the unit ran on.",
       "Building and operating the same systems changed how I build them: hardened Linux hosts and Docker services, backups and monitoring that get checked, and documentation good enough that the next person doesn't need me.",
     ],
-    focus: [".NET", "Angular", "Next.js", "TypeScript", "Docker", "DevSecOps"],
+    focus: ["TypeScript", "Node.js", "Python", "GCP", "AWS", "Docker", "SQL", "NoSQL", "BigQuery"],
   },
   "pt-br": {
     headline: "Prazer, Nicholas.",
@@ -35,7 +35,7 @@ export const intro: Record<
       "Engenheiro de software com 3+ anos de full-stack — C#/.NET e Angular no lado corporativo, Next.js e Supabase no lado de produto. Por dois anos chefiei a seção de TI de um batalhão do Exército Brasileiro, responsável por todos os sistemas em que a unidade rodava.",
       "Construir e operar os mesmos sistemas mudou como eu os construo: hosts Linux e serviços Docker endurecidos, backup e monitoramento que alguém de fato confere, e documentação boa o bastante para a próxima pessoa não precisar de mim.",
     ],
-    focus: [".NET", "Angular", "Next.js", "TypeScript", "Docker", "DevSecOps"],
+    focus: ["TypeScript", "Node.js", "Python", "GCP", "AWS", "Docker", "SQL", "NoSQL", "BigQuery"],
   },
 };
 

@@ -24,19 +24,24 @@ const image = resolveCover(cover);
 ---
 
 <article
-  class="group grid items-center gap-6 md:grid-cols-2 md:gap-12"
+  class={`group grid items-center gap-6 md:gap-12 ${
+    image ? "md:grid-cols-2" : ""
+  }`}
   aria-labelledby={`project-${entrySlug(project.id)}`}
 >
-  <a
-    href={href}
-    tabindex="-1"
-    aria-hidden="true"
-    class={`block overflow-hidden rounded-xl border border-border bg-surface ${
-      flip ? "md:order-last" : ""
-    }`}
-  >
-    {
-      image && (
+  {/* A cover is optional, and the frame is border + background only — rendering
+      it empty leaves a stray 2px line in the grid, so drop the whole cell and
+      let the text run full width instead. */}
+  {
+    image && (
+      <a
+        href={href}
+        tabindex="-1"
+        aria-hidden="true"
+        class={`block overflow-hidden rounded-xl border border-border bg-surface ${
+          flip ? "md:order-last" : ""
+        }`}
+      >
         <Image
           src={image}
           alt=""
@@ -46,9 +51,9 @@ const image = resolveCover(cover);
           decoding={eager ? "sync" : "async"}
           class="aspect-[16/9] w-full object-cover object-top transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
         />
-      )
-    }
-  </a>
+      </a>
+    )
+  }
 
   <div class="flex flex-col gap-4">
     <p class="eyebrow">

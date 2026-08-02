@@ -27,12 +27,12 @@ export function resolveCover(name?: string): ImageMetadata | undefined {
   return image;
 }
 
-/** "en/fut-evento" -> "fut-evento" */
+/** "en/meus-gastos" -> "meus-gastos" */
 export function entrySlug(id: string): string {
   return id.split("/").slice(1).join("/");
 }
 
-/** "en/fut-evento" -> "en" */
+/** "en/meus-gastos" -> "en" */
 export function entryLang(id: string): Lang {
   return id.split("/")[0] as Lang;
 }

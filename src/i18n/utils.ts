@@ -20,7 +20,7 @@ export function useTranslations(lang: Lang) {
 }
 
 /**
- * Turn a locale-agnostic path ("/projects/fut-evento") into a real URL for the
+ * Turn a locale-agnostic path ("/projects/meus-gastos") into a real URL for the
  * given locale. English keeps the bare path; Portuguese gets the /pt-br prefix.
  */
 export function localizePath(path: string, lang: Lang): string {

@@ -62,6 +62,9 @@ const personSchema = {
 
     <link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/img/icon-96.png" sizes="96x96" type="image/png" />
+    {/* Last wins where it is supported, so SVG-capable browsers scale cleanly
+        and everything else falls back to the PNGs above. */}
+    <link rel="icon" href="/img/logo.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
 
     <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)" />

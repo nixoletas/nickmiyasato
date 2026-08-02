@@ -7,22 +7,12 @@
 # --- Renamed project slugs (EN) ---
 /portfolio/projects/angular-apod         /projects/angular-nasa-apod    301
 /portfolio/projects/intranet             /projects/intranet-govbr       301
-/portfolio/projects/entrance-exit        /projects/qr-entrance-exit     301
 /portfolio/projects/famsecurity          /projects/fam-security         301
-/portfolio/projects/shopping             /projects/shopping-list        301
-/portfolio/projects/todo                 /projects/todo-list            301
-/portfolio/projects/presence-list        /projects/presence-list        301
-/portfolio/projects/shopping-vila-bella  /projects/shopping-vila-bella  301
 
 # --- Renamed project slugs (PT-BR) ---
 /pt-br/portfolio/projects/angular-apod         /pt-br/projects/angular-nasa-apod    301
 /pt-br/portfolio/projects/intranet             /pt-br/projects/intranet-govbr       301
-/pt-br/portfolio/projects/entrance-exit        /pt-br/projects/qr-entrance-exit     301
 /pt-br/portfolio/projects/famsecurity          /pt-br/projects/fam-security         301
-/pt-br/portfolio/projects/shopping             /pt-br/projects/shopping-list        301
-/pt-br/portfolio/projects/todo                 /pt-br/projects/todo-list            301
-/pt-br/portfolio/projects/presence-list        /pt-br/projects/presence-list        301
-/pt-br/portfolio/projects/shopping-vila-bella  /pt-br/projects/shopping-vila-bella  301
 
 # --- Docs pages that became home-page sections ---
 /portfolio/experience        /#experience        301
@@ -39,10 +29,21 @@
 /pt-br/portfolio/*         /pt-br/projects  301
 
 # --- Retired projects ---
-# Fut Evento was pulled after the Astro launch, so it also had a live URL on the
+# These were pulled after the Astro launch, so each also had a live URL on the
 # new site, not just the old Docusaurus one the /portfolio/* rules cover.
-/projects/fut-evento        /projects        301
-/pt-br/projects/fut-evento  /pt-br/projects  301
+/projects/fut-evento         /projects  301
+/projects/shopping-vila-bella  /projects  301
+/projects/qr-entrance-exit   /projects  301
+/projects/presence-list      /projects  301
+/projects/shopping-list      /projects  301
+/projects/todo-list          /projects  301
+
+/pt-br/projects/fut-evento           /pt-br/projects  301
+/pt-br/projects/shopping-vila-bella  /pt-br/projects  301
+/pt-br/projects/qr-entrance-exit     /pt-br/projects  301
+/pt-br/projects/presence-list        /pt-br/projects  301
+/pt-br/projects/shopping-list        /pt-br/projects  301
+/pt-br/projects/todo-list            /pt-br/projects  301
 
 # --- Contact page became a section ---
 /contact        /#contact        301

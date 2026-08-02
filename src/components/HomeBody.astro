@@ -36,10 +36,16 @@ const others = await getOtherProjects(lang);
   </div>
 
   <div class="mt-16 sm:mt-24">
-    <h3 class="eyebrow mb-4">{t("work.more")}</h3>
-    <ul class="flex flex-col border-t border-border">
-      {others.map((project) => <ProjectRow project={project} />)}
-    </ul>
+    {/* Every project can be featured, which would leave this heading standing
+        over an empty list. The "all projects" link below stays either way. */}
+    {others.length > 0 && (
+      <Fragment>
+        <h3 class="eyebrow mb-4">{t("work.more")}</h3>
+        <ul class="flex flex-col border-t border-border">
+          {others.map((project) => <ProjectRow project={project} />)}
+        </ul>
+      </Fragment>
+    )}
 
     <a
       href={localizePath("/projects", lang)}

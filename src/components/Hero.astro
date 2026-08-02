@@ -4,7 +4,7 @@ import portrait from "@/assets/nick.jpeg";
 import Icon from "@/components/Icon.astro";
 import { intro, site } from "@/data/site";
 import type { Lang } from "@/i18n/ui";
-import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -29,13 +29,18 @@ const { headline, tagline, focus } = intro[lang];
       </ul>
 
       <div class="mt-2 flex flex-wrap items-center gap-3">
-        <a
-          href={`${localizePath("/", lang)}#contact`.replace("//", "/")}
-          class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
+        <button
+          type="button"
+          id="copy-email"
+          data-email={site.email}
+          data-copied={t("contact.copied")}
+          aria-label={`${t("contact.copy")} ${site.email}`}
+          class="inline-flex max-w-full items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
         >
-          <Icon name="mail" size={16} />
-          {t("nav.contact")}
-        </a>
+          <span class="flex shrink-0" data-icon="mail"><Icon name="mail" size={16} /></span>
+          <span class="hidden shrink-0" data-icon="check"><Icon name="check" size={16} /></span>
+          <span class="truncate font-mono" data-label>{site.email}</span>
+        </button>
         <a
           href={site.github}
           target="_blank"
@@ -72,3 +77,53 @@ const { headline, tagline, focus } = intro[lang];
     </div>
   </div>
 </section>
+
+<script is:inline>
+  (() => {
+    const btn = document.getElementById("copy-email");
+    if (!btn) return;
+
+    const label = btn.querySelector("[data-label]");
+    const mail = btn.querySelector('[data-icon="mail"]');
+    const check = btn.querySelector('[data-icon="check"]');
+    const email = btn.dataset.email;
+    let timer;
+
+    // clipboard.writeText needs a secure context; fall back to a throwaway
+    // textarea so the button still works over plain http and in older Safari.
+    const copy = async (text) => {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {}
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+      } catch {}
+      ta.remove();
+    };
+
+    btn.addEventListener("click", async () => {
+      // Pin the width before swapping the label so the row doesn't reflow.
+      btn.style.minWidth = `${btn.offsetWidth}px`;
+      await copy(email);
+
+      label.textContent = btn.dataset.copied;
+      mail.classList.add("hidden");
+      check.classList.remove("hidden");
+
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        label.textContent = email;
+        check.classList.add("hidden");
+        mail.classList.remove("hidden");
+      }, 1800);
+    });
+  })();
+</script>

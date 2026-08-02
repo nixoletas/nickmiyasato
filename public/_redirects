@@ -3,51 +3,85 @@
 #
 # Old site: Docusaurus, docs at /portfolio/*, blog at /blog/*, contact page.
 # New site: projects at /projects/*, everything else is a home-page section.
+#
+# Every exact rule is written twice, bare and with a trailing slash. Astro's
+# sitemap emits the trailing-slash form as canonical and Pages 308s the bare
+# form to it, so the indexed URL is the one carrying the slash — a rule that
+# omits it 404s precisely the traffic it exists to catch. Splat rules already
+# match both forms and are not duplicated.
 
 # --- Renamed project slugs (EN) ---
-/portfolio/projects/angular-apod         /projects/angular-nasa-apod    301
-/portfolio/projects/intranet             /projects/intranet-govbr       301
-/portfolio/projects/famsecurity          /projects/fam-security         301
+/portfolio/projects/angular-apod   /projects/angular-nasa-apod  301
+/portfolio/projects/angular-apod/  /projects/angular-nasa-apod  301
+/portfolio/projects/intranet       /projects/intranet-govbr     301
+/portfolio/projects/intranet/      /projects/intranet-govbr     301
+/portfolio/projects/famsecurity    /projects/fam-security       301
+/portfolio/projects/famsecurity/   /projects/fam-security       301
 
 # --- Renamed project slugs (PT-BR) ---
-/pt-br/portfolio/projects/angular-apod         /pt-br/projects/angular-nasa-apod    301
-/pt-br/portfolio/projects/intranet             /pt-br/projects/intranet-govbr       301
-/pt-br/portfolio/projects/famsecurity          /pt-br/projects/fam-security         301
+/pt-br/portfolio/projects/angular-apod   /pt-br/projects/angular-nasa-apod  301
+/pt-br/portfolio/projects/angular-apod/  /pt-br/projects/angular-nasa-apod  301
+/pt-br/portfolio/projects/intranet       /pt-br/projects/intranet-govbr     301
+/pt-br/portfolio/projects/intranet/      /pt-br/projects/intranet-govbr     301
+/pt-br/portfolio/projects/famsecurity    /pt-br/projects/fam-security       301
+/pt-br/portfolio/projects/famsecurity/   /pt-br/projects/fam-security       301
 
 # --- Docs pages that became home-page sections ---
-/portfolio/experience        /#experience        301
-/portfolio/education         /#about             301
-/portfolio/intro             /                   301
-/pt-br/portfolio/experience  /pt-br/#experience  301
-/pt-br/portfolio/education   /pt-br/#about       301
-/pt-br/portfolio/intro       /pt-br              301
+/portfolio/experience         /#experience        301
+/portfolio/experience/        /#experience        301
+/portfolio/education          /#about             301
+/portfolio/education/         /#about             301
+/portfolio/intro              /                   301
+/portfolio/intro/             /                   301
+/pt-br/portfolio/experience   /pt-br/#experience  301
+/pt-br/portfolio/experience/  /pt-br/#experience  301
+/pt-br/portfolio/education    /pt-br/#about       301
+/pt-br/portfolio/education/   /pt-br/#about       301
+/pt-br/portfolio/intro        /pt-br              301
+/pt-br/portfolio/intro/       /pt-br              301
 
 # --- Project index and any remaining docs route ---
-/portfolio/projects        /projects        301
-/pt-br/portfolio/projects  /pt-br/projects  301
-/portfolio/*               /projects        301
-/pt-br/portfolio/*         /pt-br/projects  301
+/portfolio/projects         /projects        301
+/portfolio/projects/        /projects        301
+/pt-br/portfolio/projects   /pt-br/projects  301
+/pt-br/portfolio/projects/  /pt-br/projects  301
+/portfolio/*                /projects        301
+/pt-br/portfolio/*          /pt-br/projects  301
 
 # --- Retired projects ---
-# These were pulled after the Astro launch, so each also had a live URL on the
+# These were pulled after the Astro launch, so each also held a live URL on the
 # new site, not just the old Docusaurus one the /portfolio/* rules cover.
-/projects/fut-evento         /projects  301
+/projects/fut-evento           /projects  301
+/projects/fut-evento/          /projects  301
 /projects/shopping-vila-bella  /projects  301
-/projects/qr-entrance-exit   /projects  301
-/projects/presence-list      /projects  301
-/projects/shopping-list      /projects  301
-/projects/todo-list          /projects  301
+/projects/shopping-vila-bella/ /projects  301
+/projects/qr-entrance-exit     /projects  301
+/projects/qr-entrance-exit/    /projects  301
+/projects/presence-list        /projects  301
+/projects/presence-list/       /projects  301
+/projects/shopping-list        /projects  301
+/projects/shopping-list/       /projects  301
+/projects/todo-list            /projects  301
+/projects/todo-list/           /projects  301
 
-/pt-br/projects/fut-evento           /pt-br/projects  301
-/pt-br/projects/shopping-vila-bella  /pt-br/projects  301
-/pt-br/projects/qr-entrance-exit     /pt-br/projects  301
-/pt-br/projects/presence-list        /pt-br/projects  301
-/pt-br/projects/shopping-list        /pt-br/projects  301
-/pt-br/projects/todo-list            /pt-br/projects  301
+/pt-br/projects/fut-evento            /pt-br/projects  301
+/pt-br/projects/fut-evento/           /pt-br/projects  301
+/pt-br/projects/shopping-vila-bella   /pt-br/projects  301
+/pt-br/projects/shopping-vila-bella/  /pt-br/projects  301
+/pt-br/projects/qr-entrance-exit      /pt-br/projects  301
+/pt-br/projects/qr-entrance-exit/     /pt-br/projects  301
+/pt-br/projects/presence-list         /pt-br/projects  301
+/pt-br/projects/presence-list/        /pt-br/projects  301
+/pt-br/projects/shopping-list         /pt-br/projects  301
+/pt-br/projects/shopping-list/        /pt-br/projects  301
+/pt-br/projects/todo-list             /pt-br/projects  301
+/pt-br/projects/todo-list/            /pt-br/projects  301
 
 # --- Contact page became a section ---
-/contact        /#contact        301
-/pt-br/contact  /pt-br/#contact  301
+/contact         /#contact        301
+/contact/        /#contact        301
+/pt-br/contact   /pt-br/#contact  301
+/pt-br/contact/  /pt-br/#contact  301
 
 # --- Blog was retired; posts live in git history only ---
 /blog/*        /        301

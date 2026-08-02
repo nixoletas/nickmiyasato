@@ -10,7 +10,7 @@ export interface Role {
   end: string | null;
   summary: string;
   stack: string[];
-  /** Locale-agnostic path to related work, e.g. "/projects/intranet-govbr". */
+  /** Locale-agnostic path to related work, e.g. "/projects/a-divisao". */
   link?: { href: string; label: string };
 }
 
@@ -56,6 +56,7 @@ export const experience: Record<Lang, Role[]> = {
         "Docker",
         "GitHub Actions",
       ],
+      link: { href: "/projects/a-divisao", label: "A Divisão" },
     },
     {
       company: "PIC Money",
@@ -73,6 +74,7 @@ export const experience: Record<Lang, Role[]> = {
         "API Design",
         "Cloud Infrastructure",
       ],
+      link: { href: "/projects/picmoney", label: "PIC Money" },
     },
     {
       company: "Brazilian Army",
@@ -89,7 +91,6 @@ export const experience: Record<Lang, Role[]> = {
         "Infrastructure",
         "Agile",
       ],
-      link: { href: "/projects/intranet-govbr", label: "GovBR Intranet" },
     },
   ],
   "pt-br": [
@@ -129,6 +130,7 @@ export const experience: Record<Lang, Role[]> = {
         "Docker",
         "GitHub Actions",
       ],
+      link: { href: "/projects/a-divisao", label: "A Divisão" },
     },
     {
       company: "PIC Money",
@@ -146,6 +148,7 @@ export const experience: Record<Lang, Role[]> = {
         "Design de API",
         "Infraestrutura em nuvem",
       ],
+      link: { href: "/projects/picmoney", label: "PIC Money" },
     },
     {
       company: "Exército Brasileiro",
@@ -162,7 +165,6 @@ export const experience: Record<Lang, Role[]> = {
         "Infraestrutura",
         "Agile",
       ],
-      link: { href: "/projects/intranet-govbr", label: "Intranet GovBR" },
     },
   ],
 };

@@ -1,0 +1,35 @@
+---
+title: PIC Money
+summary: Plataforma de marketing de proximidade — cupons em realidade aumentada na rua, cashback e resgate por QR Code no PDV. Fiz a camada de dados e construí no app Flutter e na web.
+year: "2025"
+role: Engenheiro de produto, contrato
+stack: ["Flutter", "React", "Node.js", "PostgreSQL", "Geolocalização", "AR"]
+featured: true
+order: 2
+cover: picmoney.png
+demo: https://www.picmoney.com.br
+---
+
+## O problema
+
+Cupom digital tem um problema de conversão que, no fundo, é um problema de distância. A oferta chega à pessoa em casa, no feed, exatamente no momento em que ela não tem como agir — e quando ela finalmente passa em frente à loja, o cupom já está soterrado sob duzentas notificações.
+
+A PIC Money ataca pelo outro lado: colocar a oferta onde a pessoa já está, na rua, na frente do comércio, e fazer com que pegá-la valha a pena por si só. Os cupons aparecem em realidade aumentada em um ponto, o consumidor coleta, e a loja resgata por QR Code no ponto de venda.
+
+## O que eu construí
+
+Projetei a arquitetura do banco e a infraestrutura de backend, e desenvolvi funcionalidades em cima disso nos dois clientes — o app Flutter que o consumidor usa e o lado web em React.
+
+As partes que toco de ponta a ponta: autenticação, as integrações com APIs de terceiros, a camada de geolocalização que decide quais ofertas existem onde você está, e o próprio fluxo de captura em AR. Junto do código, documentei as APIs, as regras de negócio e as decisões de arquitetura — uma plataforma com marcas parceiras plugadas nela não pode ter o contrato de integração morando na cabeça de uma pessoa.
+
+## Decisões técnicas
+
+**Consulta de geolocalização no PostgreSQL, não no app.** "Quais ofertas estão perto desta pessoa agora" é uma consulta espacial com regra de negócio junto — campanha ativa, verba restante, limite de resgates. Responder isso no banco evita que o celular baixe um catálogo e filtre localmente, o que é mais lento e ainda vaza dado.
+
+**Flutter no app do consumidor.** O fluxo de captura em AR precisa de câmera e sensores com um time só mantendo iOS e Android. Duas bases nativas para uma funcionalidade nunca seria a troca certa neste produto.
+
+**QR no caixa como ponto de liquidação.** O resgate é a única etapa em que dinheiro troca de mãos, então é a etapa que precisa ser inequívoca. Um código lido no PDV dá aos dois lados o mesmo registro do que foi resgatado, quando e por quanto — é o que torna o cashback conciliável em vez de discussão.
+
+## Onde está
+
+No ar em [picmoney.com.br](https://www.picmoney.com.br), rodando com marcas parceiras. O trabalho segue em andamento.

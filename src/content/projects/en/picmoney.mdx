@@ -1,0 +1,35 @@
+---
+title: PIC Money
+summary: Proximity marketing platform — AR coupons on the street, cashback, and QR redemption at the register. I designed the data layer and built across the Flutter app and the web.
+year: "2025"
+role: Product engineer, contract
+stack: ["Flutter", "React", "Node.js", "PostgreSQL", "Geolocation", "AR"]
+featured: true
+order: 2
+cover: picmoney.png
+demo: https://www.picmoney.com.br
+---
+
+## The problem
+
+Digital coupons have a conversion problem that is really a distance problem. The offer reaches someone at home, on a feed, at the exact moment they are not in a position to act on it — and by the time they walk past the store, the coupon is buried under two hundred notifications.
+
+PIC Money attacks it from the other end: put the offer where the person already is, on the street, in front of the shop, and make picking it up worth doing on its own. Coupons appear in augmented reality at a location, the shopper collects them, and the store redeems by QR code at the point of sale.
+
+## What I built
+
+I designed the database architecture and the backend infrastructure, then built features on top of it across both clients — the Flutter app shoppers use and the React web side.
+
+The parts I own end to end: authentication, the third-party API integrations, the geolocation layer that decides which offers exist where you are standing, and the AR capture flow itself. Alongside the code, I documented the APIs, the business rules and the architectural decisions — a platform with partner brands plugged into it cannot have its integration contract live in one person's head.
+
+## Technical decisions
+
+**Geolocation queries in PostgreSQL, not in the app.** "Which offers are near this person right now" is a spatial query with business rules attached — active campaign, remaining budget, redemption limits. Answering it in the database keeps the phone from downloading a catalogue and filtering it locally, which is both slower and a data leak.
+
+**Flutter for the shopper app.** The AR capture flow needs camera and sensor access with one team maintaining it on both iOS and Android. Two native codebases for one feature was never going to be the right trade for this product.
+
+**QR at the register as the settlement point.** Redemption is the only step where money changes hands, so it is the step that has to be unambiguous. A code scanned at the POS gives both sides the same record of what was redeemed, when, and for how much — which is what makes cashback reconcilable rather than a dispute.
+
+## Where it stands
+
+Live at [picmoney.com.br](https://www.picmoney.com.br), running with partner brands. Work on it is ongoing.

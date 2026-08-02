@@ -1,0 +1,35 @@
+---
+title: A Divisão
+summary: Platform connecting serving military, veterans and their families with companies hiring them. Contract product engineering on the public site and the member area.
+year: "2025"
+role: Product engineer, contract
+stack: ["Next.js", "React", "Node.js", "PostgreSQL", "Docker", "GitHub Actions"]
+featured: true
+order: 1
+cover: divisao.png
+demo: https://adivisao.com.br
+---
+
+## The problem
+
+Leaving the military is a hard transition to make alone. The skills transfer — discipline, operating under pressure, running teams that cannot afford to improvise — but the vocabulary does not, and the network that would normally carry someone into a new job is mostly still inside the barracks.
+
+A Divisão exists to close that gap: a movement that puts serving military, veterans, military families and companies in the same place, with training and networking around it. The engineering problem is the one underneath — a platform that has to hold a public campaign and a private members area at the same time, and stay standing when a post lands and everyone arrives at once.
+
+## What I built
+
+I architected the platform and built it out across the public site and the member area, on a stack that stays cheap to run between traffic spikes and does not fall over during one.
+
+The team runs on the dashboards: real-time metrics on signups and engagement, plus an audit view that records who changed what. In an organisation handling military and veteran data, "who touched this record" is not a nice-to-have.
+
+## Technical decisions
+
+**Next.js on the front, Node on the back.** Server rendering means the campaign pages are complete and indexable on first response — the same property that makes them fast for a visitor arriving from a phone on mobile data.
+
+**PostgreSQL as the single source of truth.** Membership, companies and opportunities are relational data with real constraints between them. Enforcing those in the database rather than in application code is what keeps the member area consistent as features get added around it.
+
+**Docker for parity, GitHub Actions for the release.** Test and deploy run on every push, so releases stopped being events. The cycle time drop was the visible part; the part that mattered more was that shipping a fix at 11pm no longer meant remembering a sequence of manual steps.
+
+## Where it stands
+
+Live at [adivisao.com.br](https://adivisao.com.br), with the movement pages public and the members area behind sign-in. Work on it is ongoing.

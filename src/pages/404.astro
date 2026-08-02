@@ -1,0 +1,41 @@
+---
+import Base from "@/layouts/Base.astro";
+import Icon from "@/components/Icon.astro";
+import { site } from "@/data/site";
+import { ui } from "@/i18n/ui";
+
+// Cloudflare Pages serves this one file for every missing route, including
+// /pt-br/*, so it cannot know the visitor's locale — it shows both.
+const variants = [
+  { lang: "en", href: "/", strings: ui.en },
+  { lang: "pt-BR", href: "/pt-br", strings: ui["pt-br"] },
+] as const;
+---
+
+<Base
+  title={`404 — ${site.name}`}
+  description="Page not found."
+  noindex={true}
+>
+  <div class="shell flex min-h-[60vh] flex-col justify-center gap-12 py-20">
+    <p class="font-mono text-4xl text-accent">404</p>
+
+    <div class="grid gap-10 sm:grid-cols-2">
+      {
+        variants.map((variant) => (
+          <section lang={variant.lang} class="flex flex-col items-start gap-3">
+            <h2 class="text-xl">{variant.strings["404.title"]}</h2>
+            <p class="text-muted">{variant.strings["404.lead"]}</p>
+            <a
+              href={variant.href}
+              class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent link-underline"
+            >
+              {variant.strings["404.home"]}
+              <Icon name="arrow-right" size={14} />
+            </a>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Base>

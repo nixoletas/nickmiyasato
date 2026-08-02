@@ -1,0 +1,23 @@
+---
+title: QR Entrance & Exit
+summary: A React Native scanner that replaced a paper gate log for people and vehicles at a battalion checkpoint.
+year: "2024"
+role: Solo
+stack: ["React Native", "Expo", "TypeScript"]
+featured: false
+order: 5
+cover: entrada-saida.png
+repo: https://github.com/nixoletas/entrada-react
+---
+
+Access control at the gate was a paper book: name, time, vehicle, signature. It was slow at shift change, unreadable after a week of handling, and impossible to search when someone actually needed a record.
+
+Badges with QR codes already existed, issued by a separate system. What was missing was the thing that reads them.
+
+This is an Expo app that opens straight into the camera, scans a badge, resolves who it belongs to, and posts the movement to the existing registration service. One toggle switches the whole app between *entry* and *exit* mode, because at a checkpoint you are doing one or the other for a stretch, not alternating — the guard sets the mode once at the start of a flow rather than choosing per scan.
+
+Scans are debounced against the last badge seen, so leaving the camera pointed at a badge does not write the same movement dozens of times.
+
+The lesson was that the interesting part of a scanner app is not the scanning. It is the fifteen seconds of interaction around it, under bad lighting, by someone holding a clipboard.
+
+*The app talks to an internal service; endpoints and hostnames are not published.*

@@ -1,0 +1,89 @@
+---
+import { Image } from "astro:assets";
+import portrait from "@/assets/nick.jpeg";
+import Icon from "@/components/Icon.astro";
+import { intro, site } from "@/data/site";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { headline, tagline, focus } = intro[lang];
+---
+
+<section class="shell pt-14 pb-4 sm:pt-24">
+  <div class="grid items-start gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:gap-16">
+    <div class="rise flex max-w-2xl flex-col gap-6">
+      <div class="flex flex-col gap-3">
+        <p class="eyebrow flex items-center gap-2">
+          <span
+            class="inline-block size-1.5 rounded-full bg-accent"
+            aria-hidden="true"></span>
+          {t("hero.available")}
+        </p>
+        <h1 class="text-4xl font-semibold">{headline}</h1>
+      </div>
+
+      <p class="font-mono text-sm text-muted">
+        {site.legalName} · {t("hero.role")} · {site.location[lang]}
+      </p>
+
+      <p class="prose-measure text-lg">{tagline}</p>
+
+      <ul class="flex flex-wrap gap-2" aria-label="Core stack">
+        {focus.map((item) => <li class="tag">{item}</li>)}
+      </ul>
+
+      <div class="mt-2 flex flex-wrap items-center gap-3">
+        <a
+          href={site.resume[lang]}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
+        >
+          <Icon name="file" size={16} />
+          {t("hero.resume")}
+        </a>
+        <a
+          href={`${localizePath("/", lang)}#contact`.replace("//", "/")}
+          class="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+        >
+          <Icon name="mail" size={16} />
+          {t("nav.contact")}
+        </a>
+        <a
+          href={site.github}
+          target="_blank"
+          rel="noopener"
+          aria-label="GitHub"
+          class="grid size-10 place-items-center rounded-lg border border-border text-muted transition-colors hover:border-accent hover:text-accent"
+        >
+          <Icon name="github" size={16} />
+        </a>
+        <a
+          href={site.linkedin}
+          target="_blank"
+          rel="noopener"
+          aria-label="LinkedIn"
+          class="grid size-10 place-items-center rounded-lg border border-border text-muted transition-colors hover:border-accent hover:text-accent"
+        >
+          <Icon name="linkedin" size={16} />
+        </a>
+      </div>
+    </div>
+
+    <div class="rise order-first md:order-last">
+      <Image
+        src={portrait}
+        alt={site.legalName}
+        width={260}
+        height={260}
+        densities={[1, 2]}
+        loading="eager"
+        {/* No fetchpriority="high" — the LCP element is the h1, so the portrait
+            must not compete with the preloaded Inter file. */}
+        class="size-32 rounded-2xl border border-border object-cover sm:size-40 md:size-60"
+      />
+    </div>
+  </div>
+</section>

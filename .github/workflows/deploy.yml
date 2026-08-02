@@ -1,0 +1,47 @@
+name: Deploy
+
+# Direct-upload deploys to Cloudflare Pages. Deliberately not using the
+# dashboard's Git integration: that needs a browser OAuth step, and doing the
+# build here means the build is reproducible and inspectable in the repo.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Fails the build on a type error rather than shipping it.
+      - run: npm run check
+
+      - run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Branch drives the environment: main is production, anything else
+          # gets its own preview URL.
+          command: >-
+            pages deploy dist
+            --project-name nickmiyasato
+            --branch ${{ github.head_ref || github.ref_name }}

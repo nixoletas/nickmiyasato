@@ -1,0 +1,136 @@
+---
+import "@/styles/global.css";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { site } from "@/data/site";
+import { htmlLang, type Lang } from "@/i18n/ui";
+import { alternateUrls, getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute or root-relative image for OG/Twitter cards. */
+  image?: string;
+  /** Emitted as <meta name="robots"> — used to keep 404s out of the index. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = "/img/og-default.png",
+  noindex = false,
+} = Astro.props;
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const alternates = alternateUrls(Astro.url);
+const ogImage = new URL(image, site.url).href;
+
+// One Person record for the whole site; search engines and LLM crawlers both
+// read this, and it is what makes a name query resolve to this page.
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.legalName,
+  alternateName: site.name,
+  url: site.url,
+  image: new URL("/img/nick.jpg", site.url).href,
+  email: `mailto:${site.email}`,
+  jobTitle: t("hero.role"),
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "São Paulo",
+    addressCountry: "BR",
+  },
+  sameAs: [site.github, site.linkedin],
+  knowsLanguage: ["pt-BR", "en"],
+};
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/img/icon-96.png" sizes="96x96" type="image/png" />
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)" />
+
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="alternate" hreflang="en" href={new URL(alternates.en, site.url).href} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL(alternates["pt-br"], site.url).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(alternates.en, site.url).href} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === "en" ? "en_US" : "pt_BR"} />
+    <meta
+      property="og:locale:alternate"
+      content={lang === "en" ? "pt_BR" : "en_US"}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline>
+      // Runs before first paint so the correct theme is already on <html>.
+      // Kept inline and tiny on purpose — this is the only blocking JS.
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+          const dark = saved
+            ? saved === "dark"
+            : matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", dark);
+        } catch {}
+      })();
+    </script>
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(personSchema)}
+    />
+  </head>
+
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-fg"
+    >
+      {t("nav.skip")}
+    </a>
+
+    <Nav />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

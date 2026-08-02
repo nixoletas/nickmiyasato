@@ -1,0 +1,28 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import ProjectDetail from "@/components/ProjectDetail.astro";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/data/site";
+import { entrySlug, getProjects } from "@/lib/content";
+
+// Deliberately not annotated with `GetStaticPaths` — the annotation erases the
+// prop types that InferGetStaticPropsType needs to recover below.
+export async function getStaticPaths() {
+  const projects = await getProjects("pt-br");
+  return projects.map((project) => ({
+    params: { slug: entrySlug(project.id) },
+    props: { project },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { project } = Astro.props as Props;
+---
+
+<Base
+  title={`${project.data.title} — ${site.name}`}
+  description={project.data.summary}
+>
+  <ProjectDetail project={project} />
+</Base>

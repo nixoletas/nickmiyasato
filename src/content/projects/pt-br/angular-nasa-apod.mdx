@@ -1,0 +1,28 @@
+---
+title: Angular NASA APOD
+summary: Galeria da Foto Astronômica do Dia da NASA, feita para aprender server-side rendering no Angular de verdade.
+year: "2025"
+role: Sozinho
+stack: ["Angular", "TypeScript", "Angular SSR", "Tailwind", "Vercel"]
+featured: true
+order: 3
+cover: angular-apod.png
+repo: https://github.com/nixoletas/angular-nasa-apod
+demo: https://angular-nasa-apod.vercel.app/
+---
+
+## Por que existe
+
+Eu queria entender o server-side rendering do Angular entregando algo com ele, não lendo sobre ele. A [API do APOD](https://api.nasa.gov/) da NASA é um bom forçador: dependência externa que não controlo, respostas cheias de imagem e um rate limit que pune busca ingênua.
+
+## O que faz
+
+Busca dez Fotos Astronômicas do Dia aleatórias e renderiza como galeria — cada uma com título, data e a explicação da própria NASA.
+
+## O que tirei disso
+
+**SSR é, em grande parte, um problema de busca de dados.** A parte interessante não é renderizar no servidor: é decidir o que é buscado lá e o que é buscado no navegador, e garantir que o cliente não saia repedindo tudo que o servidor já resolveu.
+
+**Página cheia de imagem pune quem aceita os defaults.** O APOD serve fotografia astronômica em resolução cheia. Sem dimensão explícita e carregamento lazy, a galeria vira uma máquina de layout shift — que é exatamente a lição que moldou o tratamento de imagens do site que você está lendo agora.
+
+**Tailwind combina com o modelo de componentes do Angular.** O estilo fica junto da marcação a que pertence, o que mantém o componente de fato autocontido.

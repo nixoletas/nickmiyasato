@@ -1,0 +1,56 @@
+---
+import { education } from "@/data/site";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { degrees, courses, languages } = education[lang];
+---
+
+{/* Three columns only at lg — at md this block sits inside the narrow right
+    half of the About grid, where three columns cannot fit. */}
+<div class="grid gap-10 sm:grid-cols-2 sm:gap-8 md:grid-cols-1 lg:grid-cols-3">
+  <div class="flex flex-col gap-4">
+    <h3 class="eyebrow">{t("edu.degrees")}</h3>
+    <ul class="flex flex-col gap-4">
+      {
+        degrees.map((degree) => (
+          <li class="flex flex-col gap-0.5">
+            <span class="text-sm font-medium">{degree.title}</span>
+            <span class="text-sm text-muted">{degree.org}</span>
+            <span class="font-mono text-xs text-muted">{degree.period}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <h3 class="eyebrow">{t("edu.courses")}</h3>
+    <ul class="flex flex-col gap-3">
+      {
+        courses.map((course) => (
+          <li class="flex flex-col gap-0.5">
+            <span class="text-sm">{course.title}</span>
+            <span class="font-mono text-xs text-muted">{course.org}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <h3 class="eyebrow">{t("edu.languages")}</h3>
+    <ul class="flex flex-col gap-3">
+      {
+        languages.map((language) => (
+          <li class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border pb-2">
+            <span class="text-sm">{language.name}</span>
+            <span class="font-mono text-xs text-muted">{language.level}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+---
+title: Entrada & Saída por QR Code
+summary: Scanner em React Native que substituiu o livro de papel no controle de entrada de pessoas e veículos de um batalhão.
+year: "2024"
+role: Sozinho
+stack: ["React Native", "Expo", "TypeScript"]
+featured: false
+order: 5
+cover: entrada-saida.png
+repo: https://github.com/nixoletas/entrada-react
+---
+
+O controle de acesso na guarda era um livro de papel: nome, hora, veículo, assinatura. Era lento na troca de turno, ilegível depois de uma semana de manuseio e impossível de pesquisar quando alguém de fato precisava de um registro.
+
+Crachás com QR code já existiam, emitidos por outro sistema. O que faltava era a coisa que lê.
+
+Este é um app Expo que abre direto na câmera, lê o crachá, resolve de quem é e registra a movimentação no serviço já existente. Um botão alterna o app inteiro entre modo *entrada* e *saída*, porque na guarda você fica um tempo fazendo um ou outro, não alternando — o militar define o modo uma vez no começo do fluxo em vez de escolher a cada leitura.
+
+As leituras são debounced contra o último crachá visto, então deixar a câmera apontada para um crachá não grava a mesma movimentação dezenas de vezes.
+
+A lição foi que a parte interessante de um app de scanner não é a leitura. São os quinze segundos de interação em volta dela, com iluminação ruim, feita por alguém segurando uma prancheta.
+
+*O app conversa com um serviço interno; endpoints e hostnames não são publicados.*

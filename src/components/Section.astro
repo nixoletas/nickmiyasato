@@ -1,0 +1,44 @@
+---
+interface Props {
+  id?: string;
+  /** Small mono label above the heading. */
+  eyebrow: string;
+  title?: string;
+  /**
+   * Hairline rule above the section. Sections carry a lot of whitespace, and
+   * the rule is what makes that read as structure rather than as a gap.
+   */
+  divider?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  eyebrow,
+  title,
+  divider = false,
+  class: className = "",
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class={`shell scroll-mt-24 py-14 sm:py-20 ${divider ? "border-t border-border" : ""} ${className}`}
+>
+  {/* Without an explicit title the eyebrow *is* the section heading — making
+      it a <p> would jump the document outline straight from h1 to the h3s
+      inside, which fails heading-order. */}
+  <header class="mb-10 flex flex-col gap-3 sm:mb-14">
+    {
+      title ? (
+        <>
+          <p class="eyebrow">{eyebrow}</p>
+          <h2 class="text-2xl">{title}</h2>
+        </>
+      ) : (
+        <h2 class="eyebrow">{eyebrow}</h2>
+      )
+    }
+  </header>
+  <slot />
+</section>

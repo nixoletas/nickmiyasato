@@ -1,0 +1,40 @@
+---
+title: Intranet GovBR
+summary: Substituí a intranet Joomla de um batalhão por uma SPA Angular sobre o design system do governo. Continua em produção.
+year: "2023 — 2025"
+role: Desenvolvedor principal e dono do sistema
+stack: ["Angular", "Strapi", "govbr-ds", "Express", "Docker", "Nginx", "PostgreSQL"]
+featured: true
+order: 2
+cover: intranet-govbr.png
+repo: https://github.com/nixoletas/intranet-govbr
+demo: https://nixoletas.github.io/intranet-govbr
+---
+
+## O problema
+
+A intranet da unidade rodava em Joomla. Cada troca de rota era um carregamento de página inteiro, então a reclamação mais comum era simplesmente a espera — as pessoas evitavam a ferramenta que deveria ser a página inicial padrão delas. Do lado da manutenção, publicar uma única página significava brigar com um CMS cuja complexidade havia superado em muito o que qualquer um ali precisava dele.
+
+Mais ou menos na mesma época o governo brasileiro lançou o novo padrão de identidade digital, o [Design System gov.br](https://www.gov.br/ds/home), publicado abertamente e com documentação realmente boa. Isso transformou "a intranet está lenta" em uma oportunidade de reconstruir sobre um padrão em vez de inventar um.
+
+## O que eu construí
+
+Uma single-page application em Angular sobre a biblioteca de componentes govbr-ds, com Strapi como CMS headless, rodando em Docker atrás de Nginx.
+
+A restrição deliberada era que a nova interface não podia parecer um produto novo. Os usuários tinham um mapa mental de onde as coisas ficavam; a reescrita preservou esse mapa e mudou o que acontecia por baixo. Ninguém precisou ser retreinado.
+
+Com a base sólida, a superfície cresceu para cobrir o que a unidade de fato pediu: abertura de chamados online, livro de viagem, aviso de aniversariantes e leitura de temperatura e umidade em tempo real.
+
+## Decisões técnicas
+
+**Angular em vez de continuar no Joomla.** Joomla é um CMS maduro, mas o gargalo de navegação era estrutural — carregamento renderizado no servidor a cada clique. Um roteador de SPA eliminou essa classe de latência inteira, em vez de otimizar em volta dela. A CLI do Angular também fez componentes e serviços novos custarem minutos em vez de horas, o que importa quando você é o único desenvolvedor.
+
+**Strapi como CMS headless.** A publicação precisava continuar nas mãos de quem não é desenvolvedor. O Strapi deu à seção de comunicação uma interface editorial normal enquanto o front-end permaneceu um consumidor limpo de API — mudança de conteúdo nunca exigiu deploy.
+
+**Docker e Nginx.** A stack precisava ser reproduzível e reiniciável por quem estivesse de serviço, não só por mim. Containers transformaram o caminho de recuperação em um comando documentado em vez de memória institucional.
+
+## Situação
+
+O sistema continua em produção. Foi adotado como implementação de referência por outras unidades, e a escolha de partir do design system significa que a próxima equipe herda componentes documentados em vez de um tema sob medida.
+
+*Este repositório é um recorte público e sanitizado. A implantação em produção contém funcionalidades específicas da unidade que não são publicadas aqui.*

@@ -1,0 +1,32 @@
+---
+import { entrySlug, type ProjectEntry } from "@/lib/content";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath } from "@/i18n/utils";
+
+interface Props {
+  project: ProjectEntry;
+}
+
+const { project } = Astro.props;
+const lang: Lang = getLangFromUrl(Astro.url);
+const { title, summary, year, stack } = project.data;
+const href = localizePath(`/projects/${entrySlug(project.id)}`, lang);
+---
+
+<li class="border-b border-border last:border-b-0">
+  <a
+    href={href}
+    class="group flex flex-col gap-2 py-5 transition-colors sm:grid sm:grid-cols-[5rem_minmax(0,1fr)_auto] sm:items-baseline sm:gap-6"
+  >
+    <span class="font-mono text-xs text-muted">{year}</span>
+
+    <span class="flex flex-col gap-1">
+      <span class="font-medium transition-colors group-hover:text-accent">
+        {title}
+      </span>
+      <span class="text-sm text-muted">{summary}</span>
+    </span>
+
+    <span class="font-mono text-xs text-muted">{stack.slice(0, 3).join(" · ")}</span>
+  </a>
+</li>

@@ -5,7 +5,6 @@
 # New site: projects at /projects/*, everything else is a home-page section.
 
 # --- Renamed project slugs (EN) ---
-/portfolio/projects/futevento            /projects/fut-evento           301
 /portfolio/projects/angular-apod         /projects/angular-nasa-apod    301
 /portfolio/projects/intranet             /projects/intranet-govbr       301
 /portfolio/projects/entrance-exit        /projects/qr-entrance-exit     301
@@ -16,7 +15,6 @@
 /portfolio/projects/shopping-vila-bella  /projects/shopping-vila-bella  301
 
 # --- Renamed project slugs (PT-BR) ---
-/pt-br/portfolio/projects/futevento            /pt-br/projects/fut-evento           301
 /pt-br/portfolio/projects/angular-apod         /pt-br/projects/angular-nasa-apod    301
 /pt-br/portfolio/projects/intranet             /pt-br/projects/intranet-govbr       301
 /pt-br/portfolio/projects/entrance-exit        /pt-br/projects/qr-entrance-exit     301
@@ -39,6 +37,12 @@
 /pt-br/portfolio/projects  /pt-br/projects  301
 /portfolio/*               /projects        301
 /pt-br/portfolio/*         /pt-br/projects  301
+
+# --- Retired projects ---
+# Fut Evento was pulled after the Astro launch, so it also had a live URL on the
+# new site, not just the old Docusaurus one the /portfolio/* rules cover.
+/projects/fut-evento        /projects        301
+/pt-br/projects/fut-evento  /pt-br/projects  301
 
 # --- Contact page became a section ---
 /contact        /#contact        301

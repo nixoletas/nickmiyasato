@@ -1,0 +1,39 @@
+---
+title: Meus Gastos
+summary: Controle de gastos pessoais construído em torno de um lançamento de cinco segundos. App Android e web, sobre o mesmo backend Supabase.
+year: "2026"
+role: Sozinho — produto, engenharia, operação
+stack: ["React Native", "Expo", "TypeScript", "Supabase", "Next.js"]
+featured: true
+order: 1
+repo: https://github.com/nixoletas/meus-gastos-app
+demo: https://www.meusgastos.dev.br
+---
+
+## O problema
+
+Todo fim de mês some uma grana e você não sabe dizer para onde foi. Não porque a informação não exista — o app do banco tem tudo — mas porque ela chega como extrato, que é registro, não resposta.
+
+Os apps que se propõem a resolver isso costumam falhar no mesmo ponto. Lançar um café dá seis toques e um seletor de categoria com quarenta opções, então você para de lançar cafés, e um controle de gastos com buracos é pior do que nenhum.
+
+## O que eu construí
+
+Um controle de gastos em que o caminho do lançamento é o produto inteiro. Valor, categoria, pronto — uns cinco segundos. Todo o resto do app parte do princípio de que o registro está completo, o que só é verdade se registrar nunca parecer trabalho.
+
+Em cima disso: gráficos que mostram para onde o mês de fato foi, e limites por categoria que avisam antes de você estourar, não depois.
+
+Roda como app Android e no navegador, com uma conta e um conjunto de dados só. Entra com o Google em qualquer um dos dois e os mesmos dados estão lá.
+
+## Decisões técnicas
+
+**Expo e React Native, não Android nativo.** Um código TypeScript gera o app Android e compartilha a camada de dados com a build web. Em projeto solo o que decide é quanta superfície eu tenho que manter, e isso cortou quase pela metade.
+
+**Supabase para auth e dados.** Postgres com row-level security significa que as linhas de um usuário ficam isoladas por uma policy no banco, e não pela disciplina da aplicação. O OAuth do Google veio junto, e login com Google é a diferença entre ter formulário de cadastro e não ter.
+
+**Categoria é ícone, não dropdown.** Uma grade de ícones é um toque e nenhuma leitura. Um `<select>` com quarenta itens é a razão pela qual as pessoas abandonam controle de gastos na segunda semana.
+
+**App web separado, não casca responsiva.** A build Next.js é um projeto próprio contra a mesma instância Supabase. Celular e desktop são sessões genuinamente diferentes — o celular captura, o desktop revisa — e fingir o contrário piora os dois.
+
+## Onde está
+
+No ar e gratuito em [meusgastos.dev.br](https://www.meusgastos.dev.br), no Google Play e no navegador.

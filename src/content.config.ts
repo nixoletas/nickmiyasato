@@ -3,7 +3,7 @@ import { glob } from "astro/loaders";
 
 /**
  * Files live at src/content/<collection>/<lang>/<slug>.mdx, so `id` comes out
- * as "en/fut-evento". Locale is derived from that path rather than duplicated
+ * as "en/meus-gastos". Locale is derived from that path rather than duplicated
  * in frontmatter — one less thing to get out of sync.
  */
 const localizedGlob = (base: string) =>

@@ -1,0 +1,39 @@
+---
+title: Meus Gastos
+summary: A personal expense tracker built around a five-second entry. Android app and web, sharing one Supabase backend.
+year: "2026"
+role: Solo — product, engineering, ops
+stack: ["React Native", "Expo", "TypeScript", "Supabase", "Next.js"]
+featured: true
+order: 1
+repo: https://github.com/nixoletas/meus-gastos-app
+demo: https://www.meusgastos.dev.br
+---
+
+## The problem
+
+Every month a chunk of money disappears and you cannot say where it went. Not because the information is unavailable — bank apps have all of it — but because it arrives as a statement, which is a record, not an answer.
+
+The tools meant to fix this mostly fail on the same step. Logging a coffee takes six taps and a category picker with forty options, so you stop logging coffees, and a spending tracker with gaps in it is worse than none.
+
+## What I built
+
+An expense tracker where the entry path is the whole product. Amount, category, done — about five seconds. Everything else in the app is built on the assumption that the log is complete, which is only true if logging never feels like work.
+
+On top of that: charts that show where the month actually went, and spending limits per category that tell you before you blow through one rather than after.
+
+It runs as an Android app and in the browser, sharing one account and one dataset. Sign in with Google on either and the same data is there.
+
+## Technical decisions
+
+**Expo and React Native, not native Android.** One TypeScript codebase produces the Android app and shares its data layer with the web build. For a solo project the deciding factor is how much surface area I have to maintain, and this cut it roughly in half.
+
+**Supabase for auth and data.** Postgres with row-level security means a user's rows are isolated by a policy in the database rather than by discipline in the application. Google OAuth came with it, and Google sign-in is the difference between a signup form and no signup form.
+
+**Categories are icons, not a dropdown.** A grid of icons is one tap and no reading. A `<select>` with forty entries is the reason people abandon expense trackers in week two.
+
+**Separate web app rather than a responsive shell.** The Next.js web build is its own project against the same Supabase instance. Phone and desktop are genuinely different sessions — the phone captures, the desktop reviews — and pretending otherwise makes both worse.
+
+## Where it stands
+
+Live and free at [meusgastos.dev.br](https://www.meusgastos.dev.br), on Google Play and in the browser.

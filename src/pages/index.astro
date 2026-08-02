@@ -1,0 +1,13 @@
+---
+import HomeBody from "@/components/HomeBody.astro";
+import Base from "@/layouts/Base.astro";
+import { intro, site } from "@/data/site";
+---
+
+<Base
+  title={`${site.legalName} — Software Engineer`}
+  description={intro.en.headline +
+    " Full-stack engineer working in .NET, Angular, and Next.js, based in São Paulo, Brazil."}
+>
+  <HomeBody />
+</Base>

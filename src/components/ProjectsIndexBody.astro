@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+import { entrySlug, getProjects, resolveCover } from "@/lib/content";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+---
+
+<div class="shell py-14 sm:py-20">
+  <header class="flex flex-col gap-4">
+    <p class="eyebrow">{t("work.all")}</p>
+    <h1 class="text-3xl">{t("nav.projects")}</h1>
+  </header>
+
+  <ul class="mt-12 grid gap-8 sm:mt-16 sm:grid-cols-2">
+    {
+      projects.map((project, i) => {
+        const href = localizePath(`/projects/${entrySlug(project.id)}`, lang);
+        const image = resolveCover(project.data.cover);
+        return (
+          <li>
+            <a
+              href={href}
+              class="group flex h-full flex-col gap-4 rounded-xl border border-border bg-surface p-4 transition-colors hover:border-accent"
+            >
+              {image && (
+                <Image
+                  src={image}
+                  alt=""
+                  widths={[420, 760]}
+                  sizes="(min-width: 640px) 34rem, 90vw"
+                  loading={i < 2 ? "eager" : "lazy"}
+                  class="aspect-[16/9] w-full rounded-lg border border-border object-cover object-top"
+                />
+              )}
+
+              <div class="flex flex-1 flex-col gap-2.5 px-1 pb-1">
+                <p class="eyebrow">{project.data.year}</p>
+                <h2 class="text-lg font-medium transition-colors group-hover:text-accent">
+                  {project.data.title}
+                </h2>
+                <p class="flex-1 text-sm text-muted">{project.data.summary}</p>
+                <ul class="flex flex-wrap gap-1.5 pt-1">
+                  {project.data.stack.slice(0, 4).map((item) => (
+                    <li class="tag">{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  <a
+    href={localizePath("/", lang)}
+    class="mt-12 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+  >
+    <Icon name="arrow-left" size={14} />
+    {t("404.home")}
+  </a>
+</div>

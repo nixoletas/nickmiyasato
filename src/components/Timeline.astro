@@ -1,0 +1,57 @@
+---
+import Icon from "@/components/Icon.astro";
+import { experience } from "@/data/experience";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const roles = experience[lang];
+---
+
+<ol class="flex flex-col">
+  {
+    roles.map((role) => (
+      <li class="group relative grid gap-3 border-l border-border py-7 pl-6 first:pt-0 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-8 sm:pl-10">
+        <span
+          class="absolute top-8 -left-[4.5px] size-2 rounded-full bg-border transition-colors group-hover:bg-accent first:top-1"
+          aria-hidden="true"
+        />
+
+        <p class="font-mono text-xs text-muted sm:pt-1">
+          {role.start} — {role.end ?? t("exp.present")}
+        </p>
+
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-0.5">
+            <h3 class="text-lg font-medium">
+              {role.company}
+              <span class="ml-2 align-middle font-mono text-xs font-normal text-muted">
+                {role.kind}
+              </span>
+            </h3>
+            <p class="text-sm text-muted">{role.title}</p>
+          </div>
+
+          <p class="prose-measure text-sm text-muted">{role.summary}</p>
+
+          <ul class="flex flex-wrap gap-2">
+            {role.stack.map((item) => (
+              <li class="tag">{item}</li>
+            ))}
+          </ul>
+
+          {role.link && (
+            <a
+              href={localizePath(role.link.href, lang)}
+              class="inline-flex w-fit items-center gap-1.5 text-sm text-accent link-underline"
+            >
+              {role.link.label}
+              <Icon name="arrow-right" size={14} />
+            </a>
+          )}
+        </div>
+      </li>
+    ))
+  }
+</ol>

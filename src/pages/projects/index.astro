@@ -1,0 +1,12 @@
+---
+import ProjectsIndexBody from "@/components/ProjectsIndexBody.astro";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/data/site";
+---
+
+<Base
+  title={`Projects — ${site.name}`}
+  description="Every project I've shipped, from production systems used by a Brazilian Army battalion to the side projects I learned on."
+>
+  <ProjectsIndexBody />
+</Base>

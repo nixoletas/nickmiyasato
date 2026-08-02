@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import { entrySlug, resolveCover, type ProjectEntry } from "@/lib/content";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  project: ProjectEntry;
+  /** Alternating sides keep a long list of features from reading as a grid. */
+  flip?: boolean;
+  /** The first feature is above the fold on most screens. */
+  eager?: boolean;
+  index: number;
+}
+
+const { project, flip = false, eager = false, index } = Astro.props;
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { title, summary, year, stack, repo, demo, cover } = project.data;
+const href = localizePath(`/projects/${entrySlug(project.id)}`, lang);
+const image = resolveCover(cover);
+---
+
+<article
+  class="group grid items-center gap-6 md:grid-cols-2 md:gap-12"
+  aria-labelledby={`project-${entrySlug(project.id)}`}
+>
+  <a
+    href={href}
+    tabindex="-1"
+    aria-hidden="true"
+    class={`block overflow-hidden rounded-xl border border-border bg-surface ${
+      flip ? "md:order-last" : ""
+    }`}
+  >
+    {
+      image && (
+        <Image
+          src={image}
+          alt=""
+          widths={[480, 760, 1100]}
+          sizes="(min-width: 768px) 46vw, 92vw"
+          loading={eager ? "eager" : "lazy"}
+          decoding={eager ? "sync" : "async"}
+          class="aspect-[16/9] w-full object-cover object-top transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+        />
+      )
+    }
+  </a>
+
+  <div class="flex flex-col gap-4">
+    <p class="eyebrow">
+      {String(index).padStart(2, "0")} · {year}
+    </p>
+
+    <h3 id={`project-${entrySlug(project.id)}`} class="text-xl">
+      <a href={href} class="link-underline">{title}</a>
+    </h3>
+
+    <p class="text-muted">{summary}</p>
+
+    <ul class="flex flex-wrap gap-2">
+      {stack.map((item) => <li class="tag">{item}</li>)}
+    </ul>
+
+    <div class="mt-1 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+      <a href={href} class="inline-flex items-center gap-1.5 text-accent link-underline">
+        {t("work.view")}
+        <Icon name="arrow-right" size={14} />
+      </a>
+      {
+        demo && (
+          <a
+            href={demo}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-fg"
+          >
+            {t("work.demo")}
+            <Icon name="arrow-up-right" size={14} />
+          </a>
+        )
+      }
+      {
+        repo && (
+          <a
+            href={repo}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-fg"
+          >
+            {t("work.repo")}
+            <Icon name="arrow-up-right" size={14} />
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>

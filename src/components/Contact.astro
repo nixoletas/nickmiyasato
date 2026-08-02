@@ -1,0 +1,65 @@
+---
+import Icon from "@/components/Icon.astro";
+import { site } from "@/data/site";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const channels = [
+  {
+    href: `mailto:${site.email}`,
+    label: t("contact.email"),
+    value: site.email,
+    icon: "mail" as const,
+  },
+  {
+    href: site.linkedin,
+    label: "LinkedIn",
+    value: "in/nixoletas",
+    icon: "linkedin" as const,
+  },
+  {
+    href: site.github,
+    label: "GitHub",
+    value: "@nixoletas",
+    icon: "github" as const,
+  },
+];
+---
+
+<div class="flex flex-col gap-8">
+  <p class="prose-measure text-lg text-muted">{t("contact.lead")}</p>
+
+  <ul class="grid gap-3 sm:grid-cols-3">
+    {
+      channels.map((channel) => (
+        <li>
+          <a
+            href={channel.href}
+            target={channel.href.startsWith("mailto:") ? undefined : "_blank"}
+            rel="noopener"
+            class="flex h-full flex-col gap-2 rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent"
+          >
+            <span class="flex items-center gap-2 text-muted">
+              <Icon name={channel.icon} size={15} />
+              <span class="eyebrow">{channel.label}</span>
+            </span>
+            <span class="font-mono text-sm break-all">{channel.value}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a
+    href={site.resume[lang]}
+    target="_blank"
+    rel="noopener"
+    class="inline-flex w-fit items-center gap-2 text-sm text-accent link-underline"
+  >
+    <Icon name="file" size={15} />
+    {t("hero.resume")} (PDF)
+  </a>
+</div>

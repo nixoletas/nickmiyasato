@@ -1,0 +1,105 @@
+---
+import { Picture } from "astro:assets";
+import { render } from "astro:content";
+import Icon from "@/components/Icon.astro";
+import { resolveCover, type ProjectEntry } from "@/lib/content";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  project: ProjectEntry;
+}
+
+const { project } = Astro.props;
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { title, summary, year, role, stack, repo, demo, cover } = project.data;
+const image = resolveCover(cover);
+const { Content } = await render(project);
+---
+
+<article class="shell py-14 sm:py-20">
+  <a
+    href={localizePath("/projects", lang)}
+    class="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+  >
+    <Icon name="arrow-left" size={14} />
+    {t("work.back")}
+  </a>
+
+  <header class="mt-8 flex flex-col gap-6 sm:mt-12">
+    <h1 class="text-3xl">{title}</h1>
+    <p class="prose-measure text-lg text-muted">{summary}</p>
+
+    <dl
+      class="grid gap-x-8 gap-y-5 border-y border-border py-6 sm:grid-cols-[auto_auto_minmax(0,1fr)]"
+    >
+      <div class="flex flex-col gap-1">
+        <dt class="eyebrow">{t("work.year")}</dt>
+        <dd class="font-mono text-sm">{year}</dd>
+      </div>
+      <div class="flex flex-col gap-1">
+        <dt class="eyebrow">{t("work.role")}</dt>
+        <dd class="text-sm">{role}</dd>
+      </div>
+      <div class="flex flex-col gap-2">
+        <dt class="eyebrow">{t("work.stack")}</dt>
+        <dd>
+          <ul class="flex flex-wrap gap-2">
+            {stack.map((item) => <li class="tag">{item}</li>)}
+          </ul>
+        </dd>
+      </div>
+    </dl>
+
+    {
+      (demo || repo) && (
+        <div class="flex flex-wrap items-center gap-3">
+          {demo && (
+            <a
+              href={demo}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
+            >
+              {t("work.demo")}
+              <Icon name="arrow-up-right" size={15} />
+            </a>
+          )}
+          {repo && (
+            <a
+              href={repo}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+            >
+              <Icon name="github" size={15} />
+              {t("work.repo")}
+            </a>
+          )}
+        </div>
+      )
+    }
+  </header>
+
+  {
+    image && (
+      <Picture
+        src={image}
+        formats={["avif"]}
+        fallbackFormat="webp"
+        alt={title}
+        widths={[640, 1024, 1280]}
+        sizes="(min-width: 1024px) 62rem, 92vw"
+        loading="eager"
+        fetchpriority="high"
+        class="mt-10 w-full rounded-xl border border-border object-cover sm:mt-14"
+      />
+    )
+  }
+
+  <div class="content prose-measure mt-12 sm:mt-16">
+    <Content />
+  </div>
+</article>

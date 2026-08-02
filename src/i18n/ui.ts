@@ -32,7 +32,6 @@ export const ui = {
     "nav.skip": "Skip to content",
 
     "hero.role": "Software Engineer",
-    "hero.resume": "Résumé",
     "hero.available": "Open to new opportunities",
 
     "work.title": "Selected work",
@@ -84,7 +83,6 @@ export const ui = {
     "nav.skip": "Pular para o conteúdo",
 
     "hero.role": "Engenheiro de Software",
-    "hero.resume": "Currículo",
     "hero.available": "Aberto a novas oportunidades",
 
     "work.title": "Trabalhos selecionados",

@@ -9,11 +9,6 @@ export const site = {
   linkedin: "https://linkedin.com/in/nixoletas",
   repo: "https://github.com/nixoletas/nickmiyasato",
   location: { en: "São Paulo, Brazil", "pt-br": "São Paulo, Brasil" },
-  resume: {
-    en: "https://github.com/nixoletas/resume/raw/refs/heads/main/resumes/en/Resume_Nicholas_Miyasato.pdf",
-    "pt-br":
-      "https://github.com/nixoletas/resume/raw/refs/heads/main/resumes/pt-br/CV_Nicholas_Miyasato.pdf",
-  },
 } as const;
 
 /** Headline + bio shown in the hero, per locale. */
@@ -22,7 +17,7 @@ export const intro: Record<
   { headline: string; tagline: string; bio: string[]; focus: string[] }
 > = {
   en: {
-    headline: "I build and maintain web systems.",
+    headline: "Hi, I'm Nick.",
     /** One line under the headline. The full bio belongs to the About section. */
     tagline:
       "Full-stack engineer, 3+ years. From data pipelines on GCP and BigQuery to the on-premise stack of a Brazilian Army battalion — with enterprise .NET and Angular, and product work in Next.js, in between.",
@@ -33,7 +28,7 @@ export const intro: Record<
     focus: [".NET", "Angular", "Next.js", "TypeScript", "Docker", "DevSecOps"],
   },
   "pt-br": {
-    headline: "Construo e mantenho sistemas web.",
+    headline: "Prazer, Nicholas.",
     tagline:
       "Engenheiro full-stack, 3+ anos. De pipelines de dados no GCP e BigQuery ao ambiente on-premise de um batalhão do Exército Brasileiro — com .NET e Angular no corporativo, e produto em Next.js, no meio do caminho.",
     bio: [

@@ -3,8 +3,10 @@ import type { Lang } from "@/i18n/ui";
 export const site = {
   name: "Nick Miyasato",
   legalName: "Nicholas Miyasato",
-  url: "https://nickmiyasato.com.br",
-  email: "nick.miyasato.dev@gmail.com",
+  url: "https://nickmiyasato.dev",
+  // Same Umbler inbox either way — contato@ is an alias of hey@, shown on the
+  // Portuguese pages because the English address reads as a typo in PT-BR.
+  email: { en: "hey@nickmiyasato.dev", "pt-br": "contato@nickmiyasato.dev" },
   github: "https://github.com/nixoletas",
   linkedin: "https://linkedin.com/in/nixoletas",
   repo: "https://github.com/nixoletas/nickmiyasato",

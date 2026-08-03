@@ -9,6 +9,7 @@ import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const { headline, tagline, focus } = intro[lang];
+const email = site.email[lang];
 ---
 
 <section class="shell pt-14 pb-4 sm:pt-24">
@@ -32,14 +33,14 @@ const { headline, tagline, focus } = intro[lang];
         <button
           type="button"
           id="copy-email"
-          data-email={site.email}
+          data-email={email}
           data-copied={t("contact.copied")}
-          aria-label={`${t("contact.copy")} ${site.email}`}
+          aria-label={`${t("contact.copy")} ${email}`}
           class="inline-flex max-w-full items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
         >
           <span class="flex shrink-0" data-icon="mail"><Icon name="mail" size={16} /></span>
           <span class="hidden shrink-0" data-icon="check"><Icon name="check" size={16} /></span>
-          <span class="truncate font-mono" data-label>{site.email}</span>
+          <span class="truncate font-mono" data-label>{email}</span>
         </button>
         <a
           href={site.github}

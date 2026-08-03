@@ -46,7 +46,7 @@ const personSchema = {
   alternateName: site.name,
   url: site.url,
   image: new URL("/img/nick.jpg", site.url).href,
-  email: `mailto:${site.email}`,
+  email: `mailto:${site.email[lang]}`,
   jobTitle: t("hero.role"),
   address: {
     "@type": "PostalAddress",

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nickmiyasato.com.br/sitemap-index.xml
+Sitemap: https://nickmiyasato.dev/sitemap-index.xml

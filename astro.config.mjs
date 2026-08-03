@@ -4,7 +4,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
-const SITE = "https://nickmiyasato.com.br";
+const SITE = "https://nickmiyasato.dev";
 
 export default defineConfig({
   site: SITE,

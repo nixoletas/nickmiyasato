@@ -6,12 +6,13 @@ import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const email = site.email[lang];
 
 const channels = [
   {
-    href: `mailto:${site.email}`,
+    href: `mailto:${email}`,
     label: t("contact.email"),
-    value: site.email,
+    value: email,
     icon: "mail" as const,
   },
   {

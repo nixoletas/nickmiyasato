@@ -1,4 +1,4 @@
-# nickmiyasato.com.br
+# nickmiyasato.dev
 
 Personal site and portfolio of Nicholas Miyasato — bilingual (EN / PT-BR), static, and shipped with no client-side JavaScript beyond a ~400-byte theme toggle.
 

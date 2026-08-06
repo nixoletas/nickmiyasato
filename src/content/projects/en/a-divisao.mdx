@@ -3,7 +3,7 @@ title: A Divisão
 summary: Platform connecting serving military, veterans and their families with companies hiring them. Contract product engineering on the public site and the member area.
 year: "2025"
 role: Product engineer, contract
-stack: ["Next.js", "React", "Node.js", "PostgreSQL", "Docker", "GitHub Actions"]
+stack: ["Next.js", "React", "Supabase", "DynamoDB", "Stripe", "Docker", "CI/CD"]
 featured: true
 order: 1
 cover: divisao.png
@@ -22,13 +22,15 @@ I architected the platform and built it out across the public site and the membe
 
 The team runs on the dashboards: real-time metrics on signups and engagement, plus an audit view that records who changed what. In an organisation handling military and veteran data, "who touched this record" is not a nice-to-have.
 
+Membership is paid, so the monetisation side is part of the platform rather than bolted onto it: Stripe checkout, plan control, and subscription state the member area reads before it opens a door.
+
 ## Technical decisions
 
-**Next.js on the front, Node on the back.** Server rendering means the campaign pages are complete and indexable on first response — the same property that makes them fast for a visitor arriving from a phone on mobile data.
+**Next.js on the front, Supabase behind it.** Server rendering means the campaign pages are complete and indexable on first response — the same property that makes them fast for a visitor arriving from a phone on mobile data.
 
-**PostgreSQL as the single source of truth.** Membership, companies and opportunities are relational data with real constraints between them. Enforcing those in the database rather than in application code is what keeps the member area consistent as features get added around it.
+**Supabase Postgres as the single source of truth.** Membership, companies and opportunities are relational data with real constraints between them. Enforcing those in the database — constraints and row-level security, rather than discipline in application code — is what keeps the member area consistent as features get added around it.
 
-**Docker for parity, GitHub Actions for the release.** Test and deploy run on every push, so releases stopped being events. The cycle time drop was the visible part; the part that mattered more was that shipping a fix at 11pm no longer meant remembering a sequence of manual steps.
+**Docker for parity, CI/CD for the release.** Test and deploy run on every push, so releases stopped being events. The cycle time drop was the visible part; the part that mattered more was that shipping a fix at 11pm no longer meant remembering a sequence of manual steps.
 
 ## Where it stands
 

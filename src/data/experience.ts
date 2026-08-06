@@ -15,8 +15,10 @@ export interface Role {
 }
 
 /**
- * docs/resume.tex is the source of truth for roles, dates, and stacks. Zukk is
- * the one entry that lives only here — keep both in sync when either changes.
+ * docs/resume.tex is the source of truth for roles, dates, and stacks — it is
+ * untracked (see .gitignore), so this file is the public mirror. Keep both in
+ * sync when either changes, and check GITHUB-README.md too: the GitHub profile
+ * lists the same roles and drifts out of date on its own.
  */
 export const experience: Record<Lang, Role[]> = {
   en: [
@@ -35,9 +37,9 @@ export const experience: Record<Lang, Role[]> = {
       kind: "Freelance",
       title: "Software Engineer",
       start: "Jul 2025",
-      end: null,
+      end: "Jan 2026",
       summary:
-        "Consulting on a compliance-index system for Neoenergia, one of Brazil's largest electricity groups. Building C#/.NET Web APIs and Angular front ends, with RabbitMQ handling messaging between services on a large, high-complexity project.",
+        "Consulted on a compliance-index system for Neoenergia, one of Brazil's largest electricity groups. Built C#/.NET Web APIs and Angular front ends, with RabbitMQ handling messaging between services on a large, high-complexity project.",
       stack: ["C#", ".NET", "Angular", "Web API", "RabbitMQ"],
     },
     {
@@ -47,14 +49,15 @@ export const experience: Record<Lang, Role[]> = {
       start: "Jun 2025",
       end: null,
       summary:
-        "Architecting the platform that connects companies with military veterans, built to hold up under concurrent load. Automated the test and deploy pipelines on GitHub Actions, cutting release cycle time, and built the real-time metrics and audit dashboards the team runs on.",
+        "Architecting the platform that connects companies with military veterans, built to hold up under concurrent load. Built the monetisation side on Stripe — payments, plans, subscription management — automated the test and deploy pipelines, cutting release cycle time, and built the real-time metrics and audit dashboards the team runs on.",
       stack: [
-        "React",
         "Next.js",
-        "Node.js",
-        "PostgreSQL",
+        "React",
+        "Supabase",
+        "DynamoDB",
+        "Stripe",
         "Docker",
-        "GitHub Actions",
+        "CI/CD",
       ],
       link: { href: "/projects/a-divisao", label: "A Divisão" },
     },
@@ -65,7 +68,7 @@ export const experience: Record<Lang, Role[]> = {
       start: "May 2025",
       end: null,
       summary:
-        "Designed the database architecture and backend infrastructure, then built mobile and web features on top — authentication, API integrations, geolocation, and augmented reality. Documented the APIs, business flows, and architectural decisions so the product could keep moving without me in the room.",
+        "Designed the database architecture and backend infrastructure, then built mobile and web features on top — authentication, API integrations, geolocation, and augmented reality. I own QA on what I ship and sit in on product planning and go-to-market scoping. Documented the APIs, business flows, and architectural decisions so the product could keep moving without me in the room.",
       stack: [
         "Flutter",
         "React",
@@ -109,9 +112,9 @@ export const experience: Record<Lang, Role[]> = {
       kind: "Freelance",
       title: "Engenheiro de Software",
       start: "Jul 2025",
-      end: null,
+      end: "Jan 2026",
       summary:
-        "Consultoria no sistema de índices de conformidade da Neoenergia, um dos maiores grupos do setor elétrico brasileiro. Desenvolvimento de Web APIs em C#/.NET e front-ends Angular, com RabbitMQ na mensageria entre serviços, num projeto extenso e de alta complexidade.",
+        "Consultoria no sistema de índices de conformidade da Neoenergia, um dos maiores grupos do setor elétrico brasileiro. Desenvolvi Web APIs em C#/.NET e front-ends Angular, com RabbitMQ na mensageria entre serviços, num projeto extenso e de alta complexidade.",
       stack: ["C#", ".NET", "Angular", "Web API", "RabbitMQ"],
     },
     {
@@ -121,14 +124,15 @@ export const experience: Record<Lang, Role[]> = {
       start: "Jun 2025",
       end: null,
       summary:
-        "Arquitetura da plataforma que conecta empresas a veteranos militares, construída para aguentar tráfego concorrente. Automatizei os pipelines de teste e deploy com GitHub Actions, reduzindo o tempo de ciclo de release, e construí os dashboards de métricas em tempo real e auditoria em que o time se apoia.",
+        "Arquitetura da plataforma que conecta empresas a veteranos militares, construída para aguentar tráfego concorrente. Construí a monetização em cima do Stripe — pagamentos, planos, gestão de assinatura —, automatizei os pipelines de teste e deploy, reduzindo o tempo de ciclo de release, e construí os dashboards de métricas em tempo real e auditoria em que o time se apoia.",
       stack: [
-        "React",
         "Next.js",
-        "Node.js",
-        "PostgreSQL",
+        "React",
+        "Supabase",
+        "DynamoDB",
+        "Stripe",
         "Docker",
-        "GitHub Actions",
+        "CI/CD",
       ],
       link: { href: "/projects/a-divisao", label: "A Divisão" },
     },
@@ -139,7 +143,7 @@ export const experience: Record<Lang, Role[]> = {
       start: "Mai 2025",
       end: null,
       summary:
-        "Projetei a arquitetura de banco e a infraestrutura de backend, e desenvolvi as funcionalidades mobile e web em cima disso — autenticação, integrações de API, geolocalização e realidade aumentada. Documentei APIs, fluxos de negócio e decisões de arquitetura para o produto seguir andando sem eu estar na sala.",
+        "Projetei a arquitetura de banco e a infraestrutura de backend, e desenvolvi as funcionalidades mobile e web em cima disso — autenticação, integrações de API, geolocalização e realidade aumentada. Cuido do QA do que entrego e participo do planejamento de produto e da definição do que vai ao mercado. Documentei APIs, fluxos de negócio e decisões de arquitetura para o produto seguir andando sem eu estar na sala.",
       stack: [
         "Flutter",
         "React",

@@ -3,7 +3,7 @@ title: A Divisão
 summary: Plataforma que conecta militares, veteranos e família militar a empresas que contratam. Engenharia de produto por contrato no site público e na área de membros.
 year: "2025"
 role: Engenheiro de produto, contrato
-stack: ["Next.js", "React", "Node.js", "PostgreSQL", "Docker", "GitHub Actions"]
+stack: ["Next.js", "React", "Supabase", "DynamoDB", "Stripe", "Docker", "CI/CD"]
 featured: true
 order: 1
 cover: divisao.png
@@ -22,13 +22,15 @@ Fiz a arquitetura da plataforma e a construí no site público e na área de mem
 
 O time se apoia nos dashboards: métricas em tempo real de cadastros e engajamento, mais uma visão de auditoria que registra quem alterou o quê. Em uma organização que lida com dados de militares e veteranos, "quem mexeu neste registro" não é enfeite.
 
+A associação é paga, então a monetização faz parte da plataforma em vez de estar pendurada nela: checkout no Stripe, controle de planos e o estado da assinatura que a área de membros consulta antes de abrir qualquer porta.
+
 ## Decisões técnicas
 
-**Next.js na frente, Node atrás.** Renderização no servidor faz as páginas de campanha chegarem completas e indexáveis na primeira resposta — a mesma propriedade que as deixa rápidas para quem entra pelo celular no 4G.
+**Next.js na frente, Supabase atrás.** Renderização no servidor faz as páginas de campanha chegarem completas e indexáveis na primeira resposta — a mesma propriedade que as deixa rápidas para quem entra pelo celular no 4G.
 
-**PostgreSQL como fonte única da verdade.** Associação, empresas e oportunidades são dados relacionais com restrições reais entre si. Garantir isso no banco, e não no código da aplicação, é o que mantém a área de membros consistente conforme funcionalidades vão sendo agregadas em volta.
+**Postgres do Supabase como fonte única da verdade.** Associação, empresas e oportunidades são dados relacionais com restrições reais entre si. Garantir isso no banco — constraints e row-level security, e não disciplina no código da aplicação — é o que mantém a área de membros consistente conforme funcionalidades vão sendo agregadas em volta.
 
-**Docker para paridade, GitHub Actions para o release.** Teste e deploy rodam a cada push, então release deixou de ser evento. A queda no tempo de ciclo foi a parte visível; a que importou mais é que subir uma correção às 23h não depende mais de lembrar uma sequência de passos manuais.
+**Docker para paridade, CI/CD para o release.** Teste e deploy rodam a cada push, então release deixou de ser evento. A queda no tempo de ciclo foi a parte visível; a que importou mais é que subir uma correção às 23h não depende mais de lembrar uma sequência de passos manuais.
 
 ## Onde está
 

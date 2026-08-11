@@ -64,20 +64,23 @@ data the rest of the site reads. There is no separate résumé document to keep 
 step.
 
 The PDFs at `/resume.pdf` and `/curriculo.pdf` are those pages printed to paper
-by headless Chrome in `.github/workflows/deploy.yml`, so the download cannot
-drift from the page. Everything the PDF looks like lives in the `@media print`
-block of `src/components/Resume.astro`; the deploy fails if either file comes
-out implausibly small.
-
-**The PDFs only exist after a CI build.** Locally the download button 404s. To
-check a change to the print layout without pushing, build, serve, and print it
-the way CI does:
+by `scripts/render-resume-pdf.mjs`, so the download cannot drift from the page.
+Everything the PDF looks like lives in the `@media print` block of
+`src/components/Resume.astro`.
 
 ```sh
-npm run build && npm run preview -- --port 4173 &
-chrome --headless --no-pdf-header-footer \
-  --print-to-pdf=resume.pdf http://127.0.0.1:4173/resume/
+npm run build && npm run resume:pdf
 ```
+
+The same script runs in `.github/workflows/deploy.yml`, so what you get locally
+is what ships. It drives Playwright rather than the runner's own Chrome —
+`chrome --headless --print-to-pdf` resolves to old headless there, which ignores
+`@page { size: A4 }` and prints before webfonts resolve, producing US Letter
+pages set in DejaVu Sans while still exiting 0. The script asserts the page
+geometry is A4 afterwards and fails the deploy if it is not.
+
+**The PDFs are build output — they are not committed**, so the download button
+404s until you have run the command above.
 
 `docs/resume.tex` is still the human-facing LaTeX résumé and still carries a
 phone number, which is why `docs/` is gitignored. **Nothing under `src/` may

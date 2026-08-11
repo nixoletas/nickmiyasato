@@ -87,8 +87,6 @@ export const ui = {
     "resume.generated": "Generated from nickmiyasato.dev",
 
     "blog.title": "Blog",
-    "blog.lead":
-      "Notes on systems I've built and run — infrastructure, data, and the parts that only show up once something is in production.",
     "blog.empty": "Nothing published yet.",
     "blog.back": "All posts",
     "blog.readingTime": "min read",
@@ -163,8 +161,6 @@ export const ui = {
     "resume.generated": "Gerado a partir de nickmiyasato.dev",
 
     "blog.title": "Blog",
-    "blog.lead":
-      "Notas sobre sistemas que construí e operei — infraestrutura, dados e as partes que só aparecem quando a coisa está em produção.",
     "blog.empty": "Nada publicado ainda.",
     "blog.back": "Todos os posts",
     "blog.readingTime": "min de leitura",

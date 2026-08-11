@@ -44,8 +44,9 @@ const contacts = [
       <p class="prose-measure text-muted">{t("resume.lead")}</p>
       <div class="flex flex-wrap items-center gap-3">
         <a
-          href={pdf}
-          download
+          href={pdf.href}
+          download={pdf.filename}
+          type="application/pdf"
           class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
         >
           <Icon name="download" size={16} />

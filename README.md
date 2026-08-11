@@ -79,8 +79,15 @@ is what ships. It drives Playwright rather than the runner's own Chrome —
 pages set in DejaVu Sans while still exiting 0. The script asserts the page
 geometry is A4 afterwards and fails the deploy if it is not.
 
-**The PDFs are build output — they are not committed**, so the download button
-404s until you have run the command above.
+Each PDF is written to both `dist/` and `public/`. `dist/` is what gets
+uploaded; `public/` is what `astro dev` serves, and without that copy the
+download button 404s in dev — silently, because the anchor carries `download`,
+so the browser saves the 404 page as `resume.htm` rather than reporting an
+error. `public/*.pdf` is gitignored: build output that has to live in a source
+directory.
+
+**The PDFs are not committed.** On a fresh clone the button 404s until you have
+run the command above at least once.
 
 `docs/resume.tex` is still the human-facing LaTeX résumé and still carries a
 phone number, which is why `docs/` is gitignored. **Nothing under `src/` may

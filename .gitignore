@@ -2,6 +2,10 @@
 dist/
 .astro/
 
+# Résumé PDFs — build output that has to sit in public/ so `astro dev` serves
+# it. Regenerate with `npm run build && npm run resume:pdf`.
+public/*.pdf
+
 # Dependencies
 node_modules/
 

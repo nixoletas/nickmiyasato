@@ -13,15 +13,27 @@
 
 import { preview } from "astro";
 import { chromium } from "playwright";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 
 /** A4 in PostScript points, which is what a PDF MediaBox is measured in. */
 const A4 = { width: 595, height: 842 };
 const TOLERANCE = 2;
 
+/**
+ * Each PDF is written twice, on purpose.
+ *
+ * `dist/` is what gets uploaded, so the deploy needs it there. But `astro dev`
+ * serves `public/` and never looks at `dist/`, so a dist-only file makes the
+ * download button 404 in dev — and because the anchor carries `download`, the
+ * browser silently saves the 404 page as resume.htm instead of reporting it.
+ * Writing to `public/` as well makes dev serve the real file.
+ *
+ * public/*.pdf is gitignored: it is build output that happens to live in a
+ * source directory.
+ */
 const TARGETS = [
-  { path: "/resume/", out: "dist/resume.pdf" },
-  { path: "/pt-br/resume/", out: "dist/curriculo.pdf" },
+  { path: "/resume/", out: ["dist/resume.pdf", "public/resume.pdf"] },
+  { path: "/pt-br/resume/", out: ["dist/curriculo.pdf", "public/curriculo.pdf"] },
 ];
 
 /**
@@ -68,16 +80,18 @@ try {
     // DejaVu Sans.
     await page.evaluate(() => document.fonts.ready);
 
-    await page.pdf({
-      path: out,
+    const pdf = await page.pdf({
       // Let @page in src/components/Resume.astro own the paper size and
       // margins, rather than restating them here where they would drift.
       preferCSSPageSize: true,
       printBackground: false,
     });
 
-    const size = assertA4(out);
-    console.log(`${out}: ${size.width}x${size.height}pt`);
+    for (const file of out) {
+      writeFileSync(file, pdf);
+      const size = assertA4(file);
+      console.log(`${file}: ${size.width}x${size.height}pt`);
+    }
   }
 } finally {
   await browser.close();

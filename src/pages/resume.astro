@@ -8,7 +8,7 @@ import { profilePageSchema } from "@/lib/seo";
 <Base
   title={`Résumé — ${site.legalName}`}
   description="Full stack software engineer in São Paulo, Brazil. Experience, selected projects, technical skills and education — one page, with a PDF generated from the same source."
-  schemas={[profilePageSchema("en", resumePdf.en)]}
+  schemas={[profilePageSchema("en", resumePdf.en.href)]}
 >
   <Resume />
 </Base>

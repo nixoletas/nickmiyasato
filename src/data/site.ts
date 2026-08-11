@@ -19,9 +19,11 @@ export const site = {
  * language switcher and hreflang need no special case; only the download
  * filename differs, because that is the part a recruiter ends up looking at.
  */
-export const resumePdf: Record<Lang, string> = {
-  en: "/resume.pdf",
-  "pt-br": "/curriculo.pdf",
+export const resumePdf: Record<Lang, { href: string; filename: string }> = {
+  // `filename` is what lands in the recruiter's downloads folder, so it carries
+  // the name rather than being another anonymous resume.pdf in there.
+  en: { href: "/resume.pdf", filename: "Nicholas-Miyasato-Resume.pdf" },
+  "pt-br": { href: "/curriculo.pdf", filename: "Nicholas-Miyasato-Curriculo.pdf" },
 };
 
 /** Headline + bio shown in the hero, per locale. */

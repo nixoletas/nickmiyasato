@@ -11,7 +11,7 @@ export async function GET(context: APIContext) {
   const posts = await getPosts("en");
 
   return rss({
-    title: `${site.name} — Writing`,
+    title: `${site.name} — Blog`,
     description:
       "Notes on systems I've built and run — infrastructure, data pipelines, and the parts that only show up once something is in production.",
     site: context.site ?? site.url,

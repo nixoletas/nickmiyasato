@@ -6,12 +6,12 @@ import { breadcrumbSchema } from "@/lib/seo";
 ---
 
 <Base
-  title={`Writing — ${site.name}`}
+  title={`Blog — ${site.name}`}
   description="Notes on systems I've built and run — infrastructure, data pipelines, and the parts that only show up once something is in production."
   schemas={[
     breadcrumbSchema("en", [
       { name: site.name, path: "/" },
-      { name: "Writing", path: "/blog" },
+      { name: "Blog", path: "/blog" },
     ]),
   ]}
 >

@@ -7,7 +7,7 @@ export async function GET(context: APIContext) {
   const posts = await getPosts("pt-br");
 
   return rss({
-    title: `${site.name} — Escrita`,
+    title: `${site.name} — Blog`,
     description:
       "Notas sobre sistemas que construí e operei — infraestrutura, pipelines de dados e as partes que só aparecem quando a coisa está em produção.",
     site: context.site ?? site.url,

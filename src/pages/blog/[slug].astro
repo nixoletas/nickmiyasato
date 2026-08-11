@@ -24,7 +24,7 @@ const schemas = [
   postSchema(post, "en"),
   breadcrumbSchema("en", [
     { name: site.name, path: "/" },
-    { name: "Writing", path: "/blog" },
+    { name: "Blog", path: "/blog" },
     { name: post.data.title, path: `/blog/${entrySlug(post.id)}` },
   ]),
 ];

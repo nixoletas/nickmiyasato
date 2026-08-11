@@ -1,0 +1,19 @@
+---
+import BlogIndexBody from "@/components/BlogIndexBody.astro";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/data/site";
+import { breadcrumbSchema } from "@/lib/seo";
+---
+
+<Base
+  title={`Escrita — ${site.name}`}
+  description="Notas sobre sistemas que construí e operei — infraestrutura, pipelines de dados e as partes que só aparecem quando a coisa está em produção."
+  schemas={[
+    breadcrumbSchema("pt-br", [
+      { name: site.name, path: "/" },
+      { name: "Escrita", path: "/blog" },
+    ]),
+  ]}
+>
+  <BlogIndexBody />
+</Base>

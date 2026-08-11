@@ -83,14 +83,19 @@
 /pt-br/contact   /pt-br/#contact  301
 /pt-br/contact/  /pt-br/#contact  301
 
-# --- Blog was retired; posts live in git history only ---
-/blog/*        /        301
-/pt-br/blog/*  /pt-br   301
-
-# --- Docusaurus feed URLs ---
-/blog/rss.xml   /  301
-/blog/atom.xml  /  301
-/blog/feed.json /  301
+# --- Blog ---
+# The blog is back, so /blog/* must NOT be caught here — a splat rule would
+# shadow every post on the new site. The five retired Docusaurus posts were
+# Portuguese and are not being restored; their slugs fall through to the 404,
+# which is correct, because nothing on the new site answers to them.
+#
+# /blog/rss.xml is a real route now (src/pages/blog/rss.xml.ts), deliberately
+# kept at the URL Docusaurus used so old subscribers survive. Only the two feed
+# formats Astro does not emit are redirected onto it.
+/blog/atom.xml        /blog/rss.xml        301
+/blog/feed.json       /blog/rss.xml        301
+/pt-br/blog/atom.xml  /pt-br/blog/rss.xml  301
+/pt-br/blog/feed.json /pt-br/blog/rss.xml  301
 
 # --- Sitemap moved (Docusaurus emitted sitemap.xml) ---
 /sitemap.xml  /sitemap-index.xml  301

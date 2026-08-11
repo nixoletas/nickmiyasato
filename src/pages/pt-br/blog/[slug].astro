@@ -1,0 +1,38 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import PostDetail from "@/components/PostDetail.astro";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/data/site";
+import { entrySlug, getPosts } from "@/lib/content";
+import { breadcrumbSchema, postSchema } from "@/lib/seo";
+
+export async function getStaticPaths() {
+  const posts = await getPosts("pt-br");
+  return posts.map((post) => ({
+    params: { slug: entrySlug(post.id) },
+    props: { post },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { post } = Astro.props as Props;
+
+const schemas = [
+  postSchema(post, "pt-br"),
+  breadcrumbSchema("pt-br", [
+    { name: site.name, path: "/" },
+    { name: "Escrita", path: "/blog" },
+    { name: post.data.title, path: `/blog/${entrySlug(post.id)}` },
+  ]),
+];
+---
+
+<Base
+  title={`${post.data.title} — ${site.name}`}
+  description={post.data.summary}
+  noindex={post.data.draft}
+  schemas={schemas}
+>
+  <PostDetail post={post} />
+</Base>

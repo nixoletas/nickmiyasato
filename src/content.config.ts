@@ -29,6 +29,23 @@ const projects = defineCollection({
   }),
 });
 
+const posts = defineCollection({
+  loader: localizedGlob("./src/content/posts"),
+  schema: z.object({
+    title: z.string(),
+    /** One line, shown in the listing and used as the meta description. */
+    summary: z.string(),
+    /** Publication date. Drives ordering and the feed's pubDate. */
+    date: z.coerce.date(),
+    /** Freeform; rendered as tags under the title. */
+    tags: z.array(z.string()).default([]),
+    /** Drafts build locally but are dropped from the production output. */
+    draft: z.boolean().default(false),
+    /** Filename inside src/assets/posts/. */
+    cover: z.string().optional(),
+  }),
+});
+
 // A `caseStudies` collection (Army intranet, A Divisão) is planned but not
 // defined yet — it needs figures and scope details that only Nick can supply,
 // and an empty collection warns on every build. Adding it back is this block:
@@ -38,4 +55,4 @@ const projects = defineCollection({
 //     schema: z.object({ title, summary, org, period, role, stack, order }),
 //   });
 
-export const collections = { projects };
+export const collections = { projects, posts };

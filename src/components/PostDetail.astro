@@ -1,0 +1,65 @@
+---
+import { render } from "astro:content";
+import Icon from "@/components/Icon.astro";
+import { site } from "@/data/site";
+import { formatPostDate, type PostEntry } from "@/lib/content";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  post: PostEntry;
+}
+
+const { post } = Astro.props;
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { title, summary, date, tags, draft } = post.data;
+const { Content } = await render(post);
+
+// Rough but honest: 200 words a minute over the raw MDX, which overcounts by
+// the length of the frontmatter and undercounts code blocks. Close enough to
+// set expectations, which is all a reading time is for.
+const words = post.body?.trim().split(/\s+/).length ?? 0;
+const minutes = Math.max(1, Math.round(words / 200));
+---
+
+<article class="shell py-14 sm:py-20">
+  <a
+    href={localizePath("/blog", lang)}
+    class="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+  >
+    <Icon name="arrow-left" size={14} />
+    {t("blog.back")}
+  </a>
+
+  <header class="mt-8 flex max-w-3xl flex-col gap-6 sm:mt-12">
+    <h1 class="text-3xl">{title}</h1>
+    <p class="prose-measure text-lg text-muted">{summary}</p>
+
+    <div
+      class="flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-border py-4 font-mono text-xs text-muted"
+    >
+      <time datetime={date.toISOString()}>{formatPostDate(date, lang)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{minutes} {t("blog.readingTime")}</span>
+      <span aria-hidden="true">·</span>
+      <span>{site.legalName}</span>
+      {draft && <span class="tag text-accent">{t("blog.draft")}</span>}
+    </div>
+
+    {
+      tags.length > 0 && (
+        <ul class="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <li class="tag">{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+  </header>
+
+  <div class="content prose-measure mt-12 sm:mt-16">
+    <Content />
+  </div>
+</article>

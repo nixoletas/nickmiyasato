@@ -24,6 +24,7 @@ export const ui = {
     "nav.work": "Work",
     "nav.projects": "Projects",
     "nav.about": "About",
+    "nav.blog": "Writing",
     "nav.resume": "Résumé",
     "nav.contact": "Contact",
     "nav.menu": "Menu",
@@ -84,11 +85,22 @@ export const ui = {
     "resume.languages": "Spoken languages",
     "resume.back": "Back to site",
     "resume.generated": "Generated from nickmiyasato.dev",
+
+    "blog.title": "Writing",
+    "blog.lead":
+      "Notes on systems I've built and run — infrastructure, data, and the parts that only show up once something is in production.",
+    "blog.empty": "Nothing published yet.",
+    "blog.back": "All writing",
+    "blog.readingTime": "min read",
+    "blog.draft": "Draft",
+    "blog.feed": "RSS",
+    "blog.published": "Published",
   },
   "pt-br": {
     "nav.work": "Trabalho",
     "nav.projects": "Projetos",
     "nav.about": "Sobre",
+    "nav.blog": "Escrita",
     "nav.resume": "Currículo",
     "nav.contact": "Contato",
     "nav.menu": "Menu",
@@ -149,6 +161,16 @@ export const ui = {
     "resume.languages": "Idiomas",
     "resume.back": "Voltar ao site",
     "resume.generated": "Gerado a partir de nickmiyasato.dev",
+
+    "blog.title": "Escrita",
+    "blog.lead":
+      "Notas sobre sistemas que construí e operei — infraestrutura, dados e as partes que só aparecem quando a coisa está em produção.",
+    "blog.empty": "Nada publicado ainda.",
+    "blog.back": "Todos os textos",
+    "blog.readingTime": "min de leitura",
+    "blog.draft": "Rascunho",
+    "blog.feed": "RSS",
+    "blog.published": "Publicado em",
   },
 } as const;
 

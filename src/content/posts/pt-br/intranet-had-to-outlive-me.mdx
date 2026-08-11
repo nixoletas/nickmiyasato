@@ -1,0 +1,117 @@
+---
+title: A intranet tinha que sobreviver a mim
+summary: Por dois anos chefiei a seção de TI de um batalhão do Exército Brasileiro — mais de 300 usuários e todos os sistemas internos em que a unidade rodava. Construir e operar o mesmo software muda a forma como você o constrói.
+date: 2026-08-11
+tags: ["Infraestrutura", "Operação", "Setor público", "Linux"]
+---
+
+A maior parte do software que a gente escreve é entregue para outra pessoa
+operar. Você sobe, um time de ops carrega o plantão, e o retorno sobre como
+aquilo se comporta às 3 da manhã chega filtrado por um chamado.
+
+De 2023 até eu sair, em 2025, chefiei a seção de TI de um batalhão do Exército
+Brasileiro. Cerca de 300 pessoas dependiam dos sistemas, e eu era responsável
+por todos eles — rede, servidores, aplicações internas e a intranet que todo
+mundo de fato usava. Eu construía as coisas e depois convivia com elas. Esse é
+um trabalho diferente de construir, e mudou como eu faço os dois.
+
+## A intranet que existia
+
+Rodava em Joomla. Tinha se acumulado, do jeito que esses sistemas se acumulam,
+através de várias pessoas que resolveram cada uma o seu problema e seguiram em
+frente. Fazia tempo que ninguém era dono daquilo de ponta a ponta. Quem tinha
+montado já não estava mais lá — e essa é a condição normal de uma unidade
+militar, não uma falha de alguém em particular. As pessoas giram. Os sistemas
+ficam.
+
+O resultado era o de sempre: um CMS algumas versões atrás, plugins que ninguém
+sabia justificar, conteúdo estruturado em torno de quem tinha precisado
+publicar alguma coisa por último. Funcionava, no sentido de estar no ar. Não
+funcionava no sentido de alguém conseguir mexer com confiança.
+
+É essa última parte que força uma reescrita. Não o software ser velho —
+software velho que as pessoas entendem está ótimo. É o custo de qualquer
+mudança ter virado imprevisível, e custo imprevisível faz com que as mudanças
+parem de acontecer, e um sistema que ninguém muda vai devagar deixando de
+corresponder à organização que ele atende.
+
+## Restrição como briefing
+
+Os serviços digitais federais brasileiros têm um padrão de design — o gov.br —
+e construir dentro dele não é opcional. Minha primeira reação foi a reação
+clássica de engenheiro: aqui está uma restrição que vai tornar isso mais
+difícil.
+
+Estava errado, e perceber que estava errado é provavelmente a coisa mais útil
+que tirei do projeto inteiro.
+
+Um design system obrigatório elimina uma classe enorme de decisões. Não existe
+discussão sobre a cor do botão, nem debate sobre espaçamento, nem redesign seis
+meses depois porque alguém acima viu um site mais bonito. As perguntas que
+sobram são as que valem o tempo: de que informação a pessoa que chegou aqui
+precisa, em quantos passos ela chega nisso, o que acontece quando ela erra.
+
+Trabalhar dentro de uma linguagem visual fixa também significava que qualquer
+pessoa vinda de outro serviço do governo já sabia ler nossas páginas.
+Familiaridade é uma funcionalidade, e é uma que sai de graça quando você não
+inventa onde inventar não acrescenta nada.
+
+## Construir para a próxima pessoa, não para o próximo release
+
+A unidade que viesse depois não teria a mim. Esse é o único fato que moldou
+todas as decisões técnicas que valem menção.
+
+Então a intranet não foi construída como um site. Foi construída como
+templates — uma estrutura que outra unidade pudesse pegar e preencher com o
+próprio conteúdo sem precisar entender como nada daquilo funcionava por baixo.
+Essa acabou sendo a parte de maior alcance: os templates foram adotados por
+outras organizações militares país afora, o que não era algo que eu tivesse
+planejado e não era algo que eu conseguiria construindo alguma coisa engenhosa.
+
+Reaproveitável, nesse contexto, não quer dizer configurável. Toda opção que
+você expõe é uma decisão que você empurrou para alguém com menos contexto e
+menos tempo que você. Reaproveitável queria dizer opinativo: defaults sensatos,
+poucos botões, e documentação escrita partindo do princípio de que o leitor não
+esteve em nenhuma das conversas originais.
+
+Automatizei em Python o trabalho operacional repetitivo — as tarefas que eram
+feitas na mão toda semana, aquelas em que fazer na mão era ao mesmo tempo perder
+uma manhã e uma fonte confiável de pequenos erros. A automação importou menos
+pelo tempo economizado do que pelo efeito na consistência. Um script faz a mesma
+coisa toda vez. Uma pessoa numa tarefa tediosa numa sexta à tarde, não.
+
+## Operar o que você constrói
+
+O resto do trabalho era a metade sem glamour, e é a metade que mais me ensinou.
+
+Hosts Linux e serviços Docker endurecidos. Backup — e, mais importante,
+restore, porque backup do qual ninguém nunca restaurou é uma crença, não um
+sistema. Monitoramento que alguém de fato olha, o que na prática quer dizer
+monitoramento silencioso o bastante para um alerta ainda significar alguma
+coisa. Documentação mantida no padrão: a próxima pessoa consegue manter isso no
+ar sem me ligar?
+
+Nada disso é interessante de construir. Tudo isso é o que determina se aquilo
+que você construiu ainda está funcionando dois anos depois.
+
+Também introduzi prática ágil e alguns padrões técnicos básicos no
+desenvolvimento interno. Num ambiente organizado em torno de hierarquia e
+processo formal, a parte útil do ágil não eram as cerimônias — era tornar o
+trabalho visível, para um time pequeno enxergar o que estava em andamento e o
+que estava travado sem precisar de uma reunião para descobrir.
+
+## O que isso mudou
+
+Hoje eu construo diferente, em trabalho de produto com muito mais liberdade e
+muito menos em jogo do lado operacional.
+
+Parto do princípio de que não vou estar lá. Escrevo a documentação enquanto o
+raciocínio ainda está na minha cabeça, e não no fim, quando ele já evaporou.
+Desconfio de opções de configuração e sou generoso com defaults. Me importo mais
+do que a maioria das pessoas com quem trabalho se o deploy é entediante, porque
+já fui a pessoa para quem um deploy não entediante significava uma noite ruim.
+
+E tenho pouca paciência com software engenhoso de um jeito que só compensa se
+quem mantém for tão investido quanto quem escreveu. Numa unidade em que todo
+mundo é transferido, essa pessoa não existe. Acontece que ela quase não existe
+em lugar nenhum.

@@ -53,3 +53,58 @@ export async function getOtherProjects(lang: Lang) {
 }
 
 export type ProjectEntry = CollectionEntry<"projects">;
+
+/**
+ * Posts, newest first. Drafts are visible while developing and dropped from a
+ * production build, so an unfinished post can sit in the repo without leaking.
+ */
+export async function getPosts(lang: Lang) {
+  const all = await getCollection("posts");
+  assertTranslated(all.map((entry) => entry.id));
+
+  return all
+    .filter((entry) => entryLang(entry.id) === lang)
+    .filter((entry) => import.meta.env.DEV || !entry.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+}
+
+/**
+ * Every post must exist in both locales — the language switcher is unconditional,
+ * so a post present in only one would offer a link straight to a 404. Failing
+ * the build is the cheap moment to find that out.
+ */
+function assertTranslated(ids: string[]) {
+  const byLang = new Map<Lang, Set<string>>();
+  for (const id of ids) {
+    const lang = entryLang(id);
+    if (!byLang.has(lang)) byLang.set(lang, new Set());
+    byLang.get(lang)!.add(entrySlug(id));
+  }
+
+  const en = byLang.get("en") ?? new Set();
+  const pt = byLang.get("pt-br") ?? new Set();
+
+  const missing = [
+    ...[...en].filter((slug) => !pt.has(slug)).map((s) => `pt-br/${s}`),
+    ...[...pt].filter((slug) => !en.has(slug)).map((s) => `en/${s}`),
+  ];
+
+  if (missing.length > 0) {
+    throw new Error(
+      `Every post needs both locales. Missing: ${missing.join(", ")}. ` +
+        `Add the file, or delete its counterpart.`,
+    );
+  }
+}
+
+/** Locale-aware long date — "12 August 2026" / "12 de agosto de 2026". */
+export function formatPostDate(date: Date, lang: Lang): string {
+  return new Intl.DateTimeFormat(lang === "en" ? "en-GB" : "pt-BR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+export type PostEntry = CollectionEntry<"posts">;

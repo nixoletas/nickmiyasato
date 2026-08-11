@@ -1,0 +1,49 @@
+---
+import Icon from "@/components/Icon.astro";
+import PostRow from "@/components/PostRow.astro";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+import { getPosts } from "@/lib/content";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const posts = await getPosts(lang);
+const feed = localizePath("/blog/rss.xml", lang);
+---
+
+<div class="shell py-14 sm:py-20">
+  {/* No eyebrow here. The projects index carries one, but "WRITING" set above
+      the word "Writing" is just the heading twice — the lead does that job. */}
+  <header class="flex max-w-3xl flex-col gap-4">
+    <h1 class="text-3xl">{t("blog.title")}</h1>
+    <p class="prose-measure text-lg text-muted">{t("blog.lead")}</p>
+
+    <a
+      href={feed}
+      class="mt-1 inline-flex w-fit items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent"
+    >
+      <Icon name="rss" size={13} />
+      {t("blog.feed")}
+    </a>
+  </header>
+
+  {
+    posts.length > 0 ? (
+      <ul class="mt-12 flex flex-col border-t border-border sm:mt-16">
+        {posts.map((post) => (
+          <PostRow post={post} />
+        ))}
+      </ul>
+    ) : (
+      <p class="mt-12 text-muted sm:mt-16">{t("blog.empty")}</p>
+    )
+  }
+
+  <a
+    href={localizePath("/", lang)}
+    class="mt-12 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+  >
+    <Icon name="arrow-left" size={14} />
+    {t("404.home")}
+  </a>
+</div>

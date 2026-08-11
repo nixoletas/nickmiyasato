@@ -1,6 +1,6 @@
 ---
 title: Whoami
-summary: O comando devolve uma linha só. Aqui vai a resposta longa — como saí de chefiar a seção de TI de um batalhão do Exército para construir pipelines de dados e produtos, e o que ficou no caminho.
+summary: De 1º Tenente para a escola de música, para a escola de tecnologia e daí para o mundo das startups. Como saí de chefiar a seção de TI de um batalhão do Exército para construir aplicações full stack e pipelines de dados, e o que ficou no caminho.
 date: 2026-08-11
 tags: ["Pessoal", "Carreira"]
 ---
@@ -10,77 +10,70 @@ $ whoami
 nick
 ```
 
-É toda a saída. É um comando útil justamente por responder tão pouco — ele diz
-em qual conta você está, não quem está sentado no teclado. Esta é a versão
-longa.
+Tudo começou lá em 2017, quando decidi entrar para o Exército. Não passava nada
+de tecnologia pela minha cabeça. Eu estava mesmo era interessado em produção
+musical e em um dia virar um novo Hans Zimmer ou Ludwig Göransson. Fã aqui 👋
 
-## A resposta curta
+## Sem caminho fácil
 
-Sou engenheiro de software full stack em São Paulo. Três anos e pouco
-construindo coisas que as pessoas de fato usam, numa stack que foi larga demais
-para o normal: TypeScript e Python na maioria dos dias, C# e Flutter quando o
-trabalho pede, e infraestrutura suficiente para rodar tudo isso sozinho.
+![Lama](../../../assets/posts/mud.jpg)
 
-Hoje isso se divide em duas frentes. Meu trabalho em tempo integral é dado —
-pipelines de analytics em saúde com BigQuery, Dataform e Python, e os dashboards
-em que times clínicos e de negócio se apoiam para decidir. Em paralelo, faço
-engenharia de produto por contrato: Next.js na web, Flutter no mobile.
+Eu estava perdido na vida, não sabia o que fazer. O Exército apareceu como
+solução rápida para as minhas dúvidas. "Vamos ver no que dá, será que eu aguento
+o treinamento e a privação de sono? Será que eu passo pela semana do inferno?"
 
-## A parte que não está na maioria dos currículos
+Aprendi muita coisa. Umas eu aprendi do jeito difícil, outras eu simplesmente
+sabia que tinha que acelerar, senão ia dar cadeia.
 
-Não comecei em startup. De 2023 a 2025 chefiei a seção de TI de um batalhão do
-Exército Brasileiro — cerca de 300 pessoas e todos os sistemas internos em que a
-unidade dependia. Rede, servidores, aplicações internas, a intranet que todo
-mundo usava.
+Aos 19 anos, como 1º Tenente, eu era o comandante do pelotão de comunicações.
+Foi uma época boa, tive que amadurecer rápido. Mas também sentia falta da
+família — estava longe de casa, em outro estado, e não conhecia ninguém.
 
-Esse trabalho é a razão de todo o resto soar como soa. Eu construía sistemas e
-depois era a pessoa que tinha que mantê-los de pé, que é um ciclo de feedback
-que a maioria dos engenheiros nunca recebe. Você aprende rápido quais das suas
-decisões espertas custam um fim de semana lá na frente.
+Passei 5 anos de serviço militar temporário correndo atrás da música. Não deu
+muito certo e demorei para desistir. Música não era para ser trabalho, era para
+ser hobby, e eu estava correndo atrás da carreira errada.
 
-Também significou aprender a construir para pessoas que chegariam depois de eu
-já ter saído. Unidade militar gira o tempo todo — quem mantém o seu trabalho
-não te conheceu e não tem como te perguntar nada. Documentação deixa de ser uma
-tarefa que você adia e vira a entrega de verdade.
+## O playground
+
+Então, depois de um tempo, decidi focar em programação e fiz alguns cursos
+online. Em 2023 fui para a Seção de TI e, de repente, eu tinha uma pequena
+infraestrutura inteira como playground. Sete servidores Dell PowerEdge, dois
+NAS, firewalls Cisco e Proxmox rodando várias máquinas virtuais.
+
+![Sala dos servidores](../../../assets/posts/server-room.jpg)
+
+Aprendi muito com o meu time e brincamos bastante com projetos open source.
+[Docker](https://www.docker.com/) e [Linuxserver](https://www.linuxserver.io/)
+ajudaram demais a subir soluções simples como
+[Uptime Kuma](https://uptimekuma.co/), [Gitea](https://about.gitea.com/) e
+[Nextcloud](https://nextcloud.com/), e trabalhamos com segurança de rede usando
+[Wireshark](https://www.wireshark.org/) e
+[Security Onion](https://securityonionsolutions.com/).
+
+Aí começamos a construir as nossas próprias. Um sistema de chamados integrado ao
+Telegram. Um app para controlar e registrar as entradas e saídas do batalhão. E
+por fim reconstruímos a intranet em Joomla usando Angular, Nginx, Strapi e
+Node.js.
+
+Essa é a parte que ficou. Eu construía os sistemas e depois era eu quem tinha que
+mantê-los de pé, que é um ciclo de feedback que a maioria dos engenheiros nunca
+recebe.
 
 ## O que eu faço hoje
 
-O fio condutor são sistemas que precisam continuar funcionando quando ninguém
-está olhando.
+Engenheiro de software full stack em São Paulo. Três anos e pouco de aplicações
+web, apps mobile e todo tipo de backend — *TypeScript, Python, Bash, C# e
+Flutter* são algumas das linguagens que já usei. Aplicações que construí atendem
+mais de 10.000 usuários ativos por dia.
 
-Do lado de dados, isso quer dizer pipelines entre ambientes on-premise e nuvem,
-modelagem que aguenta alguém auditar os números, e relatório que uma pessoa não
-técnica consegue usar sem tradutor.
+Hoje isso se divide em duas frentes. Em tempo integral estou em dados: pipelines
+de analytics em saúde com BigQuery, Dataform e Python, e os dashboards em que
+times clínicos e de negócio se apoiam para decidir. Em paralelo, tem algumas
+startups com quem eu trabalho.
 
-Do lado de produto, quer dizer entregar funcionalidade de ponta a ponta —
-arquitetura de banco, APIs, front-end, pagamentos, pipeline de deploy —
-geralmente em times pequenos, onde assumir a vertical inteira é o único jeito de
-alguma coisa andar. Aplicações que construí atendem mais de 10.000 usuários
-ativos por dia.
+Português é minha primeira língua, inglês a segunda. Estudei Análise e
+Desenvolvimento de Sistemas na Descomplica.
 
-## Como eu trabalho
-
-Algumas coisas em que acredito o bastante para aparecerem em code review:
-
-**Deploy entediante.** Subir versão tem que ser um evento sem graça. Se subir é
-emocionante, tem algo errado antes disso.
-
-**O banco é a fronteira de segurança.** Constraints e row-level security ganham
-de disciplina no código de aplicação, porque disciplina não sobrevive à
-rotatividade.
-
-**Escreva a documentação enquanto o raciocínio ainda está na sua cabeça.** No
-fim ele já evaporou e você escreve algo tecnicamente correto e inútil na
-prática.
-
-**Desconfie de opções de configuração.** Cada botão que você expõe é uma decisão
-que você empurrou para alguém com menos contexto que você.
-
-## O resto
-
-Português é minha primeira língua, inglês a segunda, e trabalho bem nas duas —
-este site existe nos dois idiomas por isso. Estudei Análise e Desenvolvimento de
-Sistemas na Descomplica.
-
-Estou aberto a novas oportunidades, e o caminho mais rápido é e-mail. Se você
-quiser a versão comprimida no lugar desta, tem um [currículo](/pt-br/resume).
+Então — `whoami`? Essa é a resposta longa. A curta continua sendo `nick`, e estou
+aberto a novas oportunidades. E-mail é o caminho mais rápido, ou pega o
+[currículo](/pt-br/resume) se você quiser tudo isso comprimido em uma página.

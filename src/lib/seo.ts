@@ -2,7 +2,12 @@ import { getImage } from "astro:assets";
 import { site } from "@/data/site";
 import { htmlLang, type Lang } from "@/i18n/ui";
 import { localizePath } from "@/i18n/utils";
-import { resolveCover, entrySlug, type ProjectEntry } from "@/lib/content";
+import {
+  resolveCover,
+  entrySlug,
+  type PostEntry,
+  type ProjectEntry,
+} from "@/lib/content";
 
 /**
  * Every social card is generated at this size, and public/img/og-default.png
@@ -63,6 +68,32 @@ export function breadcrumbSchema(
       name: crumb.name,
       item: absolute(localizePath(crumb.path, lang)),
     })),
+  };
+}
+
+/**
+ * BlogPosting rather than Article: it is the type search engines actually treat
+ * as a blog entry, and it inherits everything Article would have carried.
+ * `author` points at the site-wide Person by @id rather than restating a name,
+ * so the post and the profile resolve to one entity.
+ */
+export function postSchema(post: PostEntry, lang: Lang, image?: string) {
+  const { title, summary, date, tags } = post.data;
+  const url = absolute(localizePath(`/blog/${entrySlug(post.id)}`, lang));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description: summary,
+    url,
+    mainEntityOfPage: url,
+    inLanguage: htmlLang[lang],
+    datePublished: date.toISOString(),
+    ...(tags.length > 0 ? { keywords: tags.join(", ") } : {}),
+    author: { "@type": "Person", "@id": personId, name: site.legalName },
+    publisher: { "@type": "Person", "@id": personId, name: site.legalName },
+    ...(image ? { image: absolute(image) } : {}),
   };
 }
 

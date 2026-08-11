@@ -4,7 +4,12 @@ import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { site } from "@/data/site";
 import { htmlLang, type Lang } from "@/i18n/ui";
-import { alternateUrls, getLangFromUrl, useTranslations } from "@/i18n/utils";
+import {
+  alternateUrls,
+  getLangFromUrl,
+  localizePath,
+  useTranslations,
+} from "@/i18n/utils";
 import { OG_SIZE } from "@/lib/seo";
 
 interface Props {
@@ -90,6 +95,12 @@ const personSchema = {
     <link rel="alternate" hreflang="pt-BR" href={new URL(alternates["pt-br"], site.url).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(alternates.en, site.url).href} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.name} — ${t("blog.title")}`}
+      href={localizePath("/blog/rss.xml", lang)}
+    />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />

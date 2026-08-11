@@ -1,0 +1,40 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import PostDetail from "@/components/PostDetail.astro";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/data/site";
+import { entrySlug, getPosts } from "@/lib/content";
+import { breadcrumbSchema, postSchema } from "@/lib/seo";
+
+// See the note in projects/[slug].astro — annotating this with GetStaticPaths
+// erases the prop types InferGetStaticPropsType recovers below.
+export async function getStaticPaths() {
+  const posts = await getPosts("en");
+  return posts.map((post) => ({
+    params: { slug: entrySlug(post.id) },
+    props: { post },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { post } = Astro.props as Props;
+
+const schemas = [
+  postSchema(post, "en"),
+  breadcrumbSchema("en", [
+    { name: site.name, path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: post.data.title, path: `/blog/${entrySlug(post.id)}` },
+  ]),
+];
+---
+
+<Base
+  title={`${post.data.title} — ${site.name}`}
+  description={post.data.summary}
+  noindex={post.data.draft}
+  schemas={schemas}
+>
+  <PostDetail post={post} />
+</Base>

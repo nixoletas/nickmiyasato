@@ -1,0 +1,40 @@
+---
+import { entrySlug, formatPostDate, type PostEntry } from "@/lib/content";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  post: PostEntry;
+}
+
+const { post } = Astro.props;
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { title, summary, date, tags, draft } = post.data;
+const href = localizePath(`/blog/${entrySlug(post.id)}`, lang);
+---
+
+<li class="border-b border-border last:border-b-0">
+  <a href={href} class="group flex flex-col gap-2 py-6">
+    <span class="flex flex-wrap items-center gap-3">
+      <time datetime={date.toISOString()} class="font-mono text-xs text-muted">
+        {formatPostDate(date, lang)}
+      </time>
+      {draft && <span class="tag text-accent">{t("blog.draft")}</span>}
+    </span>
+
+    <h3 class="text-xl transition-colors group-hover:text-accent">{title}</h3>
+
+    <p class="prose-measure text-muted">{summary}</p>
+
+    {
+      tags.length > 0 && (
+        <span class="mt-1 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </span>
+      )
+    }
+  </a>
+</li>

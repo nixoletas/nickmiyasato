@@ -24,6 +24,7 @@ export const ui = {
     "nav.work": "Work",
     "nav.projects": "Projects",
     "nav.about": "About",
+    "nav.blog": "Blog",
     "nav.resume": "Résumé",
     "nav.contact": "Contact",
     "nav.menu": "Menu",
@@ -84,11 +85,20 @@ export const ui = {
     "resume.languages": "Spoken languages",
     "resume.back": "Back to site",
     "resume.generated": "Generated from nickmiyasato.dev",
+
+    "blog.title": "Blog",
+    "blog.empty": "Nothing published yet.",
+    "blog.back": "All posts",
+    "blog.readingTime": "min read",
+    "blog.draft": "Draft",
+    "blog.feed": "RSS",
+    "blog.published": "Published",
   },
   "pt-br": {
     "nav.work": "Trabalho",
     "nav.projects": "Projetos",
     "nav.about": "Sobre",
+    "nav.blog": "Blog",
     "nav.resume": "Currículo",
     "nav.contact": "Contato",
     "nav.menu": "Menu",
@@ -149,6 +159,14 @@ export const ui = {
     "resume.languages": "Idiomas",
     "resume.back": "Voltar ao site",
     "resume.generated": "Gerado a partir de nickmiyasato.dev",
+
+    "blog.title": "Blog",
+    "blog.empty": "Nada publicado ainda.",
+    "blog.back": "Todos os posts",
+    "blog.readingTime": "min de leitura",
+    "blog.draft": "Rascunho",
+    "blog.feed": "RSS",
+    "blog.published": "Publicado em",
   },
 } as const;
 

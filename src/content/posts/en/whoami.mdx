@@ -1,0 +1,86 @@
+---
+title: Whoami
+summary: The command returns one line. Here is the longer answer — how I got from running an Army battalion's IT section to building data pipelines and products, and what stuck along the way.
+date: 2026-08-11
+tags: ["Personal", "Career"]
+---
+
+```sh
+$ whoami
+nick
+```
+
+That is the whole output. It is a useful command precisely because it answers
+so little — it tells you which account you are on, not who is sitting at the
+keyboard. This is the longer version.
+
+## The short answer
+
+I am a full stack software engineer in São Paulo, Brazil. Three-plus years of
+building things people actually use, across a stack that has been unusually
+wide: TypeScript and Python most days, C# and Flutter when the work calls for
+it, and enough infrastructure to run all of it myself.
+
+Right now that splits two ways. My full-time work is data — healthcare
+analytics pipelines on BigQuery, Dataform and Python, and the dashboards
+clinical and business teams make decisions on. Alongside that I do product
+engineering on contract: Next.js on the web, Flutter on mobile.
+
+## The part that is not on most résumés
+
+I did not start in a startup. From 2023 to 2025 I ran the IT section of a
+Brazilian Army battalion — around 300 people, and every internal system the
+unit depended on. Network, servers, internal applications, the intranet
+everyone used.
+
+That job is the reason the rest of this reads the way it does. I built systems
+and then I was the person who had to keep them alive, which is a feedback loop
+most engineers never get. You learn quickly which of your clever decisions cost
+you a weekend later.
+
+It also meant learning to build for people who would arrive after I was gone.
+Military units rotate constantly — the person maintaining your work has not met
+you and cannot ask you anything. Documentation stops being a chore you postpone
+and becomes the actual deliverable.
+
+## What I do now
+
+The through-line is systems that have to keep working when nobody is watching
+them.
+
+On the data side that means pipelines across on-premise and cloud environments,
+models that hold up when someone audits the numbers, and reporting that a
+non-technical person can act on without a translator.
+
+On the product side it means shipping features end to end — database
+architecture, APIs, the front end, payments, the deploy pipeline — usually on
+small teams where owning the whole vertical is the only way anything moves.
+Applications I have built serve more than 10,000 daily active users.
+
+## How I work
+
+A few things I believe strongly enough that they show up in code review:
+
+**Boring deploys.** A release should be an unremarkable event. If shipping is
+exciting, something upstream is wrong.
+
+**The database is the security boundary.** Constraints and row-level security
+beat discipline in application code, because discipline does not survive
+turnover.
+
+**Write the documentation while the reasoning is still in your head.** At the
+end it has evaporated and you will write something technically true and
+practically useless.
+
+**Be suspicious of configuration options.** Every knob you expose is a decision
+you pushed onto somebody with less context than you.
+
+## The rest
+
+Portuguese is my first language, English my second, and I work comfortably in
+both — this site exists in both for that reason. I studied Systems Analysis and
+Development at Descomplica.
+
+I am open to new opportunities, and the fastest way to reach me is email. If
+you want the compressed version instead of this one, there is a
+[résumé](/resume).

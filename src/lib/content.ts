@@ -65,7 +65,15 @@ export async function getPosts(lang: Lang) {
   return all
     .filter((entry) => entryLang(entry.id) === lang)
     .filter((entry) => import.meta.env.DEV || !entry.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+    .sort((a, b) => {
+      // Dates are day-resolution, so two posts written the same day tie. Falling
+      // back to the slug keeps the listing and the feed in the same order every
+      // build instead of leaving it to whatever getCollection happened to yield.
+      const byDate = b.data.date.valueOf() - a.data.date.valueOf();
+      return byDate !== 0
+        ? byDate
+        : entrySlug(a.id).localeCompare(entrySlug(b.id));
+    });
 }
 
 /**

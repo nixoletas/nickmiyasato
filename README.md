@@ -33,6 +33,7 @@ src/
   layouts/Base.astro             <head>, meta, hreflang, JSON-LD, theme script
   pages/                         Routes — EN at /, PT-BR under /pt-br/
   assets/projects/               Screenshots, optimised at build by astro:assets
+  assets/posts/                  Blog images, same treatment
   styles/global.css              Design tokens, base styles, components
 public/
   _redirects                     301s from the old Docusaurus URLs
@@ -55,6 +56,38 @@ build fails on a missing or malformed field. Put the screenshot in
 
 Set `featured: true` for a full-width block on the home page; everything else
 falls into the compact list. `order` sorts within each group.
+
+## Images in a post
+
+Put the file in `src/assets/posts/` — **never in `public/`**, which skips
+optimisation and ships the original bytes.
+
+Inside the post, a relative path is enough. Astro rewrites it and emits WebP at
+several widths:
+
+```md
+![What the dashboard looked like](../../../assets/posts/dashboard.png)
+```
+
+For control over widths and loading, import it instead:
+
+```mdx
+import { Image } from "astro:assets";
+import shot from "@/assets/posts/dashboard.png";
+
+<Image src={shot} alt="What the dashboard looked like" widths={[640, 1024]} />
+```
+
+To give the post a header image and a social card, name the file in
+frontmatter — bare filename, no path:
+
+```yaml
+cover: dashboard.png
+```
+
+That renders above the body as AVIF with a WebP fallback, and is cropped to
+1200×630 JPEG for the OG card. A `cover` that does not exist fails the build
+with the list of filenames it did find, rather than shipping a broken image.
 
 ## The résumé
 

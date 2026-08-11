@@ -4,6 +4,7 @@ import { htmlLang, type Lang } from "@/i18n/ui";
 import { localizePath } from "@/i18n/utils";
 import {
   resolveCover,
+  resolvePostCover,
   entrySlug,
   type PostEntry,
   type ProjectEntry,
@@ -25,14 +26,28 @@ export const OG_SIZE = { width: 1200, height: 630 } as const;
  * where the header and headline are, and a centred crop cuts both.
  */
 export async function projectOgImage(cover?: string): Promise<string | undefined> {
-  const source = resolveCover(cover);
+  return cardFrom(resolveCover(cover));
+}
+
+/**
+ * Same treatment for a post cover, but centred: post images are illustrations
+ * rather than screenshots, so there is no header at the top worth protecting.
+ */
+export async function postOgImage(cover?: string): Promise<string | undefined> {
+  return cardFrom(resolvePostCover(cover), "center");
+}
+
+async function cardFrom(
+  source?: ImageMetadata,
+  position: "top" | "center" = "top",
+): Promise<string | undefined> {
   if (!source) return undefined;
 
   const image = await getImage({
     src: source,
     ...OG_SIZE,
     fit: "cover",
-    position: "top",
+    position,
     format: "jpeg",
     quality: 72,
   });

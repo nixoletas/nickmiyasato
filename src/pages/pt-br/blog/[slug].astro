@@ -4,7 +4,7 @@ import PostDetail from "@/components/PostDetail.astro";
 import Base from "@/layouts/Base.astro";
 import { site } from "@/data/site";
 import { entrySlug, getPosts } from "@/lib/content";
-import { breadcrumbSchema, postSchema } from "@/lib/seo";
+import { breadcrumbSchema, postOgImage, postSchema } from "@/lib/seo";
 
 export async function getStaticPaths() {
   const posts = await getPosts("pt-br");
@@ -18,8 +18,9 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { post } = Astro.props as Props;
 
+const ogImage = await postOgImage(post.data.cover);
 const schemas = [
-  postSchema(post, "pt-br"),
+  postSchema(post, "pt-br", ogImage),
   breadcrumbSchema("pt-br", [
     { name: site.name, path: "/" },
     { name: "Blog", path: "/blog" },
@@ -31,6 +32,7 @@ const schemas = [
 <Base
   title={`${post.data.title} — ${site.name}`}
   description={post.data.summary}
+  image={ogImage}
   noindex={post.data.draft}
   schemas={schemas}
 >

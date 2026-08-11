@@ -34,6 +34,19 @@ jobs:
 
       - run: npm run build
 
+      # The résumé PDFs are the /resume pages printed to paper. Same source as
+      # the site, so the download can never drift from what the page says.
+      #
+      # The runner's own Chrome is not used for this. `chrome --headless
+      # --print-to-pdf` there resolves to old headless, which ignores
+      # `@page { size: A4 }` and prints before webfonts resolve — it produced
+      # US Letter pages set in DejaVu Sans and still exited 0. The script
+      # asserts the page geometry for that reason.
+      - run: npx playwright install --with-deps chromium
+
+      - name: Render résumé PDFs
+        run: npm run resume:pdf
+
       - name: Deploy to Cloudflare Pages
         # v4 installs Wrangler v4 by default instead of pinning v3.90.0.
         uses: cloudflare/wrangler-action@v4

@@ -1,0 +1,14 @@
+---
+import Resume from "@/components/Resume.astro";
+import Base from "@/layouts/Base.astro";
+import { resumePdf, site } from "@/data/site";
+import { profilePageSchema } from "@/lib/seo";
+---
+
+<Base
+  title={`Currículo — ${site.legalName}`}
+  description="Engenheiro de software full stack em São Paulo. Experiência, projetos selecionados, competências técnicas e formação — uma página, com PDF gerado da mesma fonte."
+  schemas={[profilePageSchema("pt-br", resumePdf["pt-br"].href)]}
+>
+  <Resume />
+</Base>

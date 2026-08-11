@@ -24,6 +24,7 @@ export const ui = {
     "nav.work": "Work",
     "nav.projects": "Projects",
     "nav.about": "About",
+    "nav.resume": "Résumé",
     "nav.contact": "Contact",
     "nav.menu": "Menu",
     "nav.close": "Close menu",
@@ -70,11 +71,25 @@ export const ui = {
     "404.title": "Page not found",
     "404.lead": "That page moved or never existed.",
     "404.home": "Go home",
+
+    "resume.title": "Résumé",
+    "resume.lead":
+      "One page, kept in sync with this site. The PDF below is generated from the same source.",
+    "resume.download": "Download PDF",
+    "resume.print": "Print",
+    "resume.summary": "Professional summary",
+    "resume.projects": "Selected projects",
+    "resume.skills": "Technical skills",
+    "resume.titles": "Equivalent role titles",
+    "resume.languages": "Spoken languages",
+    "resume.back": "Back to site",
+    "resume.generated": "Generated from nickmiyasato.dev",
   },
   "pt-br": {
     "nav.work": "Trabalho",
     "nav.projects": "Projetos",
     "nav.about": "Sobre",
+    "nav.resume": "Currículo",
     "nav.contact": "Contato",
     "nav.menu": "Menu",
     "nav.close": "Fechar menu",
@@ -121,6 +136,19 @@ export const ui = {
     "404.title": "Página não encontrada",
     "404.lead": "Essa página mudou de lugar ou nunca existiu.",
     "404.home": "Ir para o início",
+
+    "resume.title": "Currículo",
+    "resume.lead":
+      "Uma página, sempre em dia com este site. O PDF abaixo sai da mesma fonte.",
+    "resume.download": "Baixar PDF",
+    "resume.print": "Imprimir",
+    "resume.summary": "Resumo profissional",
+    "resume.projects": "Projetos selecionados",
+    "resume.skills": "Competências técnicas",
+    "resume.titles": "Títulos equivalentes",
+    "resume.languages": "Idiomas",
+    "resume.back": "Voltar ao site",
+    "resume.generated": "Gerado a partir de nickmiyasato.dev",
   },
 } as const;
 

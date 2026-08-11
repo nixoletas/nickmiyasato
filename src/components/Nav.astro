@@ -17,10 +17,14 @@ const other: Lang = lang === "en" ? "pt-br" : "en";
 // Section anchors resolve against the home page so they also work from a
 // project detail page.
 const home = localizePath("/", lang);
+// Only two links can carry `priority` — below 400px the header fits the logo,
+// two links and the two toggles, and nothing more. Résumé holds one of them:
+// the page sections are all reachable by scrolling, the résumé is not.
 const links = [
-  { href: `${home === "/" ? "" : home}/#work`, label: t("nav.work"), priority: true },
+  { href: `${home === "/" ? "" : home}/#work`, label: t("nav.work"), priority: false },
   { href: localizePath("/projects", lang), label: t("nav.projects"), priority: false },
   { href: `${home === "/" ? "" : home}/#about`, label: t("nav.about"), priority: false },
+  { href: localizePath("/resume", lang), label: t("nav.resume"), priority: true },
   { href: `${home === "/" ? "" : home}/#contact`, label: t("nav.contact"), priority: true },
 ];
 ---

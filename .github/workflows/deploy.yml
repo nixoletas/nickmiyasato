@@ -34,6 +34,36 @@ jobs:
 
       - run: npm run build
 
+      # The résumé PDFs are the /resume pages printed to paper. Same source as
+      # the site, so the download can never drift from what the page says.
+      # ubuntu-latest ships Chrome, so there is no browser to install.
+      - name: Render résumé PDFs
+        run: |
+          npm run preview -- --port 4173 &
+          for i in $(seq 1 30); do
+            curl -sfo /dev/null "http://127.0.0.1:4173/resume/" && break
+            sleep 1
+          done
+
+          print_pdf() {
+            google-chrome \
+              --headless --disable-gpu --no-sandbox \
+              --no-pdf-header-footer \
+              --print-to-pdf="dist/$2" \
+              "http://127.0.0.1:4173$1"
+          }
+
+          print_pdf /resume/       resume.pdf
+          print_pdf /pt-br/resume/ curriculo.pdf
+
+          # A PDF that failed to render still exits 0 and leaves a stub, so
+          # check the files are a plausible size before shipping them.
+          for f in dist/resume.pdf dist/curriculo.pdf; do
+            size=$(stat -c%s "$f")
+            echo "$f: $size bytes"
+            [ "$size" -gt 20000 ] || { echo "::error::$f is too small to be a real résumé"; exit 1; }
+          done
+
       - name: Deploy to Cloudflare Pages
         # v4 installs Wrangler v4 by default instead of pinning v3.90.0.
         uses: cloudflare/wrangler-action@v4

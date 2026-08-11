@@ -23,7 +23,10 @@ src/
                                  so the language switcher can pair them.
   content.config.ts              Zod schemas for the content collections
   data/site.ts                   Identity, links, intro copy, education
-  data/experience.ts             Work timeline
+  data/experience.ts             Work timeline — prose for the site, bullets
+                                 for the résumé
+  data/resume.ts                 Résumé-only content: summary, skills matrix,
+                                 ATS title line, the two called-out projects
   i18n/ui.ts                     UI strings per locale
   i18n/utils.ts                  Locale detection and path localisation
   components/                    Astro components (no framework runtime)
@@ -52,6 +55,33 @@ build fails on a missing or malformed field. Put the screenshot in
 
 Set `featured: true` for a full-width block on the home page; everything else
 falls into the compact list. `order` sorts within each group.
+
+## The résumé
+
+`/resume` and `/pt-br/resume` are rendered from `src/data/experience.ts`,
+`src/data/resume.ts` and the `education` block in `src/data/site.ts` — the same
+data the rest of the site reads. There is no separate résumé document to keep in
+step.
+
+The PDFs at `/resume.pdf` and `/curriculo.pdf` are those pages printed to paper
+by headless Chrome in `.github/workflows/deploy.yml`, so the download cannot
+drift from the page. Everything the PDF looks like lives in the `@media print`
+block of `src/components/Resume.astro`; the deploy fails if either file comes
+out implausibly small.
+
+**The PDFs only exist after a CI build.** Locally the download button 404s. To
+check a change to the print layout without pushing, build, serve, and print it
+the way CI does:
+
+```sh
+npm run build && npm run preview -- --port 4173 &
+chrome --headless --no-pdf-header-footer \
+  --print-to-pdf=resume.pdf http://127.0.0.1:4173/resume/
+```
+
+`docs/resume.tex` is still the human-facing LaTeX résumé and still carries a
+phone number, which is why `docs/` is gitignored. **Nothing under `src/` may
+repeat that number** — it feeds a public PDF.
 
 ## Conventions worth keeping
 

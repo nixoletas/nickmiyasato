@@ -67,6 +67,28 @@ export function breadcrumbSchema(
 }
 
 /**
+ * The résumé page, tied back to the same Person by @id. `mainEntity` is what
+ * tells a crawler this page *is* the profile rather than a page mentioning one,
+ * and the DigitalDocument names the PDF so the file is discoverable on its own
+ * rather than only through a download attribute.
+ */
+export function profilePageSchema(lang: Lang, pdfPath: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: absolute(localizePath("/resume", lang)),
+    inLanguage: htmlLang[lang],
+    mainEntity: { "@type": "Person", "@id": personId, name: site.legalName },
+    hasPart: {
+      "@type": "DigitalDocument",
+      name: lang === "en" ? "Résumé (PDF)" : "Currículo (PDF)",
+      encodingFormat: "application/pdf",
+      url: new URL(pdfPath, site.url).href,
+    },
+  };
+}
+
+/**
  * CreativeWork rather than SoftwareApplication: the latter is only eligible for
  * rich results with an offers/price block, and none of these are for sale.
  */

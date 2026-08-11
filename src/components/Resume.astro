@@ -1,0 +1,443 @@
+---
+import Icon from "@/components/Icon.astro";
+import { experience } from "@/data/experience";
+import { resume } from "@/data/resume";
+import { education, resumePdf, site } from "@/data/site";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const roles = experience[lang];
+const { summary, skills, equivalentTitles, projects } = resume[lang];
+const { degrees, courses, languages } = education[lang];
+const email = site.email[lang];
+const pdf = resumePdf[lang];
+
+const period = (start: string, end: string | null) =>
+  `${start} — ${end ?? t("exp.present")}`;
+
+/** The contact line under the name. No phone number — this file is public. */
+const contacts = [
+  { text: site.location[lang] },
+  { text: email, href: `mailto:${email}` },
+  { text: "nickmiyasato.dev", href: site.url },
+  { text: "linkedin.com/in/nixoletas", href: site.linkedin },
+  { text: "github.com/nixoletas", href: site.github },
+];
+---
+
+<article class="resume shell max-w-4xl py-10 sm:py-14">
+  {/* Screen-only controls. `no-print` is stripped from the PDF, which is
+      rendered by printing this exact page in headless Chrome. */}
+  <div class="no-print mb-10 flex flex-col gap-5">
+    <a
+      href={localizePath("/", lang)}
+      class="inline-flex w-fit items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+    >
+      <Icon name="arrow-left" size={14} />
+      {t("resume.back")}
+    </a>
+
+    <div class="flex flex-col gap-4">
+      <p class="prose-measure text-muted">{t("resume.lead")}</p>
+      <div class="flex flex-wrap items-center gap-3">
+        <a
+          href={pdf}
+          download
+          class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
+        >
+          <Icon name="download" size={16} />
+          {t("resume.download")}
+        </a>
+        <button
+          type="button"
+          id="print-resume"
+          class="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+        >
+          <Icon name="printer" size={16} />
+          {t("resume.print")}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <header class="resume-head">
+    <h1 class="text-2xl font-semibold">{site.legalName}</h1>
+    <p class="resume-role">{t("hero.role")}</p>
+    <p class="resume-contacts">
+      {
+        contacts.map((contact, i) => (
+          <>
+            {i > 0 && <span class="resume-sep" aria-hidden="true">•</span>}
+            {contact.href ? (
+              <a href={contact.href}>{contact.text}</a>
+            ) : (
+              <span>{contact.text}</span>
+            )}
+          </>
+        ))
+      }
+    </p>
+  </header>
+
+  <section class="resume-section">
+    <h2>{t("resume.summary")}</h2>
+    <p>{summary}</p>
+  </section>
+
+  <section class="resume-section">
+    <h2>{t("exp.title")}</h2>
+    {
+      roles.map((role) => (
+        <div class="resume-entry">
+          <h3>
+            <span class="resume-org">{role.company}</span>
+            <span class="resume-meta">{role.place}</span>
+          </h3>
+          <p class="resume-line">
+            <span class="resume-title">
+              {role.title} ({role.kind})
+            </span>
+            <span class="resume-meta">{period(role.start, role.end)}</span>
+          </p>
+          <ul>
+            {role.highlights.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <p class="resume-stack">
+            {t("work.stack")}: {role.stack.join(", ")}
+          </p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="resume-section">
+    <h2>{t("resume.projects")}</h2>
+    {
+      projects.map((project) => (
+        <div class="resume-entry">
+          <h3>
+            <span class="resume-org">{project.name}</span>
+            <span class="resume-meta">
+              <a href={project.site}>{project.siteLabel}</a>
+            </span>
+          </h3>
+          <p class="resume-line">
+            <span class="resume-title">{project.role}</span>
+            <span class="resume-meta">{project.period}</span>
+          </p>
+          <ul>
+            {project.highlights.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <p class="resume-stack">
+            {t("work.stack")}: {project.stack.join(", ")}
+          </p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="resume-section">
+    <h2>{t("resume.skills")}</h2>
+    <ul class="resume-skills">
+      {
+        skills.map((group) => (
+          <li>
+            <strong>{group.label}:</strong> {group.items.join(", ")}
+          </li>
+        ))
+      }
+      <li>
+        <strong>{t("resume.languages")}:</strong>{" "}
+        {languages.map((l) => `${l.name} (${l.level})`).join(", ")}
+      </li>
+      <li>
+        <strong>{t("resume.titles")}:</strong> {equivalentTitles.join(" • ")}
+      </li>
+    </ul>
+  </section>
+
+  <section class="resume-section">
+    <h2>{t("edu.title")}</h2>
+    {
+      degrees.map((degree) => (
+        <div class="resume-entry">
+          <h3>
+            <span class="resume-org">{degree.org}</span>
+            <span class="resume-meta">{degree.period}</span>
+          </h3>
+          <p class="resume-line">
+            <span class="resume-title">{degree.title}</span>
+          </p>
+        </div>
+      ))
+    }
+    <p class="resume-stack">
+      {t("edu.courses")}:{" "}
+      {courses.map((c) => `${c.title} (${c.org})`).join(" • ")}
+    </p>
+  </section>
+
+  {/* Print-only footer: a PDF that has left the site should still say where it
+      came from and what it claims about. */}
+  <p class="resume-source">{t("resume.generated")} — {site.url}</p>
+</article>
+
+<script is:inline>
+  document
+    .getElementById("print-resume")
+    ?.addEventListener("click", () => window.print());
+</script>
+
+<style is:global>
+  /* -------------------------------------------------------------------------
+     Screen. Deliberately closer to a document than to the rest of the site —
+     this page is read as a résumé, and recruiters paste it into their own
+     tooling.
+  ------------------------------------------------------------------------- */
+  .resume-head {
+    border-bottom: 2px solid var(--c-fg);
+    padding-bottom: 0.9rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .resume-role {
+    font-size: var(--text-lg);
+    color: var(--c-muted);
+    margin-top: 0.15rem;
+  }
+
+  .resume-contacts {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--c-muted);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .resume-contacts a:hover {
+    color: var(--c-accent);
+  }
+
+  .resume-sep {
+    color: var(--c-border);
+  }
+
+  .resume-section {
+    margin-top: 1.8rem;
+  }
+
+  .resume-section > h2 {
+    font-size: var(--text-base);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--c-border);
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .resume-entry {
+    margin-top: 1.1rem;
+    /* Never split a role across two pages of the PDF. */
+    break-inside: avoid;
+  }
+
+  .resume-entry:first-of-type {
+    margin-top: 0;
+  }
+
+  .resume-entry h3,
+  .resume-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+
+  .resume-org {
+    font-size: var(--text-base);
+    font-weight: 600;
+  }
+
+  .resume-title {
+    font-style: italic;
+  }
+
+  .resume-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--c-muted);
+    white-space: nowrap;
+  }
+
+  .resume-entry ul {
+    margin-top: 0.45rem;
+    padding-left: 1.1rem;
+    list-style: disc;
+  }
+
+  .resume-entry li {
+    margin-top: 0.2rem;
+  }
+
+  .resume-entry li::marker {
+    color: var(--c-muted);
+  }
+
+  .resume-stack {
+    margin-top: 0.45rem;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--c-muted);
+  }
+
+  .resume-skills {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .resume-source {
+    display: none;
+  }
+
+  /* -------------------------------------------------------------------------
+     Print — this is also the PDF. Chrome renders /resume with print media in
+     CI (see .github/workflows/deploy.yml), so anything changed here changes
+     the file a recruiter downloads.
+  ------------------------------------------------------------------------- */
+  @media print {
+    @page {
+      size: A4;
+      margin: 11mm 12mm;
+    }
+
+    /* The PDF must be black on white whatever theme the renderer picked up. */
+    :root,
+    .dark {
+      --c-bg: #ffffff;
+      --c-surface: #ffffff;
+      --c-fg: #000000;
+      --c-muted: #3d3d3d;
+      --c-border: #9a9a9a;
+      --c-accent: #000000;
+      color-scheme: light;
+    }
+
+    html,
+    body {
+      background: #ffffff !important;
+    }
+
+    /* Site chrome and the on-page controls are not part of the document. */
+    body > header,
+    body > footer,
+    .no-print {
+      display: none !important;
+    }
+
+    body {
+      /* Fixed points, not the site's vw-based clamps: in print the viewport is
+         the paper, and the fluid scale collapses to its minimum. */
+      font-size: 9.4pt;
+      line-height: 1.34;
+    }
+
+    .resume {
+      max-width: none;
+      margin: 0;
+      padding: 0 !important;
+    }
+
+    .resume-head {
+      text-align: center;
+      border-bottom-width: 1pt;
+      padding-bottom: 6pt;
+      margin-bottom: 10pt;
+    }
+
+    .resume-head h1 {
+      font-size: 17pt;
+    }
+
+    .resume-contacts {
+      justify-content: center;
+      font-size: 7.6pt;
+      gap: 0.3rem;
+    }
+
+    .resume-role {
+      font-size: 10.5pt;
+      color: #000;
+    }
+
+    .resume-section {
+      margin-top: 11pt;
+    }
+
+    .resume-section > h2 {
+      font-size: 10pt;
+      padding-bottom: 2pt;
+      margin-bottom: 6pt;
+      border-bottom-width: 0.6pt;
+    }
+
+    .resume-entry {
+      margin-top: 8pt;
+    }
+
+    .resume-org {
+      font-size: 10pt;
+    }
+
+    .resume-meta,
+    .resume-stack {
+      font-size: 8.2pt;
+    }
+
+    .resume-entry ul {
+      margin-top: 3pt;
+    }
+
+    .resume-entry li {
+      margin-top: 1.5pt;
+    }
+
+    .resume-stack {
+      margin-top: 3pt;
+    }
+
+    /* Underlined blue links look like a web page, not a résumé — but the URLs
+       still have to be clickable in the PDF, so only the styling goes. */
+    .resume a {
+      color: #000 !important;
+      text-decoration: none !important;
+    }
+
+    .resume-source {
+      display: block;
+      margin-top: 12pt;
+      padding-top: 4pt;
+      border-top: 0.6pt solid #9a9a9a;
+      font-size: 7.4pt;
+      color: #3d3d3d;
+      text-align: center;
+    }
+
+    h2,
+    h3 {
+      break-after: avoid;
+    }
+  }
+</style>

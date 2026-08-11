@@ -2,7 +2,7 @@
 import Icon from "@/components/Icon.astro";
 import { site } from "@/data/site";
 import type { Lang } from "@/i18n/ui";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -27,20 +27,27 @@ const channels = [
     value: "@nixoletas",
     icon: "github" as const,
   },
+  {
+    href: localizePath("/resume", lang),
+    label: t("nav.resume"),
+    value: lang === "en" ? "resume.pdf" : "curriculo.pdf",
+    icon: "file" as const,
+  },
 ];
 ---
 
 <div class="flex flex-col gap-8">
   <p class="prose-measure text-lg text-muted">{t("contact.lead")}</p>
 
-  <ul class="grid gap-3 sm:grid-cols-3">
+  <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
     {
       channels.map((channel) => (
         <li>
           <a
             href={channel.href}
-            target={channel.href.startsWith("mailto:") ? undefined : "_blank"}
-            rel="noopener"
+            {...channel.href.startsWith("http")
+              ? { target: "_blank", rel: "noopener" }
+              : {}}
             class="flex h-full flex-col gap-2 rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent"
           >
             <span class="flex items-center gap-2 text-muted">

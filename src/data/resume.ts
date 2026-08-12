@@ -41,7 +41,7 @@ export interface ResumeContent {
 export const resume: Record<Lang, ResumeContent> = {
   en: {
     summary:
-      "Full Stack Software Engineer with 3+ years designing and delivering scalable web and mobile applications serving 10,000+ daily active users, data pipelines, and cloud-native systems. Product engineering, modern frontend and backend architecture, data engineering, and infrastructure automation — with a track record of building end-to-end systems, leading technical initiatives, and shipping products that stay shipped.",
+      "Full Stack Software Engineer with 3+ years designing and delivering scalable web and mobile applications serving 10,000+ daily active users, data pipelines, and cloud-native systems. Product engineering, modern frontend and backend architecture, data engineering, and infrastructure automation — with a track record of building end-to-end systems.",
     skills: [
       { label: "Languages", items: ["TypeScript", "JavaScript", "Python", "C#", "SQL"] },
       { label: "Frontend", items: ["React", "Next.js", "Angular", "Flutter", "HTML", "CSS"] },
@@ -98,7 +98,7 @@ export const resume: Record<Lang, ResumeContent> = {
   },
   "pt-br": {
     summary:
-      "Engenheiro de Software Full Stack com 3+ anos projetando e entregando aplicações web e mobile escaláveis que atendem mais de 10.000 usuários ativos por dia, pipelines de dados e sistemas cloud-native. Engenharia de produto, arquitetura moderna de frontend e backend, engenharia de dados e automação de infraestrutura — com histórico de construir sistemas de ponta a ponta, conduzir iniciativas técnicas e entregar produtos que continuam de pé.",
+      "Engenheiro de Software Full Stack com 3+ anos projetando e entregando aplicações web e mobile escaláveis, pipelines de dados e sistemas cloud-native. Engenharia de produto, arquitetura moderna de frontend e backend, engenharia de dados e automação de infraestrutura — com histórico de construir sistemas de ponta a ponta.",
     skills: [
       { label: "Linguagens", items: ["TypeScript", "JavaScript", "Python", "C#", "SQL"] },
       { label: "Frontend", items: ["React", "Next.js", "Angular", "Flutter", "HTML", "CSS"] },

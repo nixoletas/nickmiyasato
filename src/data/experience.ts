@@ -44,7 +44,7 @@ export const experience: Record<Lang, Role[]> = {
       summary:
         "Designing healthcare analytics pipelines across on-premise and cloud environments with BigQuery, Dataform, Python, PostgreSQL and MySQL, plus the operational dashboards and reporting that clinical and business teams decide on. Also contributing to GCP and Microsoft cloud migration work, and writing the documentation that keeps the systems usable without me.",
       highlights: [
-        "Designed and implemented healthcare analytics pipelines on BigQuery, Dataform, Python, PostgreSQL and MySQL, across on-premise and cloud environments.",
+        "Designed and implemented healthcare analytics pipelines on BigQuery, Dataform, Python, PostgreSQL and MySQL.",
         "Built the operational dashboards and analytical reporting that clinical and business stakeholders decide on.",
         "Contributed to cloud migration work across the GCP and Microsoft ecosystems, improving infrastructure scalability and operational efficiency.",
         "Wrote the technical documentation and worked directly with healthcare teams to reduce operational friction around the systems.",
@@ -151,7 +151,7 @@ export const experience: Record<Lang, Role[]> = {
       end: null,
       place: "Remoto",
       summary:
-        "Desenvolvimento de pipelines de analytics em saúde entre ambientes on-premise e nuvem com BigQuery, Dataform, Python, PostgreSQL e MySQL, além dos dashboards operacionais e relatórios em que times clínicos e de negócio se apoiam para decidir. Também contribuo nas migrações para GCP e ecossistema Microsoft, e escrevo a documentação que mantém os sistemas utilizáveis sem depender de mim.",
+        "Desenvolvimento de pipelines de analytics em saúde com BigQuery, Dataform, Python, PostgreSQL e MySQL, além dos dashboards operacionais e relatórios em que times clínicos e de negócio se apoiam para decidir. Também contribuo nas migrações para GCP e ecossistema Microsoft, e escrevo a documentação que mantém os sistemas utilizáveis sem depender de mim.",
       highlights: [
         "Projetei e implementei pipelines de analytics em saúde com BigQuery, Dataform, Python, PostgreSQL e MySQL, entre ambientes on-premise e nuvem.",
         "Construí os dashboards operacionais e os relatórios analíticos em que times clínicos e de negócio se apoiam para decidir.",

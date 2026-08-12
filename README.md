@@ -33,6 +33,7 @@ src/
   layouts/Base.astro             <head>, meta, hreflang, JSON-LD, theme script
   pages/                         Routes — EN at /, PT-BR under /pt-br/
   assets/projects/               Screenshots, optimised at build by astro:assets
+  assets/posts/                  Blog images, same treatment
   styles/global.css              Design tokens, base styles, components
 public/
   _redirects                     301s from the old Docusaurus URLs
@@ -55,6 +56,80 @@ build fails on a missing or malformed field. Put the screenshot in
 
 Set `featured: true` for a full-width block on the home page; everything else
 falls into the compact list. `order` sorts within each group.
+
+## Images in a post
+
+Put the file in `src/assets/posts/` — **never in `public/`**, which skips
+optimisation and ships the original bytes.
+
+Formats: `png`, `jpg`, `jpeg`, `webp`, `avif`. **Not HEIC.** An iPhone photo
+stores the image as a grid of 512×512 HEVC tiles, and assembling that grid
+exceeds libheif's reference limit, so the bundled sharp refuses it — the build
+fails complaining about JS syntax, because Vite tried to import it as a module.
+Set the camera to "Most Compatible" to shoot JPEG, or convert first. `ffmpeg`
+appears to work and does not: it extracts a single tile and hands back a
+512×512 crop. On Windows, WIC decodes the grid properly:
+
+```powershell
+Add-Type -AssemblyName PresentationCore
+$s = [System.IO.File]::OpenRead("in.HEIC")
+$d = [System.Windows.Media.Imaging.BitmapDecoder]::Create($s,'PreservePixelFormat','OnLoad')
+$e = New-Object System.Windows.Media.Imaging.JpegBitmapEncoder
+$e.QualityLevel = 90
+$e.Frames.Add([System.Windows.Media.Imaging.BitmapFrame]::Create($d.Frames[0]))
+$o = [System.IO.File]::Open("out.jpg",'Create'); $e.Save($o); $o.Close(); $s.Close()
+```
+
+Inside the post, a relative path is enough. Astro rewrites it and emits WebP at
+several widths:
+
+```md
+![What the dashboard looked like](../../../assets/posts/dashboard.png)
+```
+
+For control over widths and loading, import it instead:
+
+```mdx
+import { Image } from "astro:assets";
+import shot from "@/assets/posts/dashboard.png";
+
+<Image src={shot} alt="What the dashboard looked like" widths={[640, 1024]} />
+```
+
+### Sizing
+
+Images in a post are capped at `32rem` tall and centred. Without that, a
+portrait photo renders about 750×1000 in the text column and pushes the article
+off the screen; wide screenshots are never tall enough for the cap to touch
+them. Two overrides, applied to an `<Image>`:
+
+```mdx
+<Image src={shot} alt="…" class="img-full" />  {/* edge to edge, no cap */}
+<Image src={shot} alt="…" class="img-sm" />    {/* 20rem, for small diagrams */}
+```
+
+If the *file* is the wrong size rather than its display, resize the source
+instead of shipping pixels nobody sees — 1800px on the long edge is plenty,
+since Astro generates the responsive widths from it:
+
+```sh
+node -e "require('sharp')('in.jpg').rotate()
+  .resize({width:1800,height:1800,fit:'inside',withoutEnlargement:true})
+  .jpeg({quality:82,mozjpeg:true}).toFile('src/assets/posts/out.jpg')"
+```
+
+### Covers
+
+To give the post a header image and a social card, name the file in
+frontmatter — bare filename, no path:
+
+```yaml
+cover: dashboard.png
+```
+
+That renders above the body as AVIF with a WebP fallback, and is cropped to
+1200×630 JPEG for the OG card. A `cover` that does not exist fails the build
+with the list of filenames it did find, rather than shipping a broken image.
 
 ## The résumé
 

@@ -4,7 +4,7 @@ import PostDetail from "@/components/PostDetail.astro";
 import Base from "@/layouts/Base.astro";
 import { site } from "@/data/site";
 import { entrySlug, getPosts } from "@/lib/content";
-import { breadcrumbSchema, postSchema } from "@/lib/seo";
+import { breadcrumbSchema, postOgImage, postSchema } from "@/lib/seo";
 
 // See the note in projects/[slug].astro — annotating this with GetStaticPaths
 // erases the prop types InferGetStaticPropsType recovers below.
@@ -20,8 +20,9 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { post } = Astro.props as Props;
 
+const ogImage = await postOgImage(post.data.cover);
 const schemas = [
-  postSchema(post, "en"),
+  postSchema(post, "en", ogImage),
   breadcrumbSchema("en", [
     { name: site.name, path: "/" },
     { name: "Blog", path: "/blog" },
@@ -33,6 +34,7 @@ const schemas = [
 <Base
   title={`${post.data.title} — ${site.name}`}
   description={post.data.summary}
+  image={ogImage}
   noindex={post.data.draft}
   schemas={schemas}
 >

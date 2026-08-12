@@ -1,30 +1,60 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import type { Lang } from "@/i18n/ui";
 
-/** Every image that a project or case study can point at via `cover`. */
-const coverModules = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/projects/*.{png,jpg,jpeg,webp,avif}",
-  { eager: true },
+/**
+ * `cover` in frontmatter is a bare filename, and these maps are what turn it
+ * into something astro:assets can optimise. Projects and posts get separate
+ * directories so a filename in one cannot silently resolve against the other.
+ *
+ * import.meta.glob needs a literal pattern — it is resolved at build time, so
+ * the directory cannot be passed in as a variable.
+ */
+const byFilename = (modules: Record<string, { default: ImageMetadata }>) =>
+  new Map(
+    Object.entries(modules).map(([path, mod]) => [
+      path.split("/").pop()!,
+      mod.default,
+    ]),
+  );
+
+const projectCovers = byFilename(
+  import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/projects/*.{png,jpg,jpeg,webp,avif}",
+    { eager: true },
+  ),
 );
 
-const covers = new Map<string, ImageMetadata>(
-  Object.entries(coverModules).map(([path, mod]) => [
-    path.split("/").pop()!,
-    mod.default,
-  ]),
+const postCovers = byFilename(
+  import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/posts/*.{png,jpg,jpeg,webp,avif}",
+    { eager: true },
+  ),
 );
 
-/** Resolve a `cover` filename to an optimizable ImageMetadata object. */
-export function resolveCover(name?: string): ImageMetadata | undefined {
+function lookup(
+  covers: Map<string, ImageMetadata>,
+  dir: string,
+  name?: string,
+): ImageMetadata | undefined {
   if (!name) return undefined;
   const image = covers.get(name);
   if (!image) {
     throw new Error(
-      `Cover "${name}" not found in src/assets/projects/. ` +
-        `Available: ${[...covers.keys()].join(", ")}`,
+      `Cover "${name}" not found in ${dir}. ` +
+        `Available: ${[...covers.keys()].join(", ") || "(none yet)"}`,
     );
   }
   return image;
+}
+
+/** Resolve a project `cover` filename to an optimizable ImageMetadata object. */
+export function resolveCover(name?: string): ImageMetadata | undefined {
+  return lookup(projectCovers, "src/assets/projects/", name);
+}
+
+/** Resolve a post `cover` filename. Images live in src/assets/posts/. */
+export function resolvePostCover(name?: string): ImageMetadata | undefined {
+  return lookup(postCovers, "src/assets/posts/", name);
 }
 
 /** "en/meus-gastos" -> "meus-gastos" */
@@ -65,7 +95,15 @@ export async function getPosts(lang: Lang) {
   return all
     .filter((entry) => entryLang(entry.id) === lang)
     .filter((entry) => import.meta.env.DEV || !entry.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+    .sort((a, b) => {
+      // Dates are day-resolution, so two posts written the same day tie. Falling
+      // back to the slug keeps the listing and the feed in the same order every
+      // build instead of leaving it to whatever getCollection happened to yield.
+      const byDate = b.data.date.valueOf() - a.data.date.valueOf();
+      return byDate !== 0
+        ? byDate
+        : entrySlug(a.id).localeCompare(entrySlug(b.id));
+    });
 }
 
 /**

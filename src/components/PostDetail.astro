@@ -1,8 +1,9 @@
 ---
+import { Picture } from "astro:assets";
 import { render } from "astro:content";
 import Icon from "@/components/Icon.astro";
 import { site } from "@/data/site";
-import { formatPostDate, type PostEntry } from "@/lib/content";
+import { formatPostDate, resolvePostCover, type PostEntry } from "@/lib/content";
 import type { Lang } from "@/i18n/ui";
 import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 
@@ -14,7 +15,8 @@ const { post } = Astro.props;
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const { title, summary, date, tags, draft } = post.data;
+const { title, summary, date, tags, draft, cover } = post.data;
+const image = resolvePostCover(cover);
 const { Content } = await render(post);
 
 // Rough but honest: 200 words a minute over the raw MDX, which overcounts by
@@ -58,6 +60,22 @@ const minutes = Math.max(1, Math.round(words / 200));
       )
     }
   </header>
+
+  {
+    image && (
+      <Picture
+        src={image}
+        formats={["avif"]}
+        fallbackFormat="webp"
+        alt=""
+        widths={[640, 1024, 1280]}
+        sizes="(min-width: 1024px) 62rem, 92vw"
+        loading="eager"
+        fetchpriority="high"
+        class="mt-10 w-full rounded-xl border border-border object-cover sm:mt-14"
+      />
+    )
+  }
 
   <div class="content prose-measure mt-12 sm:mt-16">
     <Content />

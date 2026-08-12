@@ -288,6 +288,25 @@
   .content img {
     border-radius: 0.6rem;
     border: 1px solid var(--c-border);
+    /* A portrait photo at full column width runs to ~1000px tall and pushes
+       the article off the screen. Capping the height fixes that without
+       touching wide screenshots, which are never this tall to begin with.
+       `width: auto` keeps the aspect ratio; the base `max-width: 100%` still
+       stops anything overflowing the column. */
+    display: block;
+    max-height: 32rem;
+    width: auto;
+    margin-inline: auto;
+  }
+
+  /* Escape hatches for when the cap is wrong. Put the class on an <Image>. */
+  .content img.img-full {
+    max-height: none;
+    width: 100%;
+  }
+
+  .content img.img-sm {
+    max-height: 20rem;
   }
   .content hr {
     border-color: var(--c-border);

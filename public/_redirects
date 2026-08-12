@@ -97,5 +97,13 @@
 /pt-br/blog/atom.xml  /pt-br/blog/rss.xml  301
 /pt-br/blog/feed.json /pt-br/blog/rss.xml  301
 
+# Renamed post slugs. The first one shipped to production and went out in the
+# RSS feed under the old slug, so feed readers and anyone who shared the link
+# hold that URL — renaming without this would 404 exactly the people who read it.
+/blog/intranet-had-to-outlive-me        /blog/replacing-an-old-intranet        301
+/blog/intranet-had-to-outlive-me/       /blog/replacing-an-old-intranet        301
+/pt-br/blog/intranet-had-to-outlive-me  /pt-br/blog/replacing-an-old-intranet  301
+/pt-br/blog/intranet-had-to-outlive-me/ /pt-br/blog/replacing-an-old-intranet  301
+
 # --- Sitemap moved (Docusaurus emitted sitemap.xml) ---
 /sitemap.xml  /sitemap-index.xml  301

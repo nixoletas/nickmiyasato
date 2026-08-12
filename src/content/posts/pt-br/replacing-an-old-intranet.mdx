@@ -1,0 +1,128 @@
+---
+title: Trocando uma intranet velha em Joomla por uma aplicação Angular moderna
+summary: Por dois anos chefiei a seção de TI de um batalhão do Exército Brasileiro — mais de 300 usuários, toda unidade tinha a missão de atualizar sua página de intranet, e a gente fez primeiro!
+date: 2026-08-11
+tags: ["Angular", "Strapi", "Setor público", "Infraestrutura"]
+---
+
+No dia em que recebemos o documento mandando toda unidade trocar a intranet
+antiga pelo [Design System do Governo](https://www.gov.br/ds/home), eu fiquei
+obcecado em descobrir como usar os Web Components deles. Aliás, eu era bem novo
+em desenvolvimento frontend.
+
+Toda unidade do país recebeu a mesma ordem. A gente foi a primeira a entregar.
+
+## A intranet que existia
+
+Rodava em Joomla! 3.10. Não me entenda mal, o Joomla! é uma solução incrível,
+livre e de código aberto, mas a nossa tinha acumulado vários problemas de
+performance e uma gestão de componentes bagunçada. Era muito confuso e difícil de
+manter. Quem tinha montado já não estava mais lá — e essa é a condição normal de
+uma unidade militar, não uma falha de alguém em particular. As pessoas giram. Os
+sistemas ficam. E fazia alguns anos sem manutenção.
+
+Resumindo: um CMS algumas versões atrás, plugins que ninguém sabia justificar,
+conteúdo estruturado em torno de quem tinha precisado publicar alguma coisa por
+último. Funcionava, no sentido de estar no ar. Não funcionava no sentido de
+alguém conseguir mexer com confiança.
+
+É essa última parte que força uma reescrita. Não o software ser velho — software
+velho que as pessoas entendem está ótimo. É o custo de qualquer mudança ter
+virado imprevisível, e custo imprevisível faz com que as mudanças parem de
+acontecer, e um sistema que ninguém muda vai devagar deixando de corresponder à
+organização que ele atende.
+
+## Restrição como briefing
+
+Um design system obrigatório elimina uma classe enorme de decisões. Não existe
+discussão sobre a cor do botão, nem debate sobre espaçamento, nem redesign seis
+meses depois porque alguém acima viu um site mais bonito. As perguntas que sobram
+são as que valem o tempo: de que informação a pessoa que chegou aqui precisa, em
+quantos passos ela chega nisso, o que acontece quando ela erra.
+
+Trabalhar dentro de uma linguagem visual fixa também significava que qualquer
+pessoa vinda de outro serviço do governo já sabia ler nossas páginas.
+Familiaridade é uma funcionalidade, e é uma que sai de graça quando você não
+inventa onde inventar não acrescenta nada.
+
+## A stack
+
+A gente precisava de um framework robusto o bastante para de fato usar os Web
+Components, então fomos de Angular.
+
+Parece contraditório — eu era novo em frontend e escolhi a opção mais pesada. Mas
+o peso era justamente o ponto. Angular é opinativo quanto à estrutura de pastas,
+e opinativo é exatamente o que você quer quando a pessoa que vai manter aquilo
+não te conheceu. Existe um lugar óbvio para cada coisa, e essa é uma discussão
+que ninguém precisa ter de novo depois que eu sair.
+
+Os Web Components do gov.br encaixaram limpo. Ganhamos o design obrigatório de
+graça e mantivemos nossa própria estrutura em volta dele.
+
+O Strapi entrou atrás como headless CMS, e é essa a peça que de fato aposentou o
+Joomla. Uma intranet publica as coisas que uma unidade publica: a aba de
+aniversariantes, a escala de serviço, o blog. Nada disso deveria depender de um
+desenvolvedor, e com o Strapi nada disso depende — o conteúdo vive fora da
+aplicação, e quem é dono dele altera sem encostar num build.
+
+Essa separação é o truque inteiro. O Joomla não tinha falhado por ser um CMS;
+falhou porque o CMS e o site tinham crescido um dentro do outro até nenhum dos
+dois poder ser mudado sozinho. Separar os dois fez com que a parte que muda toda
+semana e a parte que muda uma vez por ano deixassem de ser o mesmo código.
+
+## Construir para a próxima pessoa
+
+Quem viesse depois de mim não teria a mim. Esse é o único fato que decidiu todo o
+resto.
+
+Então a gente não construiu um site. Construiu templates — uma coisa que outra
+unidade pudesse pegar e preencher com o próprio conteúdo sem ter que entender o
+que estava acontecendo por baixo. Essa acabou sendo a parte que foi mais longe:
+outras organizações militares país afora pegaram os templates. Eu não planejei
+isso, e não teria conseguido construindo alguma coisa engenhosa.
+
+Só que reaproveitável não queria dizer configurável. Toda opção que você expõe é
+uma decisão que você está jogando em cima de alguém com menos contexto e menos
+tempo que você. Reaproveitável queria dizer opinativo — defaults sensatos, poucos
+botões, e documentação escrita para quem não esteve em nenhuma das conversas
+originais.
+
+Também automatizei em Python o que era repetitivo, as tarefas que a gente fazia
+na mão toda semana. Fazer na mão queimava uma manhã e introduzia pequenos erros
+com confiabilidade. O tempo economizado importou menos que a consistência: um
+script faz a mesma coisa toda vez, e uma pessoa numa tarefa tediosa numa sexta à
+tarde, não.
+
+## Operar o que você constrói
+
+O resto do trabalho era a metade chata, e é a metade que mais me ensinou.
+
+Hosts Linux e serviços Docker endurecidos. Backup — e restore, que importa mais,
+porque backup do qual você nunca restaurou é uma crença, não um sistema.
+Monitoramento que alguém de fato olha, o que na prática quer dizer manter aquilo
+silencioso o bastante para um alerta ainda significar alguma coisa. Documentação
+boa o suficiente para a próxima pessoa manter isso no ar sem me ligar.
+
+Nada disso é divertido de construir. Tudo isso decide se o que você construiu
+ainda está de pé dois anos depois.
+
+A gente também trouxe um pouco de prática ágil e padrões técnicos básicos. Num
+lugar organizado em torno de hierarquia e processo formal, a parte útil não eram
+as cerimônias — era tornar o trabalho visível, para um time pequeno enxergar o
+que estava andando e o que estava travado sem precisar de reunião pra descobrir.
+
+## O que isso mudou
+
+Hoje eu construo diferente, em trabalho de produto com bem mais liberdade e bem
+menos em jogo do lado operacional.
+
+Parto do princípio de que não vou estar lá. Escrevo a documentação enquanto o
+raciocínio ainda está na minha cabeça, não no fim, quando ele já foi. Desconfio
+de opções de configuração e sou generoso com defaults. Me importo mais do que a
+maioria das pessoas com quem trabalho se o deploy é entediante, porque já fui o
+cara pra quem um deploy emocionante significava uma noite ruim.
+
+E não tenho muita paciência com código esperto de um jeito que só compensa se
+quem mantém se importar tanto quanto quem escreveu. Numa unidade em que todo
+mundo é transferido, essa pessoa não existe. No fim das contas ela quase não
+existe em lugar nenhum.

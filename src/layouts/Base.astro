@@ -38,8 +38,22 @@ const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
-const alternates = alternateUrls(Astro.url);
 const ogImage = new URL(image, site.url).href;
+
+/**
+ * hreflang annotations have to name the canonical URL exactly — Google matches
+ * them as strings, and a cluster whose members disagree about a trailing slash
+ * does not resolve. The canonical carries one and localizePath strips it, so
+ * put it back. seo.ts does the same thing to the schema URLs, for the same
+ * reason.
+ */
+const alt = alternateUrls(Astro.url);
+const alternates = Object.fromEntries(
+  Object.entries(alt).map(([lang, path]) => [
+    lang,
+    new URL(path.endsWith("/") ? path : `${path}/`, site.url).href,
+  ]),
+) as Record<keyof typeof alt, string>;
 
 // One Person record for the whole site; search engines and LLM crawlers both
 // read this, and it is what makes a name query resolve to this page.
@@ -73,6 +87,11 @@ const personSchema = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
+    {/* Google resolves the search-result favicon from /favicon.ico as well as
+        from these tags, and it caches whatever it last fetched. Without the
+        .ico the old Docusaurus icon stayed in results long after the rebuild.
+        It carries 16/32/48 — 48 because Google wants a multiple of 48. */}
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/img/icon-96.png" sizes="96x96" type="image/png" />
     {/* Last wins where it is supported, so SVG-capable browsers scale cleanly
@@ -91,9 +110,9 @@ const personSchema = {
       crossorigin
     />
 
-    <link rel="alternate" hreflang="en" href={new URL(alternates.en, site.url).href} />
-    <link rel="alternate" hreflang="pt-BR" href={new URL(alternates["pt-br"], site.url).href} />
-    <link rel="alternate" hreflang="x-default" href={new URL(alternates.en, site.url).href} />
+    <link rel="alternate" hreflang="en" href={alternates.en} />
+    <link rel="alternate" hreflang="pt-BR" href={alternates["pt-br"]} />
+    <link rel="alternate" hreflang="x-default" href={alternates.en} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link
       rel="alternate"

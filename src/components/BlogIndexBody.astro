@@ -1,6 +1,7 @@
 ---
 import Icon from "@/components/Icon.astro";
 import PostRow from "@/components/PostRow.astro";
+import Toc from "@/components/Toc.astro";
 import type { Lang } from "@/i18n/ui";
 import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 import { getAllTags, getPostsByYear } from "@/lib/content";
@@ -13,6 +14,16 @@ const tags = await getAllTags(lang);
 const feed = localizePath("/blog/rss.xml", lang);
 const tagBase = localizePath("/blog/tags", lang);
 const total = years.reduce((n, group) => n + group.posts.length, 0);
+
+// The same rail the posts use, over years instead of sections. Ids are
+// prefixed because a bare "2026" is not a valid fragment to start an id with
+// in older parsers, and the prefix says what the anchor is for.
+const archive = years.map(({ year, posts }) => ({
+  id: `year-${year}`,
+  label: String(year),
+  badge: posts.length,
+}));
+const SPY = "#blog-posts section[id]";
 ---
 
 <div class="shell py-14 sm:py-20">
@@ -81,17 +92,26 @@ const total = years.reduce((n, group) => n + group.posts.length, 0);
 
   {
     total > 0 ? (
-      <div id="blog-posts" class="mt-12 flex flex-col gap-12 sm:mt-16">
-        {years.map(({ year, posts }) => (
-          <section>
-            <h2 class="eyebrow">{year}</h2>
-            <ul class="mt-4 flex flex-col border-t border-border">
-              {posts.map((post) => (
-                <PostRow post={post} />
-              ))}
-            </ul>
-          </section>
-        ))}
+      <div class="mt-12 sm:mt-16 lg:grid lg:grid-cols-[minmax(0,68ch)_minmax(0,1fr)] lg:gap-12">
+        {/* Rail first in the source so the archive is reachable before the
+            whole listing, and put back on the right by the grid. */}
+        <Toc items={archive} variant="rail" title={t("blog.archive")} spy={SPY} />
+
+        <div
+          id="blog-posts"
+          class="flex flex-col gap-12 lg:col-start-1 lg:row-start-1"
+        >
+          {years.map(({ year, posts }) => (
+            <section id={`year-${year}`}>
+              <h2 class="eyebrow">{year}</h2>
+              <ul class="mt-4 flex flex-col border-t border-border">
+                {posts.map((post) => (
+                  <PostRow post={post} />
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
       </div>
     ) : (
       <p class="mt-12 text-muted sm:mt-16">{t("blog.empty")}</p>
@@ -125,7 +145,15 @@ const total = years.reduce((n, group) => n + group.posts.length, 0);
     const input = document.getElementById("blog-q");
     const results = document.getElementById("blog-results");
     const posts = document.getElementById("blog-posts");
+    const rail = document.getElementById("toc-rail");
     if (!form || !input || !results || !posts) return;
+
+    // The listing and its year rail are one thing as far as searching goes.
+    const showList = (visible) => {
+      posts.hidden = !visible;
+      if (rail) rail.hidden = !visible;
+      if (visible) dispatchEvent(new Event("toc:refresh"));
+    };
 
     let pagefind;
     try {
@@ -149,7 +177,7 @@ const total = years.reduce((n, group) => n + group.posts.length, 0);
       if (!query.trim()) {
         results.hidden = true;
         results.innerHTML = "";
-        posts.hidden = false;
+        showList(true);
         return;
       }
 
@@ -161,7 +189,7 @@ const total = years.reduce((n, group) => n + group.posts.length, 0);
         search.results.slice(0, 20).map((result) => result.data()),
       );
 
-      posts.hidden = true;
+      showList(false);
       results.hidden = false;
 
       if (found === 0) {

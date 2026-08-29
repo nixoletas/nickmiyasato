@@ -37,6 +37,8 @@ const tagBase = localizePath("/blog/tags", lang);
 // see. MDX generates the ids, so the anchors need no extra config.
 const toc = headings.filter((heading) => heading.depth === 2);
 const showToc = toc.length >= 3;
+const tocItems = toc.map((heading) => ({ id: heading.slug, label: heading.text }));
+const SPY = ".content h2[id]";
 
 const { newer, older } = await adjacentPosts(lang, post.id);
 ---
@@ -117,7 +119,13 @@ const { newer, older } = await adjacentPosts(lang, post.id);
     )
   }
 
-  {showToc && <Toc headings={toc} variant="inline" />}
+  {
+    showToc && (
+      <div class="mt-10 sm:mt-12">
+        <Toc items={tocItems} variant="inline" title={t("blog.toc")} spy={SPY} />
+      </div>
+    )
+  }
 
   {/* The rail sits in the second column but comes first in the source, so a
       screen reader or a tab through the page meets the outline before the
@@ -125,7 +133,7 @@ const { newer, older } = await adjacentPosts(lang, post.id);
   <div
     class="mt-12 sm:mt-16 lg:grid lg:grid-cols-[minmax(0,68ch)_minmax(0,1fr)] lg:gap-12"
   >
-    {showToc && <Toc headings={toc} variant="rail" />}
+    {showToc && <Toc items={tocItems} variant="rail" title={t("blog.toc")} spy={SPY} />}
 
     <div class="content prose-measure lg:col-start-1 lg:row-start-1">
       <Content />

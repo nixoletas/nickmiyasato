@@ -1,24 +1,32 @@
 ---
-import type { MarkdownHeading } from "astro";
 import Icon from "@/components/Icon.astro";
-import type { Lang } from "@/i18n/ui";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+export interface TocItem {
+  /** id of the element on the page this jumps to. */
+  id: string;
+  label: string;
+  /** Optional right-aligned figure — a post count, say. */
+  badge?: string | number;
+}
 
 interface Props {
-  /** Section headings, already filtered to the depth worth listing. */
-  headings: MarkdownHeading[];
+  items: TocItem[];
   /**
-   * "rail" is the sticky column beside the article on large screens; "inline"
-   * is the collapsed disclosure above it on everything narrower. Both are
-   * rendered and one is hidden per breakpoint, so only one is ever in the
+   * "rail" is the sticky column beside the content on large screens; "inline"
+   * is the collapsed disclosure above it on everything narrower. A page can
+   * render both and hide one per breakpoint, so only one is ever in the
    * accessibility tree.
    */
   variant: "rail" | "inline";
+  title: string;
+  /**
+   * Selector for the elements the highlight tracks, in document order. Only
+   * read by the rail, which is the only variant that highlights.
+   */
+  spy: string;
 }
 
-const { headings, variant } = Astro.props;
-const lang: Lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { items, variant, title, spy } = Astro.props;
 const titleId = `toc-${variant}-title`;
 ---
 
@@ -31,21 +39,24 @@ const titleId = `toc-${variant}-title`;
       class="hidden lg:col-start-2 lg:row-start-1 lg:block"
     >
       {/* top-24 clears the 4rem sticky header with the same breathing room as
-          the scroll-padding-top in global.css, so a heading jumped to from
-          here lands where the highlight says it is. */}
+          the scroll-padding-top in global.css, so a target jumped to from here
+          lands where the highlight says it is. */}
       <div class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
         <h2 id={titleId} class="eyebrow">
-          {t("blog.toc")}
+          {title}
         </h2>
 
         <ol class="mt-4 flex flex-col border-l border-border">
-          {headings.map((heading) => (
+          {items.map((item) => (
             <li>
               <a
-                href={`#${heading.slug}`}
-                class="-ml-px block border-l border-transparent py-1.5 pl-4 text-sm text-muted transition-colors hover:text-fg aria-[current=location]:border-accent aria-[current=location]:text-accent"
+                href={`#${item.id}`}
+                class="-ml-px flex items-center justify-between gap-3 border-l border-transparent py-1.5 pr-1 pl-4 text-sm text-muted transition-colors hover:text-fg aria-[current=location]:border-accent aria-[current=location]:text-accent"
               >
-                {heading.text}
+                {item.label}
+                {item.badge !== undefined && (
+                  <span class="font-mono text-xs opacity-60">{item.badge}</span>
+                )}
               </a>
             </li>
           ))}
@@ -54,13 +65,13 @@ const titleId = `toc-${variant}-title`;
     </nav>
   ) : (
     <details
-      class="group mt-10 rounded-xl border border-border bg-surface sm:mt-12 lg:hidden"
+      class="group rounded-xl border border-border bg-surface lg:hidden"
       data-pagefind-ignore
     >
       <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
-        <span class="eyebrow">{t("blog.toc")}</span>
+        <span class="eyebrow">{title}</span>
         <span class="flex items-center gap-2 font-mono text-xs text-muted">
-          {headings.length}
+          {items.length}
           <Icon
             name="chevron-down"
             size={14}
@@ -70,13 +81,16 @@ const titleId = `toc-${variant}-title`;
       </summary>
 
       <ol class="flex flex-col gap-3 border-t border-border px-5 py-4">
-        {headings.map((heading) => (
+        {items.map((item) => (
           <li>
             <a
-              href={`#${heading.slug}`}
-              class="block text-sm text-muted transition-colors hover:text-accent"
+              href={`#${item.id}`}
+              class="flex items-center justify-between gap-3 text-sm text-muted transition-colors hover:text-accent"
             >
-              {heading.text}
+              {item.label}
+              {item.badge !== undefined && (
+                <span class="font-mono text-xs opacity-60">{item.badge}</span>
+              )}
             </a>
           </li>
         ))}
@@ -86,65 +100,78 @@ const titleId = `toc-${variant}-title`;
 }
 
 {
-  /* Only the rail highlights, and it only exists once, so the script ships
-     with it rather than twice from the component as a whole. */
+  /* Only the rail highlights, and a page has at most one, so the script ships
+     with that variant rather than twice from the component as a whole. */
   variant === "rail" && (
-    <script is:inline>
+    <script is:inline define:vars={{ spy }}>
       (() => {
         const start = () => {
-        const rail = document.getElementById("toc-rail");
-        const headings = [...document.querySelectorAll(".content h2[id]")];
-        if (!rail || headings.length === 0) return;
+          const rail = document.getElementById("toc-rail");
+          const targets = [...document.querySelectorAll(spy)];
+          if (!rail || targets.length === 0) return;
 
-        const links = new Map(
-          [...rail.querySelectorAll("a[href^='#']")].map((a) => [
-            decodeURIComponent(a.getAttribute("href").slice(1)),
-            a,
-          ]),
-        );
+          const links = new Map(
+            [...rail.querySelectorAll("a[href^='#']")].map((a) => [
+              decodeURIComponent(a.getAttribute("href").slice(1)),
+              a,
+            ]),
+          );
 
-        let current = null;
-        const mark = (id) => {
-          if (id === current) return;
-          links.get(current)?.removeAttribute("aria-current");
-          // "location" rather than "page": this is a position within the
-          // document, not a link to the page you are already on.
-          links.get(id)?.setAttribute("aria-current", "location");
-          current = id;
+          let current = null;
+          const mark = (id) => {
+            if (id === current) return;
+            links.get(current)?.removeAttribute("aria-current");
+            // "location" rather than "page": this is a position within the
+            // document, not a link to the page you are already on.
+            links.get(id)?.setAttribute("aria-current", "location");
+            current = id;
+          };
+
+          // The line a target has to cross to count as the one being read.
+          // Below the sticky header, so a heading level with the top of the
+          // viewport is already active rather than about to be.
+          const LINE = 120;
+
+          const update = () => {
+            const doc = document.documentElement;
+            const scrolls = doc.scrollHeight > innerHeight + 1;
+            // At the very bottom the last target can sit below the line and
+            // never be reached — a short final section would leave the rail
+            // pointing at the one before it while you read the end of the page.
+            if (scrolls && innerHeight + Math.ceil(scrollY) >= doc.scrollHeight - 2) {
+              mark(targets[targets.length - 1].id);
+              return;
+            }
+
+            let active = targets[0].id;
+            for (const target of targets) {
+              if (target.getBoundingClientRect().top > LINE) break;
+              active = target.id;
+            }
+            mark(active);
+          };
+
+          let queued = false;
+          const schedule = () => {
+            if (queued) return;
+            queued = true;
+            requestAnimationFrame(() => {
+              queued = false;
+              update();
+            });
+          };
+
+          addEventListener("scroll", schedule, { passive: true });
+          addEventListener("resize", schedule, { passive: true });
+          // The blog index hides its list while a search is running, which
+          // takes the rail's targets out of the layout with it.
+          addEventListener("toc:refresh", update);
+          update();
         };
 
-        // The line the heading has to cross to count as the one being read.
-        // Below the sticky header, so a heading level with the top of the
-        // viewport is already active rather than about to be.
-        const LINE = 120;
-
-        const update = () => {
-          let active = headings[0].id;
-          for (const heading of headings) {
-            if (heading.getBoundingClientRect().top > LINE) break;
-            active = heading.id;
-          }
-          mark(active);
-        };
-
-        let queued = false;
-        const schedule = () => {
-          if (queued) return;
-          queued = true;
-          requestAnimationFrame(() => {
-            queued = false;
-            update();
-          });
-        };
-
-        addEventListener("scroll", schedule, { passive: true });
-        addEventListener("resize", schedule, { passive: true });
-        update();
-        };
-
-        // The rail is placed before the article in the source so the outline
+        // The rail is placed before the content in the source so the outline
         // comes first for a screen reader, which means this script runs before
-        // the headings it measures exist. Waiting is not optional.
+        // the elements it measures exist. Waiting is not optional.
         if (document.readyState === "loading") {
           document.addEventListener("DOMContentLoaded", start, { once: true });
         } else {

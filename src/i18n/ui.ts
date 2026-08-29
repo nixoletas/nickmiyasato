@@ -105,6 +105,7 @@ export const ui = {
     "blog.newer": "Newer",
     "blog.older": "Older",
     "blog.toc": "Contents",
+    "blog.archive": "Archive",
   },
   "pt-br": {
     "nav.work": "Trabalho",
@@ -191,6 +192,7 @@ export const ui = {
     "blog.newer": "Mais recente",
     "blog.older": "Mais antigo",
     "blog.toc": "Conteúdo",
+    "blog.archive": "Arquivo",
   },
 } as const;
 

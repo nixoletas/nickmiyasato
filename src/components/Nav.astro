@@ -22,16 +22,13 @@ const other: Lang = lang === "en" ? "pt-br" : "en";
 // Section anchors resolve against the home page so they also work from a
 // project detail page.
 const home = localizePath("/", lang);
-// Only two links can carry `priority` — below 400px the header fits the logo,
-// two links and the two toggles, and nothing more. Résumé holds one of them:
-// the page sections are all reachable by scrolling, the résumé is not.
 const links = [
-  { href: `${home === "/" ? "" : home}/#work`, label: t("nav.work"), priority: false },
-  { href: localizePath("/projects", lang), label: t("nav.projects"), priority: false },
-  { href: `${home === "/" ? "" : home}/#about`, label: t("nav.about"), priority: false },
-  { href: localizePath("/blog", lang), label: t("nav.blog"), priority: false },
-  { href: localizePath("/resume", lang), label: t("nav.resume"), priority: true },
-  { href: `${home === "/" ? "" : home}/#contact`, label: t("nav.contact"), priority: true },
+  { href: `${home === "/" ? "" : home}/#work`, label: t("nav.work") },
+  { href: localizePath("/projects", lang), label: t("nav.projects") },
+  { href: `${home === "/" ? "" : home}/#about`, label: t("nav.about") },
+  { href: localizePath("/blog", lang), label: t("nav.blog") },
+  { href: localizePath("/resume", lang), label: t("nav.resume") },
+  { href: `${home === "/" ? "" : home}/#contact`, label: t("nav.contact") },
 ];
 ---
 
@@ -51,10 +48,12 @@ const links = [
     </a>
 
     <div class="flex items-center gap-1 sm:gap-2">
-      <ul class="flex items-center gap-1 sm:gap-2">
+      {/* Six links do not fit a phone. Below `sm` they move into the panel
+          below, which is why none of them carries a narrow-screen variant. */}
+      <ul class="hidden items-center gap-1 sm:flex sm:gap-2">
         {
           links.map((link) => (
-            <li class={link.priority ? "hidden xs:block" : "hidden sm:block"}>
+            <li>
               <a
                 href={link.href}
                 class="rounded-md px-2 py-1.5 text-sm text-muted transition-colors hover:text-fg sm:px-3"
@@ -86,7 +85,46 @@ const links = [
         <Icon name="sun" size={17} class="hidden dark:block" />
         <Icon name="moon" size={17} class="block dark:hidden" />
       </button>
+
+      <button
+        type="button"
+        id="menu-toggle"
+        aria-label={t("nav.menu")}
+        aria-expanded="false"
+        aria-controls="menu-panel"
+        class="grid size-9 place-items-center rounded-md text-muted transition-colors hover:text-fg sm:hidden"
+      >
+        {/* Swapped by the script rather than by a CSS variant: the icons are
+            components, so a class on them lands inside Icon.astro's own scope
+            and a parent [aria-expanded] selector would not reach it. */}
+        <span id="menu-icon-open"><Icon name="menu" size={18} /></span>
+        <span id="menu-icon-close" hidden><Icon name="close" size={18} /></span>
+      </button>
     </div>
+  </nav>
+
+  {/* Inside <header> so it inherits the sticky position and the blur, and so
+      the border under the bar reads as the panel's own edge when open. */}
+  <nav
+    id="menu-panel"
+    aria-label={t("nav.menu")}
+    hidden
+    class="border-t border-border sm:hidden"
+  >
+    <ul class="shell flex flex-col py-2">
+      {
+        links.map((link) => (
+          <li class="border-b border-border/60 last:border-b-0">
+            <a
+              href={link.href}
+              class="block py-3.5 text-sm text-muted transition-colors hover:text-fg"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </nav>
 </header>
 
@@ -97,4 +135,46 @@ const links = [
       localStorage.setItem("theme", dark ? "dark" : "light");
     } catch {}
   });
+</script>
+
+<script
+  is:inline
+  define:vars={{ openLabel: t("nav.menu"), closeLabel: t("nav.close") }}
+>
+  (() => {
+    const toggle = document.getElementById("menu-toggle");
+    const panel = document.getElementById("menu-panel");
+    const iconOpen = document.getElementById("menu-icon-open");
+    const iconClose = document.getElementById("menu-icon-close");
+    if (!toggle || !panel || !iconOpen || !iconClose) return;
+
+    const set = (open) => {
+      panel.hidden = !open;
+      iconOpen.hidden = open;
+      iconClose.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? closeLabel : openLabel);
+    };
+
+    toggle.addEventListener("click", () => set(panel.hidden));
+
+    // A same-page anchor does not reload anything, so the panel would sit open
+    // over the section it just jumped to.
+    panel.addEventListener("click", (event) => {
+      if (event.target.closest("a")) set(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || panel.hidden) return;
+      set(false);
+      toggle.focus();
+    });
+
+    // Rotating to landscape past the breakpoint hides the panel's container
+    // while it is still open, which would leave the button claiming expanded
+    // and the panel reappearing on the way back.
+    matchMedia("(min-width: 40rem)").addEventListener("change", (event) => {
+      if (event.matches) set(false);
+    });
+  })();
 </script>

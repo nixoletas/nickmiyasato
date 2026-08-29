@@ -99,10 +99,6 @@
   --text-4xl--line-height: 1.03;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Below 400px the header cannot fit the logo, two nav links and the two
-     toggles — `xs` is where the nav links drop out. */
-  --breakpoint-xs: 25rem;
 }
 
 /* ---------------------------------------------------------------------------

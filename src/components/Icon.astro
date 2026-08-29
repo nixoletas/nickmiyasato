@@ -18,7 +18,9 @@ export type IconName =
   | "sun"
   | "moon"
   | "copy"
-  | "check";
+  | "check"
+  | "menu"
+  | "close";
 
 interface Props {
   name: IconName;
@@ -50,6 +52,8 @@ const strokes: Record<string, string> = {
   moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
   copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
+  menu: '<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>',
+  close: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
 };
 
 const isBrand = name in brands;

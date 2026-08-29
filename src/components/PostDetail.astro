@@ -3,7 +3,15 @@ import { Picture } from "astro:assets";
 import { render } from "astro:content";
 import Icon from "@/components/Icon.astro";
 import { site } from "@/data/site";
-import { formatPostDate, resolvePostCover, type PostEntry } from "@/lib/content";
+import {
+  adjacentPosts,
+  entrySlug,
+  formatPostDate,
+  readingTime,
+  resolvePostCover,
+  tagSlug,
+  type PostEntry,
+} from "@/lib/content";
 import type { Lang } from "@/i18n/ui";
 import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 
@@ -15,20 +23,30 @@ const { post } = Astro.props;
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const { title, summary, date, tags, draft, cover } = post.data;
+const { title, summary, date, updated, tags, draft, cover } = post.data;
 const image = resolvePostCover(cover);
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
-// Rough but honest: 200 words a minute over the raw MDX, which overcounts by
-// the length of the frontmatter and undercounts code blocks. Close enough to
-// set expectations, which is all a reading time is for.
-const words = post.body?.trim().split(/\s+/).length ?? 0;
-const minutes = Math.max(1, Math.round(words / 200));
+const minutes = readingTime(post);
+const published = formatPostDate(date, lang);
+const tagBase = localizePath("/blog/tags", lang);
+
+// Only the section headings, and only once there are enough of them to be
+// worth a jump list — two entries is a list of the two things you can already
+// see. MDX generates the ids, so the anchors need no extra config.
+const toc = headings.filter((heading) => heading.depth === 2);
+const showToc = toc.length >= 3;
+
+const { newer, older } = await adjacentPosts(lang, post.id);
 ---
 
-<article class="shell py-14 sm:py-20">
+{/* data-pagefind-body scopes the search index to posts, so the résumé and the
+    project write-ups cannot turn up in a blog search. Everything on the page
+    that is navigation rather than prose is marked ignore below. */}
+<article class="shell py-14 sm:py-20" data-pagefind-body>
   <a
     href={localizePath("/blog", lang)}
+    data-pagefind-ignore
     class="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
   >
     <Icon name="arrow-left" size={14} />
@@ -36,13 +54,27 @@ const minutes = Math.max(1, Math.round(words / 200));
   </a>
 
   <header class="mt-8 flex max-w-3xl flex-col gap-6 sm:mt-12">
-    <h1 class="text-3xl">{title}</h1>
+    <h1 class="text-3xl" data-pagefind-meta="title">{title}</h1>
     <p class="prose-measure text-lg text-muted">{summary}</p>
 
     <div
       class="flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-border py-4 font-mono text-xs text-muted"
     >
-      <time datetime={date.toISOString()}>{formatPostDate(date, lang)}</time>
+      {/* Explicit value rather than the element's text: the search result row
+          wants the date on its own, without the "Published" label. */}
+      <time datetime={date.toISOString()} data-pagefind-meta={`date:${published}`}>
+        {t("blog.published")} {published}
+      </time>
+      {
+        updated && (
+          <Fragment>
+            <span aria-hidden="true">·</span>
+            <time datetime={updated.toISOString()}>
+              {t("blog.updated")} {formatPostDate(updated, lang)}
+            </time>
+          </Fragment>
+        )
+      }
       <span aria-hidden="true">·</span>
       <span>{minutes} {t("blog.readingTime")}</span>
       <span aria-hidden="true">·</span>
@@ -54,7 +86,14 @@ const minutes = Math.max(1, Math.round(words / 200));
       tags.length > 0 && (
         <ul class="flex flex-wrap gap-2">
           {tags.map((tag) => (
-            <li class="tag">{tag}</li>
+            <li>
+              <a
+                href={`${tagBase}/${tagSlug(tag)}`}
+                class="tag transition-colors hover:border-accent hover:text-accent"
+              >
+                {tag}
+              </a>
+            </li>
           ))}
         </ul>
       )
@@ -77,7 +116,77 @@ const minutes = Math.max(1, Math.round(words / 200));
     )
   }
 
-  <div class="content prose-measure mt-12 sm:mt-16">
+  {
+    showToc && (
+      <nav
+        aria-labelledby="toc-title"
+        data-pagefind-ignore
+        class="prose-measure mt-12 rounded-xl border border-border bg-surface p-5 sm:mt-16"
+      >
+        <h2 id="toc-title" class="eyebrow">
+          {t("blog.toc")}
+        </h2>
+        <ol class="mt-3 flex flex-col gap-2">
+          {toc.map((heading) => (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                class="text-sm text-muted transition-colors hover:text-accent"
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )
+  }
+
+  <div class:list={["content prose-measure", showToc ? "mt-10" : "mt-12 sm:mt-16"]}>
     <Content />
   </div>
+
+  {
+    (newer || older) && (
+      <nav
+        aria-label={t("blog.title")}
+        data-pagefind-ignore
+        class="mt-16 grid gap-4 border-t border-border pt-8 sm:mt-20 sm:grid-cols-2"
+      >
+        {newer ? (
+          <a
+            href={localizePath(`/blog/${entrySlug(newer.id)}`, lang)}
+            class="group flex flex-col gap-2 rounded-lg border border-border p-4 transition-colors hover:border-accent"
+          >
+            <span class="eyebrow inline-flex items-center gap-1.5">
+              <Icon name="arrow-left" size={12} />
+              {t("blog.newer")}
+            </span>
+            <span class="transition-colors group-hover:text-accent">
+              {newer.data.title}
+            </span>
+          </a>
+        ) : (
+          /* Holds the column so a post with only an older neighbour keeps it
+             on the right, where the direction reads correctly. */
+          <div class="hidden sm:block" />
+        )}
+
+        {older && (
+          <a
+            href={localizePath(`/blog/${entrySlug(older.id)}`, lang)}
+            class="group flex flex-col gap-2 rounded-lg border border-border p-4 transition-colors hover:border-accent sm:text-right"
+          >
+            <span class="eyebrow inline-flex items-center gap-1.5 sm:justify-end">
+              {t("blog.older")}
+              <Icon name="arrow-right" size={12} />
+            </span>
+            <span class="transition-colors group-hover:text-accent">
+              {older.data.title}
+            </span>
+          </a>
+        )}
+      </nav>
+    )
+  }
 </article>

@@ -47,6 +47,12 @@ jobs:
       - name: Render résumé PDFs
         run: npm run resume:pdf
 
+      # Social cards for posts without a cover image. Same browser as above,
+      # already installed, and it has to land before the upload because the
+      # og:image tags in the built HTML already point at these files.
+      - name: Render post social cards
+        run: npm run og:cards
+
       - name: Deploy to Cloudflare Pages
         # v4 installs Wrangler v4 by default instead of pinning v3.90.0.
         uses: cloudflare/wrangler-action@v4

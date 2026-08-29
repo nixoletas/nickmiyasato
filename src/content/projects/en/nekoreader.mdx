@@ -1,0 +1,42 @@
+---
+title: nekoreader
+summary: A PDF and EPUB reader that turns scanned books into selectable, highlightable text — with reading position and notes synced across devices.
+year: "2026"
+role: Solo — product, engineering, ops
+stack: ["Next.js", "React 19", "TypeScript", "Supabase", "Tailwind", "pdf.js", "PWA"]
+featured: true
+order: 1
+cover: nekoreader.png
+repo: https://github.com/nixoletas/nekoreader
+demo: https://nekoreader.vercel.app
+---
+
+## The problem
+
+Most of what I want to read exists as a PDF someone scanned. A viewer will happily show you those pages, but they are pictures of text. You cannot select a sentence. The page number on screen has nothing to do with the number printed on the paper, so a citation taken from it is wrong. And any note you make ends up in whatever other app happened to be open, disconnected from the passage that provoked it.
+
+The alternatives each give something up. Dedicated e-readers want EPUB and handle scans badly. Cloud libraries want your books on their servers. Browser viewers forget where you were the moment the tab closes.
+
+## What I built
+
+A reader that runs in the browser and installs to a phone home screen as a PWA, and that treats a scanned page and a born-digital one the same way: text you can select, highlight in four colours, and hang a titled note on.
+
+Position and annotations sync through one account, so the page you stopped on at a desk is the page that opens on a phone. Books can leave again — export to EPUB or Markdown with the annotations and page numbers intact. A library you cannot get back out of is a trap, not a library.
+
+The interface is available in six languages, resolved on the server from the request so the first paint is already in the right one.
+
+## Technical decisions
+
+**OCR runs on the device.** Scanned pages are put through optical recognition in the browser rather than on a server. That keeps the book on the reader's machine, and it means the feature costs nothing per page to operate — which is the only reason it can be free. Equations and figures are kept as image crops instead of being fed through recognition, because a mangled formula is worse than a picture of one.
+
+**Book pages, not file pages.** A scan opens with a cover, a title page and a dozen roman-numbered pages of front matter before printed page 1. Numbering from the file offset makes every reference off by that much. Each book carries a page offset and a roman-numeral range, so "page 214" means the 214 printed on the paper.
+
+**Private buckets and signed URLs.** Files live in a private Supabase bucket and are read through short-lived signed URLs; row-level security scopes every progress and annotation row to its owner. The isolation is a policy in Postgres rather than a filter someone has to remember to write.
+
+**Progress saves are debounced at 700 ms.** Reading produces a position update on essentially every scroll, and writing each one is a request per frame. 700 ms collapses a burst of scrolling into a single write while keeping the loss from closing the tab mid-page down to nothing anyone would notice.
+
+**Server components for the shell, client only for the canvas.** The library, the book metadata and the language resolution render on the server. Only the page canvas, the selection layer and the annotation UI ship as client code, which is where the interactivity actually is.
+
+## Where it stands
+
+Live and free at [nekoreader.vercel.app](https://nekoreader.vercel.app), with uploads up to 100 MB per book. Source is on [GitHub](https://github.com/nixoletas/nekoreader).

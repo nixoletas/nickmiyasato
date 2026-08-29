@@ -1,0 +1,43 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import TagPageBody from "@/components/TagPageBody.astro";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/data/site";
+import { getTagPages } from "@/lib/content";
+import { breadcrumbSchema } from "@/lib/seo";
+
+// See the note in blog/[slug].astro — annotating this with GetStaticPaths
+// erases the prop types InferGetStaticPropsType recovers below.
+//
+// Tags are prose and written per locale, so this list and the English one
+// are two taxonomies over the same posts rather than one set of translated
+// slugs. getTagPages pairs them and hands back where each tag lives in the
+// other locale, which is what the hreflang and the language switcher need —
+// the path-for-path default would point "career" at a page called "carreira".
+export async function getStaticPaths() {
+  const pages = await getTagPages("pt-br");
+  return pages.map(({ tag, slug, posts, alternates }) => ({
+    params: { tag: slug },
+    props: { tag, slug, posts, alternates },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { tag, slug, posts, alternates } = Astro.props as Props;
+---
+
+<Base
+  title={`${tag} — Blog — ${site.name}`}
+  description={`Posts marcados com “${tag}” no blog de ${site.name}.`}
+  alternates={alternates}
+  schemas={[
+    breadcrumbSchema("pt-br", [
+      { name: site.name, path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: tag, path: `/blog/tags/${slug}` },
+    ]),
+  ]}
+>
+  <TagPageBody tag={tag} posts={posts} />
+</Base>

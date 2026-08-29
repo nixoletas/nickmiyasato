@@ -8,9 +8,14 @@ import {
   useTranslations,
 } from "@/i18n/utils";
 
+interface Props {
+  /** Passed down by Base, which knows about routes whose path is translated. */
+  alternates?: Record<Lang, string>;
+}
+
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const alternates = alternateUrls(Astro.url);
+const alternates = Astro.props.alternates ?? alternateUrls(Astro.url);
 
 const other: Lang = lang === "en" ? "pt-br" : "en";
 
@@ -31,6 +36,7 @@ const links = [
 ---
 
 <header
+  data-pagefind-ignore
   class="sticky top-0 z-40 border-b border-border/70 bg-bg/80 backdrop-blur-md"
 >
   <nav

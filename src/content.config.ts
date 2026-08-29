@@ -37,6 +37,11 @@ const posts = defineCollection({
     summary: z.string(),
     /** Publication date. Drives ordering and the feed's pubDate. */
     date: z.coerce.date(),
+    /**
+     * Set only when a published post is substantively revised — it surfaces on
+     * the post and as `dateModified` in the schema. A typo fix is not one.
+     */
+    updated: z.coerce.date().optional(),
     /** Freeform; rendered as tags under the title. */
     tags: z.array(z.string()).default([]),
     /** Drafts build locally but are dropped from the production output. */

@@ -1,18 +1,19 @@
 # nickmiyasato.dev
 
-Personal site and portfolio of Nicholas Miyasato — bilingual (EN / PT-BR), static, and shipped with no client-side JavaScript beyond a ~400-byte theme toggle.
+Personal site and portfolio of Nicholas Miyasato — bilingual (EN / PT-BR), static, and shipped with almost no client-side JavaScript: a ~400-byte theme toggle everywhere, and the blog search on `/blog`.
 
 Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com), deployed on Cloudflare Pages.
 
 ## Commands
 
-| Command           | Does                                |
-| ----------------- | ----------------------------------- |
-| `npm install`     | Install dependencies                |
-| `npm run dev`     | Dev server at `localhost:4321`      |
-| `npm run build`   | Build the static site to `dist/`    |
-| `npm run preview` | Serve `dist/` locally               |
-| `npm run check`   | Type-check `.astro` and `.ts` files |
+| Command            | Does                                     |
+| ------------------ | ---------------------------------------- |
+| `npm install`      | Install dependencies                     |
+| `npm run dev`      | Dev server at `localhost:4321`           |
+| `npm run build`    | Build the static site to `dist/`         |
+| `npm run preview`  | Serve `dist/` locally                    |
+| `npm run check`    | Type-check `.astro` and `.ts` files      |
+| `npm run og:cards` | Render post social cards (after a build) |
 
 ## Layout
 
@@ -21,6 +22,8 @@ src/
   content/projects/{en,pt-br}/   Project write-ups (MDX). Locale comes from the
                                  directory; filenames must match across locales
                                  so the language switcher can pair them.
+  content/posts/{en,pt-br}/      Blog posts (MDX). Same pairing rule, enforced:
+                                 an unpaired post fails the build.
   content.config.ts              Zod schemas for the content collections
   data/site.ts                   Identity, links, intro copy, education
   data/experience.ts             Work timeline — prose for the site, bullets
@@ -32,6 +35,8 @@ src/
   components/                    Astro components (no framework runtime)
   layouts/Base.astro             <head>, meta, hreflang, JSON-LD, theme script
   pages/                         Routes — EN at /, PT-BR under /pt-br/
+  pages/og/blog/                 Social card templates, screenshotted after the
+                                 build rather than served
   assets/projects/               Screenshots, optimised at build by astro:assets
   assets/posts/                  Blog images, same treatment
   styles/global.css              Design tokens, base styles, components
@@ -56,6 +61,93 @@ build fails on a missing or malformed field. Put the screenshot in
 
 Set `featured: true` for a full-width block on the home page; everything else
 falls into the compact list. `order` sorts within each group.
+
+For the screenshot, `scripts/capture-cover.mjs` takes one at the size the
+covers are used at, so it does not need cropping afterwards:
+
+```sh
+node scripts/capture-cover.mjs https://example.com my-project.png 470
+```
+
+The third argument scrolls before the shot — landing pages usually put the
+thing worth showing below the hero. Take it by hand instead if a particular
+frame is wanted; nothing depends on the script.
+
+## Adding a post
+
+Create the same filename in both locale directories:
+
+```
+src/content/posts/en/my-post.mdx
+src/content/posts/pt-br/my-post.mdx
+```
+
+Both, always. `assertTranslated()` in `src/lib/content.ts` fails the build on a
+post that exists in one locale only — the language switcher is unconditional,
+so a lone post would offer a link straight to a 404. It is the most common way
+to break this build.
+
+```yaml
+---
+title: What it is called
+summary: One line. Shown in the listing and used as the meta description.
+date: 2026-08-29
+tags: ["Angular", "Public sector"]
+# updated: 2026-09-14   # only for a real revision, not a typo fix
+# draft: true           # builds in dev, dropped from production
+# cover: dashboard.png  # file in src/assets/posts/
+---
+```
+
+**Tags are prose, and they are translated** — `"Public sector"` in English is
+`"Setor público"` in Portuguese. The two tag pages are separate taxonomies with
+their own slugs (`/blog/tags/public-sector`, `/pt-br/blog/tags/setor-publico`),
+and the only thing linking them is **position**: the Nth tag of a post in one
+locale is the same tag as the Nth in the other. Keep both lists the same length
+and in the same order, or the build tells you which post is out of step. That
+pairing is what lets a tag page point its hreflang at the right counterpart.
+
+Two posts on the same date sort by slug, so the order is stable across builds.
+
+If a slug changes after publication, add the 301 to `public/_redirects` — both
+the bare and the trailing-slash form, in both locales. There is precedent in
+that file from the Docusaurus migration.
+
+## Search
+
+`/blog` has full-text search over the post bodies, built by
+[Pagefind](https://pagefind.app) in the `postbuild` npm script and written to
+`dist/pagefind/`. It reads `<html lang>` and keeps one index per locale, so a
+Portuguese search never returns English results.
+
+This is the one place the site loads JavaScript that matters. It is loaded
+lazily and the box stays hidden until the index answers, so the year-grouped
+list below it is what a reader without JS — or anyone on `astro dev`, where
+`dist/pagefind/` does not exist — gets, which is the whole blog anyway.
+
+**Search only works against a build.** `npm run build && npm run preview`, not
+`npm run dev`. Two things it depends on that are easy to break:
+
+- `data-pagefind-body` on the `<article>` in `src/components/PostDetail.astro`.
+  It is what confines the index to posts; remove it and the résumé starts
+  turning up in blog results.
+- `'wasm-unsafe-eval'` in the CSP in `public/_headers`. Pagefind's index reader
+  is WebAssembly. Without it the search box silently never appears, and nothing
+  else on the page notices.
+
+## Social cards
+
+A post with a `cover` gets that image cropped to 1200×630. A post without one
+gets a card generated from its title and summary: `src/pages/og/blog/[lang]/`
+renders it as a real page, and `npm run og:cards` screenshots that page into
+`dist/og/blog/<lang>/<slug>.png` with Playwright — the same approach as the
+résumé PDFs, and for the same reason, which is that the card then uses the
+site's own fonts and palette and cannot drift from them.
+
+The built HTML already points `og:image` at those files, so the step has to run
+after `npm run build` and before the upload. `.github/workflows/deploy.yml` does
+that. Skipping it locally only means the card 404s on localhost, where nothing
+unfurls anything.
 
 ## Images in a post
 
@@ -170,8 +262,11 @@ repeat that number** — it feeds a public PDF.
 
 ## Conventions worth keeping
 
-- **No client JS.** If something seems to need a framework island, check whether
-  CSS can do it first. The only script that ships is the theme toggle.
+- **Almost no client JS.** If something seems to need a framework island, check
+  whether CSS can do it first. What ships today is the theme toggle, the
+  copy-email button and the blog search — and the search is lazy, optional, and
+  leaves a working page behind when it fails to load. Hold new additions to
+  that standard.
 - **Images go through `astro:assets`.** Never reference a screenshot from
   `public/` — that skips optimisation and ships the raw file.
 - **URLs are locale-agnostic in code.** Build paths with `localizePath()` from

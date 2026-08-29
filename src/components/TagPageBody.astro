@@ -1,0 +1,36 @@
+---
+import Icon from "@/components/Icon.astro";
+import PostRow from "@/components/PostRow.astro";
+import type { PostEntry } from "@/lib/content";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  /** The tag as written in the posts, in this locale. */
+  tag: string;
+  posts: PostEntry[];
+}
+
+const { tag, posts } = Astro.props;
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="shell py-14 sm:py-20">
+  <a
+    href={localizePath("/blog", lang)}
+    class="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+  >
+    <Icon name="arrow-left" size={14} />
+    {t("blog.back")}
+  </a>
+
+  <header class="mt-8 flex max-w-3xl flex-col gap-3 sm:mt-12">
+    <p class="eyebrow">{t("blog.tagged")}</p>
+    <h1 class="text-3xl">{tag}</h1>
+  </header>
+
+  <ul class="mt-10 flex flex-col border-t border-border sm:mt-12">
+    {posts.map((post) => <PostRow post={post} />)}
+  </ul>
+</div>

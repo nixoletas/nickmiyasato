@@ -3,12 +3,16 @@ import Icon from "@/components/Icon.astro";
 import PostRow from "@/components/PostRow.astro";
 import type { Lang } from "@/i18n/ui";
 import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
-import { getPosts } from "@/lib/content";
+import { getAllTags, getPostsByYear } from "@/lib/content";
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const posts = await getPosts(lang);
+
+const years = await getPostsByYear(lang);
+const tags = await getAllTags(lang);
 const feed = localizePath("/blog/rss.xml", lang);
+const tagBase = localizePath("/blog/tags", lang);
+const total = years.reduce((n, group) => n + group.posts.length, 0);
 ---
 
 <div class="shell py-14 sm:py-20">
@@ -28,12 +32,67 @@ const feed = localizePath("/blog/rss.xml", lang);
   </header>
 
   {
-    posts.length > 0 ? (
-      <ul class="mt-12 flex flex-col border-t border-border sm:mt-16">
-        {posts.map((post) => (
-          <PostRow post={post} />
+    total > 0 && (
+      <Fragment>
+        {/* Hidden until the Pagefind index answers. Without JS, or under
+            `astro dev` where dist/pagefind/ does not exist, there is no half
+            a search box sitting above a list that already works. */}
+        <form
+          id="blog-search"
+          role="search"
+          hidden
+          class="mt-10 max-w-md sm:mt-12"
+        >
+          <label for="blog-q" class="sr-only">
+            {t("blog.search")}
+          </label>
+          <input
+            id="blog-q"
+            type="search"
+            name="q"
+            autocomplete="off"
+            placeholder={t("blog.searchPlaceholder")}
+            class="w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm transition-colors placeholder:text-muted hover:border-accent/50 focus:border-accent focus:outline-none"
+          />
+        </form>
+
+        {tags.length > 0 && (
+          <nav
+            aria-label={t("blog.tags")}
+            class="mt-8 flex flex-wrap gap-2"
+            data-pagefind-ignore
+          >
+            {tags.map(({ tag, slug, count }) => (
+              <a
+                href={`${tagBase}/${slug}`}
+                class="tag transition-colors hover:border-accent hover:text-accent"
+              >
+                {tag}
+                <span class="ml-1.5 opacity-60">{count}</span>
+              </a>
+            ))}
+          </nav>
+        )}
+      </Fragment>
+    )
+  }
+
+  <div id="blog-results" hidden class="mt-12 sm:mt-16"></div>
+
+  {
+    total > 0 ? (
+      <div id="blog-posts" class="mt-12 flex flex-col gap-12 sm:mt-16">
+        {years.map(({ year, posts }) => (
+          <section>
+            <h2 class="eyebrow">{year}</h2>
+            <ul class="mt-4 flex flex-col border-t border-border">
+              {posts.map((post) => (
+                <PostRow post={post} />
+              ))}
+            </ul>
+          </section>
         ))}
-      </ul>
+      </div>
     ) : (
       <p class="mt-12 text-muted sm:mt-16">{t("blog.empty")}</p>
     )
@@ -47,3 +106,110 @@ const feed = localizePath("/blog/rss.xml", lang);
     {t("404.home")}
   </a>
 </div>
+
+{/* `is:inline` on purpose: Vite would try to resolve the /pagefind/ import at
+    build time, and that directory is only written afterwards by the postbuild
+    step. Inline scripts are emitted verbatim and resolved by the browser. */}
+<script
+  is:inline
+  define:vars={{
+    strings: {
+      one: t("blog.result"),
+      many: t("blog.results"),
+      none: t("blog.noResults"),
+    },
+  }}
+>
+  (async () => {
+    const form = document.getElementById("blog-search");
+    const input = document.getElementById("blog-q");
+    const results = document.getElementById("blog-results");
+    const posts = document.getElementById("blog-posts");
+    if (!form || !input || !results || !posts) return;
+
+    let pagefind;
+    try {
+      pagefind = await import("/pagefind/pagefind.js");
+      await pagefind.init();
+    } catch {
+      // No index: dev server, or a build that skipped postbuild. The list
+      // below is the whole blog anyway, so there is nothing to fall back to.
+      return;
+    }
+
+    form.hidden = false;
+
+    const escape = (value) =>
+      String(value ?? "").replace(
+        /[&<>"]/g,
+        (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+      );
+
+    const render = async (query) => {
+      if (!query.trim()) {
+        results.hidden = true;
+        results.innerHTML = "";
+        posts.hidden = false;
+        return;
+      }
+
+      const search = await pagefind.search(query);
+      const found = search.results.length;
+      // Twenty is well past where anyone keeps reading, and each data() call
+      // is a fetch of that page's fragment.
+      const top = await Promise.all(
+        search.results.slice(0, 20).map((result) => result.data()),
+      );
+
+      posts.hidden = true;
+      results.hidden = false;
+
+      if (found === 0) {
+        results.innerHTML = `<p class="text-muted">${escape(strings.none)}</p>`;
+        return;
+      }
+
+      const count = `${found} ${found === 1 ? strings.one : strings.many}`;
+      results.innerHTML =
+        `<p class="eyebrow">${escape(count)}</p>` +
+        `<ul class="mt-4 flex flex-col border-t border-border">` +
+        top
+          .map(
+            (page) =>
+              `<li class="border-b border-border last:border-b-0">` +
+              `<a href="${escape(page.url)}" class="group flex flex-col gap-2 py-6">` +
+              `<span class="font-mono text-xs text-muted">${escape(page.meta.date)}</span>` +
+              `<h3 class="text-xl transition-colors group-hover:text-accent">${escape(page.meta.title)}</h3>` +
+              // Pagefind builds the excerpt from indexed text and wraps the
+              // hits in <mark>, so this one field is intentionally not escaped.
+              `<p class="prose-measure text-muted">${page.excerpt}</p>` +
+              `</a></li>`,
+          )
+          .join("") +
+        `</ul>`;
+    };
+
+    let timer;
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const query = input.value;
+        // Keeps a search linkable and survives a back button, without adding
+        // a history entry per keystroke.
+        const url = new URL(location.href);
+        if (query.trim()) url.searchParams.set("q", query);
+        else url.searchParams.delete("q");
+        history.replaceState(null, "", url);
+        render(query);
+      }, 150);
+    });
+
+    form.addEventListener("submit", (event) => event.preventDefault());
+
+    const initial = new URL(location.href).searchParams.get("q");
+    if (initial) {
+      input.value = initial;
+      render(initial);
+    }
+  })();
+</script>

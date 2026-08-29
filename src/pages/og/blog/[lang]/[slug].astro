@@ -1,0 +1,122 @@
+---
+import "@/styles/global.css";
+import type { InferGetStaticPropsType } from "astro";
+import { site } from "@/data/site";
+import { htmlLang, type Lang } from "@/i18n/ui";
+import { locales, useTranslations } from "@/i18n/utils";
+import { entrySlug, formatPostDate, getPosts, readingTime } from "@/lib/content";
+import { OG_SIZE } from "@/lib/seo";
+
+/**
+ * The social card for a post, as a page. Deliberately not a <Base> page: there
+ * is no nav, no footer and no theme script here — it is a standalone 1200x630
+ * document that scripts/render-og-cards.mjs screenshots into
+ * /og/blog/<lang>/<slug>.png after the build.
+ *
+ * Rendering it as a page rather than composing an image means it uses the same
+ * fonts, palette and type as the site, and changing the design is a CSS edit.
+ */
+export async function getStaticPaths() {
+  const perLocale = await Promise.all(
+    locales.map(async (lang) => {
+      const posts = await getPosts(lang);
+      return posts.map((post) => ({
+        params: { lang, slug: entrySlug(post.id) },
+        props: { post, lang },
+      }));
+    }),
+  );
+
+  return perLocale.flat();
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { post, lang } = Astro.props as Props;
+const t = useTranslations(lang as Lang);
+const { title, summary, date } = post.data;
+---
+
+<html lang={htmlLang[lang as Lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    {/* These pages exist to be photographed, not read. */}
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+
+  <body>
+    <div class="card">
+      <p class="wordmark">nick<span>.</span>miyasato</p>
+
+      <div class="body">
+        <h1>{title}</h1>
+        <p class="summary">{summary}</p>
+      </div>
+
+      <p class="meta">
+        {`${formatPostDate(date, lang as Lang)} · ${readingTime(post)} ${t("blog.readingTime")}`}
+      </p>
+    </div>
+  </body>
+</html>
+
+<style define:vars={{ w: `${OG_SIZE.width}px`, h: `${OG_SIZE.height}px` }}>
+  /* Fixed pixels throughout: the fluid type scale is sized against a viewport,
+     and this document only ever renders at one size. */
+  .card {
+    width: var(--w);
+    height: var(--h);
+    padding: 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--c-bg);
+    border-bottom: 10px solid var(--c-accent);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    color: var(--c-muted);
+  }
+
+  .wordmark span {
+    color: var(--c-accent);
+  }
+
+  h1 {
+    font-size: 64px;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    text-wrap: balance;
+    /* A long title has to stop somewhere; four lines is what fits above the
+       summary without pushing the meta line off the card. */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .summary {
+    margin-top: 24px;
+    font-size: 28px;
+    line-height: 1.45;
+    color: var(--c-muted);
+    max-width: 22em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--c-muted);
+  }
+</style>

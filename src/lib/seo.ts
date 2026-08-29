@@ -30,11 +30,17 @@ export async function projectOgImage(cover?: string): Promise<string | undefined
 }
 
 /**
- * Same treatment for a post cover, but centred: post images are illustrations
- * rather than screenshots, so there is no header at the top worth protecting.
+ * The social card for a post. A cover gets the same crop treatment as a project
+ * one but centred — post images are illustrations rather than screenshots, so
+ * there is no header at the top worth protecting.
+ *
+ * Without a cover this falls through to the card rendered at build time by
+ * scripts/render-og-cards.mjs rather than to the site-wide default, which
+ * would put one identical image on every post in the feed.
  */
-export async function postOgImage(cover?: string): Promise<string | undefined> {
-  return cardFrom(resolvePostCover(cover), "center");
+export async function postOgImage(post: PostEntry, lang: Lang): Promise<string> {
+  const fromCover = await cardFrom(resolvePostCover(post.data.cover), "center");
+  return fromCover ?? `/og/blog/${lang}/${entrySlug(post.id)}.png`;
 }
 
 async function cardFrom(
@@ -93,7 +99,7 @@ export function breadcrumbSchema(
  * so the post and the profile resolve to one entity.
  */
 export function postSchema(post: PostEntry, lang: Lang, image?: string) {
-  const { title, summary, date, tags } = post.data;
+  const { title, summary, date, updated, tags } = post.data;
   const url = absolute(localizePath(`/blog/${entrySlug(post.id)}`, lang));
 
   return {
@@ -105,6 +111,7 @@ export function postSchema(post: PostEntry, lang: Lang, image?: string) {
     mainEntityOfPage: url,
     inLanguage: htmlLang[lang],
     datePublished: date.toISOString(),
+    ...(updated ? { dateModified: updated.toISOString() } : {}),
     ...(tags.length > 0 ? { keywords: tags.join(", ") } : {}),
     author: { "@type": "Person", "@id": personId, name: site.legalName },
     publisher: { "@type": "Person", "@id": personId, name: site.legalName },
@@ -157,5 +164,36 @@ export function projectSchema(project: ProjectEntry, lang: Lang, image?: string)
     ...(demo || repo
       ? { sameAs: [demo, repo].filter(Boolean) as string[] }
       : {}),
+  };
+}
+
+/**
+ * The blog as an entity, for the index page. Without it /blog is just another
+ * page that happens to link to some others; with it, the posts are named as a
+ * set and each one's URL and date are known without a crawl. `blogPost` uses
+ * the same @id for the author as everything else, so it all resolves to one
+ * Person.
+ */
+export function blogSchema(lang: Lang, posts: PostEntry[]) {
+  const url = absolute(localizePath("/blog", lang));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${url}#blog`,
+    name: `${site.name} — Blog`,
+    url,
+    inLanguage: htmlLang[lang],
+    author: { "@type": "Person", "@id": personId, name: site.legalName },
+    blogPost: posts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.data.title,
+      description: post.data.summary,
+      url: absolute(localizePath(`/blog/${entrySlug(post.id)}`, lang)),
+      datePublished: post.data.date.toISOString(),
+      ...(post.data.updated
+        ? { dateModified: post.data.updated.toISOString() }
+        : {}),
+    })),
   };
 }

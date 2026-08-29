@@ -2,13 +2,17 @@
 import BlogIndexBody from "@/components/BlogIndexBody.astro";
 import Base from "@/layouts/Base.astro";
 import { site } from "@/data/site";
-import { breadcrumbSchema } from "@/lib/seo";
+import { getPosts } from "@/lib/content";
+import { blogSchema, breadcrumbSchema } from "@/lib/seo";
+
+const posts = await getPosts("en");
 ---
 
 <Base
   title={`Blog — ${site.name}`}
   description="Notes on systems I've built and run — infrastructure, data pipelines, and the parts that only show up once something is in production."
   schemas={[
+    blogSchema("en", posts),
     breadcrumbSchema("en", [
       { name: site.name, path: "/" },
       { name: "Blog", path: "/blog" },

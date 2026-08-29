@@ -23,6 +23,10 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
+      // The /og/ routes are card templates that exist to be screenshotted by
+      // scripts/render-og-cards.mjs. They carry noindex; keeping them out of
+      // the sitemap stops them being offered up in the first place.
+      filter: (page) => !page.includes("/og/"),
       i18n: {
         defaultLocale: "en",
         locales: { en: "en", "pt-br": "pt-BR" },

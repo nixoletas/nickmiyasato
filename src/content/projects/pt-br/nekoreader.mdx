@@ -1,0 +1,42 @@
+---
+title: nekoreader
+summary: Leitor de PDF e EPUB que transforma livros escaneados em texto selecionável e marcável — com a posição de leitura e as notas sincronizadas entre dispositivos.
+year: "2026"
+role: Sozinho — produto, engenharia, operação
+stack: ["Next.js", "React 19", "TypeScript", "Supabase", "Tailwind", "pdf.js", "PWA"]
+featured: true
+order: 1
+cover: nekoreader.png
+repo: https://github.com/nixoletas/nekoreader
+demo: https://nekoreader.vercel.app
+---
+
+## O problema
+
+Boa parte do que eu quero ler existe como um PDF que alguém escaneou. Qualquer visualizador mostra essas páginas sem reclamar, mas elas são fotos de texto. Não dá para selecionar uma frase. O número da página na tela não tem relação com o número impresso no papel, então toda citação tirada dali sai errada. E qualquer anotação acaba em outro aplicativo, desligada do trecho que a provocou.
+
+As alternativas abrem mão de alguma coisa. Leitores dedicados querem EPUB e lidam mal com escaneados. Bibliotecas na nuvem querem os livros nos servidores delas. Visualizadores de navegador esquecem onde você parou assim que a aba fecha.
+
+## O que eu construí
+
+Um leitor que roda no navegador e se instala na tela inicial do celular como PWA, e que trata uma página escaneada e uma nativa do mesmo jeito: texto que dá para selecionar, marcar em quatro cores e pendurar uma nota com título.
+
+Posição e anotações sincronizam por uma conta só, então a página em que você parou no computador é a que abre no celular. E os livros podem sair de novo — exportação para EPUB ou Markdown com as anotações e a numeração preservadas. Uma biblioteca da qual não dá para tirar as coisas é uma armadilha, não uma biblioteca.
+
+A interface está em seis idiomas, resolvidos no servidor a partir da requisição para que a primeira renderização já venha na língua certa.
+
+## Decisões técnicas
+
+**O OCR roda no dispositivo.** As páginas escaneadas passam por reconhecimento óptico no próprio navegador, não em um servidor. Isso mantém o livro na máquina de quem lê e faz o recurso não custar nada por página para operar — que é a única razão de ele poder ser gratuito. Equações e figuras ficam como recortes de imagem em vez de passarem pelo reconhecimento: uma fórmula embaralhada é pior que uma foto dela.
+
+**Página do livro, não página do arquivo.** Um escaneado começa com capa, folha de rosto e uma dúzia de páginas de miolo em algarismos romanos antes da página 1 impressa. Numerar pelo deslocamento do arquivo erra toda referência por essa diferença. Cada livro guarda um deslocamento de página e a faixa em romanos, então "página 214" é o 214 impresso no papel.
+
+**Buckets privados e URLs assinadas.** Os arquivos ficam em um bucket privado do Supabase e são lidos por URLs assinadas de vida curta; row-level security prende cada linha de progresso e de anotação ao seu dono. O isolamento é uma policy no Postgres, não um filtro que alguém precisa lembrar de escrever.
+
+**O progresso salva com debounce de 700 ms.** Ler gera uma atualização de posição a cada rolagem, e gravar cada uma é uma requisição por quadro. 700 ms junta uma rajada de rolagem em uma escrita só e mantém a perda por fechar a aba no meio da página em algo que ninguém percebe.
+
+**Server components na casca, cliente só no canvas.** Biblioteca, metadados do livro e resolução de idioma renderizam no servidor. Só o canvas da página, a camada de seleção e a interface de anotação vão como código de cliente — que é onde a interatividade de fato está.
+
+## Onde está
+
+No ar e gratuito em [nekoreader.vercel.app](https://nekoreader.vercel.app), com upload de até 100 MB por livro. O código está no [GitHub](https://github.com/nixoletas/nekoreader).

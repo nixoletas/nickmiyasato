@@ -18,7 +18,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { post } = Astro.props as Props;
 
-const ogImage = await postOgImage(post.data.cover);
+const ogImage = await postOgImage(post, "pt-br");
 const schemas = [
   postSchema(post, "pt-br", ogImage),
   breadcrumbSchema("pt-br", [
@@ -33,6 +33,9 @@ const schemas = [
   title={`${post.data.title} — ${site.name}`}
   description={post.data.summary}
   image={ogImage}
+  ogType="article"
+  published={post.data.date.toISOString()}
+  modified={post.data.updated?.toISOString()}
   noindex={post.data.draft}
   schemas={schemas}
 >

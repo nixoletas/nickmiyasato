@@ -23,6 +23,20 @@ interface Props {
   noindex?: boolean;
   /** Extra JSON-LD blocks for this page, alongside the site-wide Person. */
   schemas?: Record<string, unknown>[];
+  /**
+   * "article" on a blog post, which is what the OG spec has for one and what
+   * unfurlers use to decide whether to show a byline and a date.
+   */
+  ogType?: "website" | "article";
+  /** ISO 8601. Emitted as article:* metadata; only read when ogType is set. */
+  published?: string;
+  modified?: string;
+  /**
+   * Real paths for this page in every locale. Only needed where the path
+   * itself differs between locales — tag pages, whose slugs are translated.
+   * Everything else pairs by path and can leave this alone.
+   */
+  alternates?: Record<Lang, string>;
 }
 
 const {
@@ -32,6 +46,10 @@ const {
   imageAlt,
   noindex = false,
   schemas = [],
+  ogType = "website",
+  published,
+  modified,
+  alternates: given,
 } = Astro.props;
 
 const lang: Lang = getLangFromUrl(Astro.url);
@@ -47,7 +65,7 @@ const ogImage = new URL(image, site.url).href;
  * put it back. seo.ts does the same thing to the schema URLs, for the same
  * reason.
  */
-const alt = alternateUrls(Astro.url);
+const alt = given ?? alternateUrls(Astro.url);
 const alternates = Object.fromEntries(
   Object.entries(alt).map(([lang, path]) => [
     lang,
@@ -121,8 +139,10 @@ const personSchema = {
       href={localizePath("/blog/rss.xml", lang)}
     />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.name} />
+    {published && <meta property="article:published_time" content={published} />}
+    {modified && <meta property="article:modified_time" content={modified} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -179,7 +199,7 @@ const personSchema = {
       {t("nav.skip")}
     </a>
 
-    <Nav />
+    <Nav alternates={alt} />
 
     <main id="main">
       <slot />

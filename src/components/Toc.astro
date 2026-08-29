@@ -1,0 +1,156 @@
+---
+import type { MarkdownHeading } from "astro";
+import Icon from "@/components/Icon.astro";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+interface Props {
+  /** Section headings, already filtered to the depth worth listing. */
+  headings: MarkdownHeading[];
+  /**
+   * "rail" is the sticky column beside the article on large screens; "inline"
+   * is the collapsed disclosure above it on everything narrower. Both are
+   * rendered and one is hidden per breakpoint, so only one is ever in the
+   * accessibility tree.
+   */
+  variant: "rail" | "inline";
+}
+
+const { headings, variant } = Astro.props;
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const titleId = `toc-${variant}-title`;
+---
+
+{
+  variant === "rail" ? (
+    <nav
+      id="toc-rail"
+      aria-labelledby={titleId}
+      data-pagefind-ignore
+      class="hidden lg:col-start-2 lg:row-start-1 lg:block"
+    >
+      {/* top-24 clears the 4rem sticky header with the same breathing room as
+          the scroll-padding-top in global.css, so a heading jumped to from
+          here lands where the highlight says it is. */}
+      <div class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+        <h2 id={titleId} class="eyebrow">
+          {t("blog.toc")}
+        </h2>
+
+        <ol class="mt-4 flex flex-col border-l border-border">
+          {headings.map((heading) => (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                class="-ml-px block border-l border-transparent py-1.5 pl-4 text-sm text-muted transition-colors hover:text-fg aria-[current=location]:border-accent aria-[current=location]:text-accent"
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </nav>
+  ) : (
+    <details
+      class="group mt-10 rounded-xl border border-border bg-surface sm:mt-12 lg:hidden"
+      data-pagefind-ignore
+    >
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+        <span class="eyebrow">{t("blog.toc")}</span>
+        <span class="flex items-center gap-2 font-mono text-xs text-muted">
+          {headings.length}
+          <Icon
+            name="chevron-down"
+            size={14}
+            class="transition-transform group-open:rotate-180"
+          />
+        </span>
+      </summary>
+
+      <ol class="flex flex-col gap-3 border-t border-border px-5 py-4">
+        {headings.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class="block text-sm text-muted transition-colors hover:text-accent"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </details>
+  )
+}
+
+{
+  /* Only the rail highlights, and it only exists once, so the script ships
+     with it rather than twice from the component as a whole. */
+  variant === "rail" && (
+    <script is:inline>
+      (() => {
+        const start = () => {
+        const rail = document.getElementById("toc-rail");
+        const headings = [...document.querySelectorAll(".content h2[id]")];
+        if (!rail || headings.length === 0) return;
+
+        const links = new Map(
+          [...rail.querySelectorAll("a[href^='#']")].map((a) => [
+            decodeURIComponent(a.getAttribute("href").slice(1)),
+            a,
+          ]),
+        );
+
+        let current = null;
+        const mark = (id) => {
+          if (id === current) return;
+          links.get(current)?.removeAttribute("aria-current");
+          // "location" rather than "page": this is a position within the
+          // document, not a link to the page you are already on.
+          links.get(id)?.setAttribute("aria-current", "location");
+          current = id;
+        };
+
+        // The line the heading has to cross to count as the one being read.
+        // Below the sticky header, so a heading level with the top of the
+        // viewport is already active rather than about to be.
+        const LINE = 120;
+
+        const update = () => {
+          let active = headings[0].id;
+          for (const heading of headings) {
+            if (heading.getBoundingClientRect().top > LINE) break;
+            active = heading.id;
+          }
+          mark(active);
+        };
+
+        let queued = false;
+        const schedule = () => {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(() => {
+            queued = false;
+            update();
+          });
+        };
+
+        addEventListener("scroll", schedule, { passive: true });
+        addEventListener("resize", schedule, { passive: true });
+        update();
+        };
+
+        // The rail is placed before the article in the source so the outline
+        // comes first for a screen reader, which means this script runs before
+        // the headings it measures exist. Waiting is not optional.
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", start, { once: true });
+        } else {
+          start();
+        }
+      })();
+    </script>
+  )
+}

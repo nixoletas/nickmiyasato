@@ -2,6 +2,7 @@
 import { Picture } from "astro:assets";
 import { render } from "astro:content";
 import Icon from "@/components/Icon.astro";
+import Toc from "@/components/Toc.astro";
 import { site } from "@/data/site";
 import {
   adjacentPosts,
@@ -116,34 +117,19 @@ const { newer, older } = await adjacentPosts(lang, post.id);
     )
   }
 
-  {
-    showToc && (
-      <nav
-        aria-labelledby="toc-title"
-        data-pagefind-ignore
-        class="prose-measure mt-12 rounded-xl border border-border bg-surface p-5 sm:mt-16"
-      >
-        <h2 id="toc-title" class="eyebrow">
-          {t("blog.toc")}
-        </h2>
-        <ol class="mt-3 flex flex-col gap-2">
-          {toc.map((heading) => (
-            <li>
-              <a
-                href={`#${heading.slug}`}
-                class="text-sm text-muted transition-colors hover:text-accent"
-              >
-                {heading.text}
-              </a>
-            </li>
-          ))}
-        </ol>
-      </nav>
-    )
-  }
+  {showToc && <Toc headings={toc} variant="inline" />}
 
-  <div class:list={["content prose-measure", showToc ? "mt-10" : "mt-12 sm:mt-16"]}>
-    <Content />
+  {/* The rail sits in the second column but comes first in the source, so a
+      screen reader or a tab through the page meets the outline before the
+      article rather than after it. */}
+  <div
+    class="mt-12 sm:mt-16 lg:grid lg:grid-cols-[minmax(0,68ch)_minmax(0,1fr)] lg:gap-12"
+  >
+    {showToc && <Toc headings={toc} variant="rail" />}
+
+    <div class="content prose-measure lg:col-start-1 lg:row-start-1">
+      <Content />
+    </div>
   </div>
 
   {

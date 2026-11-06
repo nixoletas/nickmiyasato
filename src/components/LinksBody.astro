@@ -10,24 +10,37 @@ const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const email = site.email[lang];
 
+/** Android deep link: opens the app, or `url` when it is not installed. */
+const intent = (url: string, pkg: string) => {
+  const { host, pathname } = new URL(url);
+  const fallback = encodeURIComponent(url);
+  return `intent://${host}${pathname}#Intent;scheme=https;package=${pkg};S.browser_fallback_url=${fallback};end`;
+};
+
 const links = [
   {
     href: site.youtube,
     label: "YouTube",
     value: "@nixoletas",
     icon: "youtube" as const,
+    android: intent(site.youtube, "com.google.android.youtube"),
+    ios: "youtube://www.youtube.com/@nixoletas",
   },
   {
     href: site.instagram,
     label: "Instagram",
     value: "@nickmiyasato",
     icon: "instagram" as const,
+    android: intent(site.instagram, "com.instagram.android"),
+    ios: "instagram://user?username=nickmiyasato",
   },
   {
     href: site.linkedin,
     label: "LinkedIn",
     value: "in/nixoletas",
     icon: "linkedin" as const,
+    android: intent(site.linkedin, "com.linkedin.android"),
+    ios: "linkedin://in/nixoletas",
   },
   {
     href: site.github,
@@ -70,6 +83,8 @@ const links = [
           <li>
             <a
               href={link.href}
+              data-android={link.android}
+              data-ios={link.ios}
               {...link.href.startsWith("http")
                 ? { target: "_blank", rel: "me noopener" }
                 : {}}
@@ -92,3 +107,44 @@ const links = [
     </ul>
   </div>
 </section>
+
+<script is:inline>
+  // This page lives in a social bio, so most taps come from the Instagram or
+  // TikTok in-app browser, which ignores Universal Links and App Links and
+  // would open the profile inside itself. The href stays a plain https URL, so
+  // desktop and no-JS visitors are unaffected.
+  (() => {
+    const ua = navigator.userAgent;
+    const android = /Android/i.test(ua);
+    const ios = /iPhone|iPad|iPod/i.test(ua);
+    const inApp = /Instagram|FBAN|FBAV|FB_IAB|Threads|TikTok|musical_ly|BytedanceWebview|LinkedInApp|Twitter/i.test(ua);
+
+    // A normal iOS browser already honours Universal Links, and a custom scheme
+    // there would show an error when the app is missing.
+    if (!android && !(ios && inApp)) return;
+
+    document.querySelectorAll("a[data-android]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        if (android) {
+          // Same tab: target=_blank would strand an empty tab behind the app.
+          // The intent carries its own fallback URL.
+          location.href = link.dataset.android;
+          return;
+        }
+
+        // iOS cannot tell us whether a scheme opened anything, so if the page
+        // is still visible shortly after, assume the app is not installed.
+        const timer = setTimeout(() => {
+          if (!document.hidden) location.href = link.href;
+        }, 1500);
+        const cancel = () => clearTimeout(timer);
+        document.addEventListener("visibilitychange", cancel, { once: true });
+        window.addEventListener("pagehide", cancel, { once: true });
+
+        location.href = link.dataset.ios;
+      });
+    });
+  })();
+</script>

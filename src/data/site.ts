@@ -8,7 +8,9 @@ export const site = {
   // Portuguese pages because the English address reads as a typo in PT-BR.
   email: { en: "hey@nickmiyasato.dev", "pt-br": "contato@nickmiyasato.dev" },
   github: "https://github.com/nixoletas",
-  linkedin: "https://linkedin.com/in/nixoletas",
+  // www on purpose: the bare domain redirects, which can stop the LinkedIn app
+  // from claiming the link on a phone.
+  linkedin: "https://www.linkedin.com/in/nixoletas",
   youtube: "https://www.youtube.com/@nixoletas",
   instagram: "https://www.instagram.com/nickmiyasato",
   repo: "https://github.com/nixoletas/nickmiyasato",

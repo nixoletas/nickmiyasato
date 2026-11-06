@@ -9,6 +9,8 @@ export const site = {
   email: { en: "hey@nickmiyasato.dev", "pt-br": "contato@nickmiyasato.dev" },
   github: "https://github.com/nixoletas",
   linkedin: "https://linkedin.com/in/nixoletas",
+  youtube: "https://www.youtube.com/@nixoletas",
+  instagram: "https://www.instagram.com/nickmiyasato",
   repo: "https://github.com/nixoletas/nickmiyasato",
   location: { en: "São Paulo, Brazil", "pt-br": "São Paulo, Brasil" },
 } as const;

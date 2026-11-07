@@ -4,7 +4,7 @@ import portrait from "@/assets/nick.jpeg";
 import Icon from "@/components/Icon.astro";
 import { site } from "@/data/site";
 import type { Lang } from "@/i18n/ui";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -18,6 +18,14 @@ const intent = (url: string, pkg: string) => {
 };
 
 const links = [
+  {
+    // First on purpose: someone tapping through from a bio who might hire me
+    // should not have to scroll past the social profiles to find out how.
+    href: localizePath("/services", lang),
+    label: t("nav.services"),
+    value: lang === "en" ? "Websites, apps and data" : "Sites, sistemas e dados",
+    icon: "briefcase" as const,
+  },
   {
     href: site.youtube,
     label: "YouTube",
@@ -88,7 +96,7 @@ const links = [
               {...link.href.startsWith("http")
                 ? { target: "_blank", rel: "me noopener" }
                 : {}}
-              class="group flex items-center gap-4 rounded-xl border border-border bg-surface px-5 py-4 transition-colors hover:border-accent"
+              class="card group flex items-center gap-4 px-5 py-4"
             >
               <span class="shrink-0 text-muted transition-colors group-hover:text-accent">
                 <Icon name={link.icon} size={20} />

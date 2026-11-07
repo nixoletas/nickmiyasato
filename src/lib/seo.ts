@@ -1,4 +1,5 @@
 import { getImage } from "astro:assets";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
 import { htmlLang, type Lang } from "@/i18n/ui";
 import { localizePath } from "@/i18n/utils";
@@ -194,6 +195,79 @@ export function blogSchema(lang: Lang, posts: PostEntry[]) {
       ...(post.data.updated
         ? { dateModified: post.data.updated.toISOString() }
         : {}),
+    })),
+  };
+}
+
+/**
+ * The services page as a ProfessionalService offering a catalogue of Services.
+ * This is what lets a query like "desenvolvedor de sites São Paulo" resolve to
+ * a named provider with a location and a list of what it sells, rather than to
+ * an anonymous page. The provider is the site-wide Person by @id, so the
+ * offer and the profile stay one entity. No prices: none are published.
+ */
+export function servicesSchema(lang: Lang) {
+  const copy = services[lang];
+  const url = absolute(localizePath("/services", lang));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": `${url}#service`,
+    name: `${site.legalName} — ${copy.eyebrow}`,
+    description: copy.lead,
+    url,
+    inLanguage: htmlLang[lang],
+    image: new URL("/img/nick.jpg", site.url).href,
+    email: site.email[lang],
+    founder: { "@type": "Person", "@id": personId, name: site.legalName },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "São Paulo",
+      addressRegion: "SP",
+      addressCountry: "BR",
+    },
+    areaServed: [
+      { "@type": "Country", name: "Brazil" },
+      { "@type": "Place", name: "Worldwide (remote)" },
+    ],
+    availableLanguage: ["pt-BR", "en"],
+    knowsAbout: [...new Set(copy.services.flatMap((s) => s.stack))],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: copy.servicesHeading,
+      itemListElement: copy.services.map((service, i) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          "@id": `${url}#service-${i + 1}`,
+          name: service.title,
+          description: `${service.pitch} ${service.includes.join(". ")}.`,
+          url: `${url}#service-${i + 1}`,
+          serviceType: service.title,
+          provider: { "@type": "Person", "@id": personId, name: site.legalName },
+          areaServed: { "@type": "Country", name: "Brazil" },
+        },
+      })),
+    },
+  };
+}
+
+/**
+ * The FAQ block on /services. Google limits FAQ rich results to a few sites
+ * now, but the markup still states the Q&A pairs unambiguously for search and
+ * for LLM crawlers, and it mirrors visible text exactly, as required.
+ */
+export function faqSchema(lang: Lang) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    url: absolute(localizePath("/services", lang)),
+    inLanguage: htmlLang[lang],
+    mainEntity: services[lang].faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
 }

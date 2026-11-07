@@ -1,0 +1,19 @@
+---
+import ServicesBody from "@/components/ServicesBody.astro";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/data/site";
+import { breadcrumbSchema, faqSchema, servicesSchema } from "@/lib/seo";
+
+const breadcrumb = breadcrumbSchema("en", [
+  { name: site.name, path: "/" },
+  { name: "Services", path: "/services" },
+]);
+---
+
+<Base
+  title={`Freelance Full Stack Developer — ${site.name}`}
+  description="Hire a freelance full stack developer: websites and landing pages, web and mobile apps, data pipelines and dashboards, and server maintenance. Fixed-price proposals, remote, in English or Portuguese."
+  schemas={[breadcrumb, servicesSchema("en"), faqSchema("en")]}
+>
+  <ServicesBody />
+</Base>

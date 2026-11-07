@@ -91,7 +91,6 @@ export const experience: Record<Lang, Role[]> = {
         "Docker",
         "CI/CD",
       ],
-      link: { href: "/projects/a-divisao", label: "A Divisão" },
     },
     {
       company: "PIC Money",
@@ -116,7 +115,6 @@ export const experience: Record<Lang, Role[]> = {
         "API Design",
         "Cloud Infrastructure",
       ],
-      link: { href: "/projects/picmoney", label: "PIC Money" },
     },
     {
       company: "Brazilian Army",
@@ -200,7 +198,6 @@ export const experience: Record<Lang, Role[]> = {
         "Docker",
         "CI/CD",
       ],
-      link: { href: "/projects/a-divisao", label: "A Divisão" },
     },
     {
       company: "PIC Money",
@@ -225,7 +222,6 @@ export const experience: Record<Lang, Role[]> = {
         "Design de API",
         "Infraestrutura em nuvem",
       ],
-      link: { href: "/projects/picmoney", label: "PIC Money" },
     },
     {
       company: "Exército Brasileiro",

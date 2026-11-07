@@ -21,10 +21,12 @@ export const htmlLang: Record<Lang, string> = {
 
 export const ui = {
   en: {
+    "nav.home": "Home",
     "nav.work": "Work",
     "nav.projects": "Projects",
     "nav.about": "About",
     "nav.blog": "Blog",
+    "nav.services": "Services",
     "nav.resume": "Résumé",
     "nav.contact": "Contact",
     "nav.menu": "Menu",
@@ -108,10 +110,12 @@ export const ui = {
     "blog.archive": "Archive",
   },
   "pt-br": {
+    "nav.home": "Home",
     "nav.work": "Trabalho",
     "nav.projects": "Projetos",
     "nav.about": "Sobre",
     "nav.blog": "Blog",
+    "nav.services": "Serviços",
     "nav.resume": "Currículo",
     "nav.contact": "Contato",
     "nav.menu": "Menu",

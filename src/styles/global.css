@@ -44,6 +44,8 @@
   --c-accent: #b4531f;
   --c-accent-fg: #ffffff;
   --c-selection: #f2d9c6;
+  --shadow-sm: 0 1px 2px rgb(26 25 23 / 0.04), 0 4px 16px -6px rgb(26 25 23 / 0.06);
+  --shadow-lg: 0 2px 4px rgb(26 25 23 / 0.04), 0 18px 40px -12px rgb(26 25 23 / 0.16);
 
   color-scheme: light;
 }
@@ -57,6 +59,8 @@
   --c-accent: #e8975a;
   --c-accent-fg: #1a1005;
   --c-selection: #4a3018;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px -6px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 18px 40px -12px rgb(0 0 0 / 0.6);
 
   color-scheme: dark;
 }
@@ -163,6 +167,7 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0s !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
@@ -208,6 +213,88 @@
   .link-underline:hover,
   .link-underline:focus-visible {
     background-size: 100% 1px;
+  }
+
+  /* Raised surface. The shadow is two layers — a tight one for the edge and a
+     wide, faint one for lift — so cards separate from the cream background
+     without the heavy drop shadow look. */
+  .card {
+    background-color: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 0.9rem;
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color 0.25s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft),
+      transform 0.35s var(--ease-out-soft);
+  }
+
+  a.card:hover,
+  a.card:focus-visible {
+    border-color: color-mix(in srgb, var(--c-accent) 55%, var(--c-border));
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.6rem;
+    padding: 0.65rem 1.05rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      color 0.2s,
+      box-shadow 0.3s var(--ease-out-soft),
+      transform 0.3s var(--ease-out-soft);
+  }
+
+  .btn-primary {
+    background-color: var(--c-accent);
+    color: var(--c-accent-fg);
+    box-shadow: 0 6px 20px -8px color-mix(in srgb, var(--c-accent) 70%, transparent);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px -8px color-mix(in srgb, var(--c-accent) 80%, transparent);
+  }
+
+  .btn-ghost {
+    border: 1px solid var(--c-border);
+    background-color: color-mix(in srgb, var(--c-surface) 70%, transparent);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+  }
+
+  /* Soft copper glow behind the hero. Decorative only, so it sits on a
+     pseudo-element and never affects layout or hit-testing. */
+  .hero-glow {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .hero-glow::before {
+    content: "";
+    position: absolute;
+    inset: -6rem 0 auto;
+    height: 36rem;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(40rem 22rem at 78% 30%, color-mix(in srgb, var(--c-accent) 14%, transparent), transparent 70%),
+      radial-gradient(30rem 18rem at 10% 0%, color-mix(in srgb, var(--c-accent) 8%, transparent), transparent 70%);
+    /* Fade every edge so the box itself never shows as a hard rectangle. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent), linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, #000 35%, transparent), linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+    mask-composite: intersect;
   }
 
   .tag {
@@ -316,6 +403,21 @@
 @layer utilities {
   .rise {
     animation: rise 0.7s var(--ease-out-soft) backwards;
+    /* Set --d inline to stagger siblings, e.g. style="--d: 120ms". */
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* Fade-up as a block scrolls into view. Progressive: browsers without
+     scroll-driven animations simply show the block, and reduced-motion users
+     never get the animation at all. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .reveal {
+        animation: rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 35%;
+      }
+    }
   }
 
   @keyframes rise {

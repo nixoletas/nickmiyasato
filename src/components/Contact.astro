@@ -48,7 +48,7 @@ const channels = [
             {...channel.href.startsWith("http")
               ? { target: "_blank", rel: "noopener" }
               : {}}
-            class="flex h-full flex-col gap-2 rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent"
+            class="card flex h-full flex-col gap-2 p-5"
           >
             <span class="flex items-center gap-2 text-muted">
               <Icon name={channel.icon} size={15} />

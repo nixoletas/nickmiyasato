@@ -69,7 +69,6 @@ export const resume: Record<Lang, ResumeContent> = {
     projects: [
       {
         name: "Meus Gastos",
-        href: "/projects/meus-gastos",
         site: "https://www.meusgastos.dev.br",
         siteLabel: "meusgastos.dev.br",
         period: "2026",
@@ -83,7 +82,6 @@ export const resume: Record<Lang, ResumeContent> = {
       },
       {
         name: "FAM Security",
-        href: "/projects/fam-security",
         site: "https://www.famsecurity.com.br",
         siteLabel: "famsecurity.com.br",
         period: "2023 — Present",
@@ -126,7 +124,6 @@ export const resume: Record<Lang, ResumeContent> = {
     projects: [
       {
         name: "Meus Gastos",
-        href: "/projects/meus-gastos",
         site: "https://www.meusgastos.dev.br",
         siteLabel: "meusgastos.dev.br",
         period: "2026",
@@ -140,7 +137,6 @@ export const resume: Record<Lang, ResumeContent> = {
       },
       {
         name: "FAM Security",
-        href: "/projects/fam-security",
         site: "https://www.famsecurity.com.br",
         siteLabel: "famsecurity.com.br",
         period: "2023 — Atual",

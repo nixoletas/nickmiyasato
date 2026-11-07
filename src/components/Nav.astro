@@ -22,13 +22,11 @@ const other: Lang = lang === "en" ? "pt-br" : "en";
 // Section anchors resolve against the home page so they also work from a
 // project detail page.
 const home = localizePath("/", lang);
+// Projects, blog, résumé, about and contact are hidden from the menu: the
+// pages still exist, but the home page already carries that content.
 const links = [
-  { href: `${home === "/" ? "" : home}/#work`, label: t("nav.work") },
-  { href: localizePath("/projects", lang), label: t("nav.projects") },
-  { href: `${home === "/" ? "" : home}/#about`, label: t("nav.about") },
-  { href: localizePath("/blog", lang), label: t("nav.blog") },
-  { href: localizePath("/resume", lang), label: t("nav.resume") },
-  { href: `${home === "/" ? "" : home}/#contact`, label: t("nav.contact") },
+  { href: home, label: t("nav.home") },
+  { href: localizePath("/services", lang), label: t("nav.services") },
 ];
 ---
 
@@ -48,7 +46,7 @@ const links = [
     </a>
 
     <div class="flex items-center gap-1 sm:gap-2">
-      {/* Six links do not fit a phone. Below `sm` they move into the panel
+      {/* Below `sm` the links move into the panel
           below, which is why none of them carries a narrow-screen variant. */}
       <ul class="hidden items-center gap-1 sm:flex sm:gap-2">
         {

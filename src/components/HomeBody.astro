@@ -2,7 +2,7 @@
 import Contact from "@/components/Contact.astro";
 import Education from "@/components/Education.astro";
 import Hero from "@/components/Hero.astro";
-import Icon from "@/components/Icon.astro";
+import HomeServices from "@/components/HomeServices.astro";
 import ProjectFeature from "@/components/ProjectFeature.astro";
 import ProjectRow from "@/components/ProjectRow.astro";
 import Section from "@/components/Section.astro";
@@ -10,7 +10,7 @@ import Timeline from "@/components/Timeline.astro";
 import { intro } from "@/data/site";
 import type { Lang } from "@/i18n/ui";
 import { getFeaturedProjects, getOtherProjects } from "@/lib/content";
-import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -21,7 +21,9 @@ const others = await getOtherProjects(lang);
 
 <Hero />
 
-<Section id="work" eyebrow={t("work.title")} divider class="mt-6">
+<HomeServices />
+
+<Section id="work" eyebrow={t("work.title")} divider>
   <div class="flex flex-col gap-20 sm:gap-28">
     {
       featured.map((project, i) => (
@@ -35,26 +37,14 @@ const others = await getOtherProjects(lang);
     }
   </div>
 
-  <div class="mt-16 sm:mt-24">
-    {/* Every project can be featured, which would leave this heading standing
-        over an empty list. The "all projects" link below stays either way. */}
-    {others.length > 0 && (
-      <Fragment>
-        <h3 class="eyebrow mb-4">{t("work.more")}</h3>
-        <ul class="flex flex-col border-t border-border">
-          {others.map((project) => <ProjectRow project={project} />)}
-        </ul>
-      </Fragment>
-    )}
-
-    <a
-      href={localizePath("/projects", lang)}
-      class="mt-6 inline-flex items-center gap-1.5 text-sm text-accent link-underline"
-    >
-      {t("work.all")}
-      <Icon name="arrow-right" size={14} />
-    </a>
-  </div>
+  {others.length > 0 && (
+    <div class="mt-16 sm:mt-24">
+      <h3 class="eyebrow mb-4">{t("work.more")}</h3>
+      <ul class="flex flex-col border-t border-border">
+        {others.map((project) => <ProjectRow project={project} />)}
+      </ul>
+    </div>
+  )}
 </Section>
 
 <Section id="experience" eyebrow={t("exp.title")} divider>

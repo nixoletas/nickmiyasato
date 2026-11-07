@@ -1,0 +1,146 @@
+---
+import Icon from "@/components/Icon.astro";
+import { services } from "@/data/services";
+import { site } from "@/data/site";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath } from "@/i18n/utils";
+import { entrySlug, getProjects } from "@/lib/content";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const copy = services[lang];
+const email = site.email[lang];
+
+// Proof links resolve against the real collection, so a renamed or removed
+// project drops out here instead of becoming a 404.
+const projects = new Map(
+  (await getProjects(lang)).map((p) => [entrySlug(p.id), p.data.title]),
+);
+
+const quote = `mailto:${email}?subject=${encodeURIComponent(copy.cta.subject)}&body=${encodeURIComponent(copy.cta.body)}`;
+---
+
+<div class="shell py-14 sm:py-20">
+  <header class="hero-glow rise flex max-w-3xl flex-col gap-5">
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1 class="text-3xl">{copy.title}</h1>
+    <p class="prose-measure text-lg text-muted">{copy.lead}</p>
+    <div class="flex flex-wrap items-center gap-3 pt-2">
+      <a
+        href={quote}
+        class="btn btn-primary"
+      >
+        <Icon name="mail" size={16} />
+        {copy.cta.button}
+      </a>
+      <a
+        href={localizePath("/projects", lang)}
+        class="btn btn-ghost"
+      >
+        {lang === "en" ? "See projects" : "Ver projetos"}
+        <Icon name="arrow-right" size={16} />
+      </a>
+    </div>
+  </header>
+
+  <section class="mt-16 sm:mt-24" aria-labelledby="services-heading">
+    <h2 id="services-heading" class="eyebrow mb-8">{copy.servicesHeading}</h2>
+    <ul class="grid gap-5 md:grid-cols-2">
+      {
+        copy.services.map((service, i) => {
+          const proof = service.proof.filter((slug) => projects.has(slug));
+          return (
+            <li id={`service-${i + 1}`} class="card reveal flex scroll-mt-24 flex-col gap-5 p-6">
+              <div class="flex flex-col gap-2">
+                <p class="font-mono text-xs text-accent">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <h3 class="text-xl">{service.title}</h3>
+                <p class="text-muted">{service.pitch}</p>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <p class="eyebrow">{copy.includesLabel}</p>
+                <ul class="flex flex-col gap-1.5 text-sm">
+                  {service.includes.map((item) => (
+                    <li class="flex items-start gap-2">
+                      <Icon name="check" size={15} class="mt-1 shrink-0 text-accent" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="mt-auto flex flex-col gap-3 border-t border-border pt-4">
+                <ul class="flex flex-wrap gap-1.5">
+                  {service.stack.map((item) => (
+                    <li class="tag">{item}</li>
+                  ))}
+                </ul>
+                {proof.length > 0 && (
+                  <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                    <span class="text-muted">{copy.proofLabel}:</span>
+                    {proof.map((slug) => (
+                      <a
+                        href={localizePath(`/projects/${slug}`, lang)}
+                        class="link-underline"
+                      >
+                        {projects.get(slug)}
+                      </a>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+
+  <section class="mt-16 border-t border-border pt-14 sm:mt-24 sm:pt-20" aria-labelledby="process-heading">
+    <h2 id="process-heading" class="eyebrow mb-8">{copy.processHeading}</h2>
+    <ol class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        copy.process.map((step, i) => (
+          <li class="reveal flex flex-col gap-2 border-t-2 border-accent/40 pt-4">
+            <span class="font-mono text-sm text-accent">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="text-lg font-medium">{step.title}</h3>
+            <p class="text-sm text-muted">{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="mt-16 border-t border-border pt-14 sm:mt-24 sm:pt-20" aria-labelledby="faq-heading">
+    <h2 id="faq-heading" class="eyebrow mb-8">{copy.faqHeading}</h2>
+    <dl class="grid gap-x-12 gap-y-8 md:grid-cols-2">
+      {
+        copy.faq.map((item) => (
+          <div class="flex flex-col gap-2">
+            <dt class="font-medium">{item.q}</dt>
+            <dd class="text-muted">{item.a}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section
+    class="card reveal mt-16 flex flex-col gap-5 p-6 sm:mt-24 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+    aria-labelledby="cta-heading"
+  >
+    <div class="flex flex-col gap-2">
+      <h2 id="cta-heading" class="text-xl">{copy.cta.title}</h2>
+      <p class="text-muted">{copy.cta.text}</p>
+      <p class="font-mono text-sm break-all">{email}</p>
+    </div>
+    <a
+      href={quote}
+      class="btn btn-primary w-fit shrink-0"
+    >
+      <Icon name="mail" size={16} />
+      {copy.cta.button}
+    </a>
+  </section>
+</div>

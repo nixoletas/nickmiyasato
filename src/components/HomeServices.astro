@@ -1,0 +1,44 @@
+---
+import Icon from "@/components/Icon.astro";
+import Section from "@/components/Section.astro";
+import { services } from "@/data/services";
+import type { Lang } from "@/i18n/ui";
+import { getLangFromUrl, localizePath } from "@/i18n/utils";
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const copy = services[lang];
+const page = localizePath("/services", lang);
+---
+
+{/* A teaser of /services: titles and pitches only. Each card deep-links to
+    its full entry there, so the detail lives in one place. */}
+<Section id="services" eyebrow={copy.eyebrow} title={copy.title} divider class="mt-6">
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      copy.services.map((service, i) => (
+        <li class="reveal">
+          <a
+            href={`${page}#service-${i + 1}`}
+            class="card group flex h-full flex-col gap-3 p-5"
+          >
+            <span class="flex items-center justify-between font-mono text-xs text-accent">
+              {String(i + 1).padStart(2, "0")}
+              <Icon
+                name="arrow-up-right"
+                size={15}
+                class="text-muted transition-colors group-hover:text-accent"
+              />
+            </span>
+            <h3 class="text-lg font-medium">{service.title}</h3>
+            <p class="text-sm text-muted">{service.pitch}</p>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a href={page} class="mt-8 inline-flex items-center gap-1.5 text-sm text-accent link-underline">
+    {lang === "en" ? "How I work and common questions" : "Como trabalho e perguntas frequentes"}
+    <Icon name="arrow-right" size={14} />
+  </a>
+</Section>

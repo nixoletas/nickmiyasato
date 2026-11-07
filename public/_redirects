@@ -11,12 +11,12 @@
 # match both forms and are not duplicated.
 
 # --- Renamed project slugs (EN) ---
-/portfolio/projects/famsecurity    /projects/fam-security  301
-/portfolio/projects/famsecurity/   /projects/fam-security  301
+/portfolio/projects/famsecurity    /projects               301
+/portfolio/projects/famsecurity/   /projects               301
 
 # --- Renamed project slugs (PT-BR) ---
-/pt-br/portfolio/projects/famsecurity    /pt-br/projects/fam-security  301
-/pt-br/portfolio/projects/famsecurity/   /pt-br/projects/fam-security  301
+/pt-br/portfolio/projects/famsecurity    /pt-br/projects               301
+/pt-br/portfolio/projects/famsecurity/   /pt-br/projects               301
 
 # --- Docs pages that became home-page sections ---
 /portfolio/experience         /#experience        301
@@ -59,6 +59,14 @@
 /projects/angular-nasa-apod/   /projects  301
 /projects/intranet-govbr       /projects  301
 /projects/intranet-govbr/      /projects  301
+/projects/a-divisao            /projects  301
+/projects/a-divisao/           /projects  301
+/projects/fam-security         /projects  301
+/projects/fam-security/        /projects  301
+/projects/meus-gastos          /projects  301
+/projects/meus-gastos/         /projects  301
+/projects/picmoney             /projects  301
+/projects/picmoney/            /projects  301
 
 /pt-br/projects/fut-evento            /pt-br/projects  301
 /pt-br/projects/fut-evento/           /pt-br/projects  301
@@ -76,6 +84,14 @@
 /pt-br/projects/angular-nasa-apod/    /pt-br/projects  301
 /pt-br/projects/intranet-govbr        /pt-br/projects  301
 /pt-br/projects/intranet-govbr/       /pt-br/projects  301
+/pt-br/projects/a-divisao             /pt-br/projects  301
+/pt-br/projects/a-divisao/            /pt-br/projects  301
+/pt-br/projects/fam-security          /pt-br/projects  301
+/pt-br/projects/fam-security/         /pt-br/projects  301
+/pt-br/projects/meus-gastos           /pt-br/projects  301
+/pt-br/projects/meus-gastos/          /pt-br/projects  301
+/pt-br/projects/picmoney              /pt-br/projects  301
+/pt-br/projects/picmoney/             /pt-br/projects  301
 
 # --- Contact page became a section ---
 /contact         /#contact        301
